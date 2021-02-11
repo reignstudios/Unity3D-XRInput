@@ -1,4 +1,5 @@
 # Simple XRInput for Unity3D
+* <b>NOTE: SteamVR SDK must NOT be installed for OpenVR Input mode to work!</b>
 * Ensure 'com.valvesoftware.unity.openvr' .tgz file is installed via Unity package manager
 * Run file-menu 'Assets/VRstudios/XRInput/Enable for Steam' for Steam / OpenVR input mode
 * Run file-menu 'Assets/VRstudios/XRInput/Enable for Generic-Unity-Input' for Oculus PC/Android, Generic, etc mode
