@@ -1,0 +1,88 @@
+﻿using UnityEngine;
+
+namespace VRstudios
+{
+    public class TestInput : MonoBehaviour
+    {
+        void Update()
+        {
+            // =====================================
+            // left
+            // =====================================
+            var stateL = XRInput.ControllerState(XRController.Left);
+
+            // touch
+            PrintButton(stateL.touchTrigger, "Left - TouchTrigger");
+            PrintButton(stateL.touchJoystick, "Left - TouchJoystick");
+            PrintButton(stateL.touchGrip, "Left - TouchGrip");
+            PrintButton(stateL.touchMenu, "Left - TouchMenu");
+            PrintButton(stateL.touch1, "Left - Touch1");
+            PrintButton(stateL.touch2, "Left - Touch2");
+            PrintButton(stateL.touch3, "Left - Touch3");
+            PrintButton(stateL.touch4, "Left - Touch4");
+
+            // buttons
+            PrintButton(stateL.buttonTrigger, "Left - ButtonTrigger");
+            PrintButton(stateL.buttonJoystick, "Left - ButtonJoystick");
+            PrintButton(stateL.buttonGrip, "Left - ButtonGrip");
+            PrintButton(stateL.buttonMenu, "Left - ButtonMenu");
+            PrintButton(stateL.button1, "Left - Button1");
+            PrintButton(stateL.button2, "Left - Button2");
+            PrintButton(stateL.button3, "Left - Button3");
+            PrintButton(stateL.button4, "Left - Button4");
+
+            // triggers
+            PrintAnalog(stateL.trigger, "Left - Trigger");
+
+            // triggers
+            PrintJoystick(stateL.joystick, "Left - Joystick");
+
+            // =====================================
+            // right
+            // =====================================
+            var stateR = XRInput.ControllerState(XRController.Right);
+
+            // touch
+            PrintButton(stateR.touchTrigger, "Right - TouchTrigger");
+            PrintButton(stateR.touchJoystick, "Right - TouchJoystick");
+            PrintButton(stateR.touchGrip, "Right - TouchGrip");
+            PrintButton(stateR.touchMenu, "Right - TouchMenu");
+            PrintButton(stateR.touch1, "Right - Touch1");
+            PrintButton(stateR.touch2, "Right - Touch2");
+            PrintButton(stateR.touch3, "Right - Touch3");
+            PrintButton(stateR.touch4, "Right - Touch4");
+
+            // buttons
+            PrintButton(stateR.buttonTrigger, "Right - ButtonTrigger");
+            PrintButton(stateR.buttonJoystick, "Right - ButtonJoystick");
+            PrintButton(stateR.buttonGrip, "Right - ButtonGrip");
+            PrintButton(stateR.buttonMenu, "Right - ButtonMenu");
+            PrintButton(stateR.button1, "Right - Button1");
+            PrintButton(stateR.button2, "Right - Button2");
+            PrintButton(stateR.button3, "Right - Button3");
+            PrintButton(stateR.button4, "Right - Button4");
+
+            // triggers
+            PrintAnalog(stateR.trigger, "Right - Trigger");
+
+            // triggers
+            PrintJoystick(stateR.joystick, "Right - Joystick");
+        }
+
+        void PrintButton(XRControllerButton button, string name)
+        {
+            if (button.down) Debug.Log(name + " down");
+            if (button.up) Debug.Log(name + " up");
+        }
+
+        void PrintAnalog(XRControllerAnalog analog, string name)
+        {
+           if (analog.value >= .1f) Debug.Log(name + " " + analog.value.ToString());
+	    }
+
+        void PrintJoystick(XRControllerJoystick joystick, string name)
+        {
+            if (joystick.value.magnitude >= .1f) Debug.Log($"{name} {joystick.value.x}x{joystick.value.y}");
+        }
+    }
+}
