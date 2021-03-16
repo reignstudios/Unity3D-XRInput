@@ -55,7 +55,8 @@ namespace VRstudios
 
             #if VRSTUDIOS_XRINPUT_OPENVR
             EVRInitError e = EVRInitError.None;
-            OpenVR.Init(ref e);
+            var system = OpenVR.Init(ref e);
+            Debug.Log("OpenVR version: " + system.GetRuntimeVersion());
             #endif
         }
 
