@@ -27,6 +27,7 @@ namespace VRstudios
         private const uint controllerStateLength = OpenVR.k_unMaxTrackedDeviceCount;
         private StringBuilder propertyText = new StringBuilder(256);
         private StringBuilder propertyText_ViveController = new StringBuilder("vive_controller", 256);// capacity must match 'propertyText' for equals to work
+        private StringBuilder propertyText_IndexController = new StringBuilder("knuckles", 256);// capacity must match 'propertyText' for equals to work
         #else
         private const int controllerStateLength = 4;
         #endif
@@ -97,17 +98,33 @@ namespace VRstudios
                     system.GetStringTrackedDeviceProperty(i, ETrackedDeviceProperty.Prop_ControllerType_String, propertyText, (uint)propertyText.Capacity, ref e);
 
                     // update button & touch states
-                    if (e == ETrackedPropertyError.TrackedProp_Success && propertyText.Equals(propertyText_ViveController))// specialize input for odd Vive button layout
+                    if (e == ETrackedPropertyError.TrackedProp_Success)
                     {
-                        // buttons
-                        controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
-                        controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
-                        controller.buttonMenu.Update((state.ulButtonPressed & 2) != 0);
-                        controller.button1.Update((state.ulButtonPressed & 4294967296) != 0);
+                        if (propertyText.Equals(propertyText_ViveController))// specialize input for odd Vive button layout
+                        {
+                            // buttons
+                            controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
+                            controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
+                            controller.buttonMenu.Update((state.ulButtonPressed & 2) != 0);
+                            controller.button1.Update((state.ulButtonPressed & 4294967296) != 0);
 
-                        // touch
-                        controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
-                        controller.touch1.Update((state.ulButtonTouched & 4294967296) != 0);
+                            // touch
+                            controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
+                            controller.touch1.Update((state.ulButtonTouched & 4294967296) != 0);
+                        }
+                        else if (propertyText.Equals(propertyText_IndexController))// specialize input for odd Vive button layout
+                        {
+                            Debug.Log(state.ulButtonPressed.ToString());
+                            // buttons
+                            //controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
+                            //controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
+                            //controller.buttonMenu.Update((state.ulButtonPressed & 2) != 0);
+                            //controller.button1.Update((state.ulButtonPressed & 4294967296) != 0);
+
+                            // touch
+                            //controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
+                            //controller.touch1.Update((state.ulButtonTouched & 4294967296) != 0);
+                        }
                     }
                     else// normal controller mappings
                     {
@@ -130,12 +147,12 @@ namespace VRstudios
                         controller.touch2.Update((state.ulButtonTouched & 2) != 0);
                     }
 
-                    // update analog states
+                    /*// update analog states
                     controller.trigger.Update(state.rAxis1.x);
 
                     // update joystick states
                     if (state.ulButtonTouched != 0) controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
-                    else controller.joystick.Update(Vector2.zero);
+                    else controller.joystick.Update(Vector2.zero);*/
 
                     // update controller side
                     var role = system.GetControllerRoleForTrackedDeviceIndex(i);
