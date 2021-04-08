@@ -30,6 +30,7 @@ namespace VRstudios
         private StringBuilder propertyText_IndexController = new StringBuilder("knuckles", 256);// capacity must match 'propertyText' for equals to work
         #else
         private const int controllerStateLength = 4;
+        private string deviceName_MixedReality = "Spatial Controller";
         #endif
         private XRControllerState[] state_controllers = new XRControllerState[controllerStateLength];
         private uint state_controllerCount;
@@ -184,6 +185,7 @@ namespace VRstudios
 
                 var controller = state_controllers[state_controllerCount];
                 controller.connected = true;
+                bool isMixedReality = c.name.StartsWith(deviceName_MixedReality);
 
                 // update buttons states
                 bool triggerValueValid = c.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
@@ -202,8 +204,19 @@ namespace VRstudios
                 }
                 controller.buttonTrigger.Update(triggerButton);
 
-                if (c.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out bool joystickButton)) controller.buttonJoystick.Update(joystickButton);
-                else controller.buttonJoystick.Update(false);
+                if (isMixedReality)
+				{
+                    if (c.TryGetFeatureValue(CommonUsages.secondary2DAxisClick, out bool joystickButton)) controller.buttonJoystick.Update(joystickButton);
+                    else controller.buttonJoystick.Update(false);
+
+                    if (c.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out bool joystickButton2)) controller.buttonJoystick2.Update(joystickButton2);
+                    else controller.buttonJoystick2.Update(false);
+				}
+                else
+				{
+                    if (c.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out bool joystickButton)) controller.buttonJoystick.Update(joystickButton);
+                    else controller.buttonJoystick.Update(false);
+				}
 
                 if (c.TryGetFeatureValue(CommonUsages.gripButton, out bool gripButton)) controller.buttonGrip.Update(gripButton);
                 else controller.buttonGrip.Update(false);
@@ -222,15 +235,34 @@ namespace VRstudios
                 else controller.trigger.Update(0);
 
                 // update joystick states
-                if (c.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 joystick)) controller.joystick.Update(joystick);
-                else controller.joystick.Update(Vector2.zero);
+                if (isMixedReality)
+				{
+                    if (c.TryGetFeatureValue(CommonUsages.secondary2DAxis, out Vector2 joystick)) controller.joystick.Update(joystick);
+                    else controller.joystick.Update(Vector2.zero);
+
+                    if (c.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 joystick2)) controller.joystick2.Update(joystick2);
+                    else controller.joystick2.Update(Vector2.zero);
+				}
+                else
+				{
+                    if (c.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 joystick)) controller.joystick.Update(joystick);
+                    else controller.joystick.Update(Vector2.zero);
+				}
 
                 // update touch states
-                if (c.TryGetFeatureValue(OculusUsages.indexTouch, out bool triggerTouch)) controller.touchTrigger.Update(triggerTouch);
-                else controller.touchTrigger.Update(false);
+                if (isMixedReality)
+				{
+                    controller.touchJoystick.Update(false);
+                    controller.touchJoystick2.Update(controller.joystick2.value.magnitude >= XRControllerJoystick.tolerance);
+				}
+                else
+				{
+                    if (c.TryGetFeatureValue(OculusUsages.indexTouch, out bool triggerTouch)) controller.touchTrigger.Update(triggerTouch);
+                    else controller.touchTrigger.Update(false);
 
-                if (c.TryGetFeatureValue(OculusUsages.thumbTouch, out bool joystickTouch)) controller.touchJoystick.Update(joystickTouch);
-                else controller.touchJoystick.Update(false);
+                    if (c.TryGetFeatureValue(OculusUsages.thumbTouch, out bool joystickTouch)) controller.touchJoystick.Update(joystickTouch);
+                    else controller.touchJoystick.Update(false);
+				}
 
                 //if (c.TryGetFeatureValue(CommonUsages.gripTouch, out bool gripTouch)) controller.touchGrip.Update(gripTouch);// not supported
                 //else controller.touchGrip.Update(false);
@@ -306,6 +338,7 @@ namespace VRstudios
 
                 controllerState.buttonTrigger.Merge(ref state_controllerMerged.buttonTrigger);
                 controllerState.buttonJoystick.Merge(ref state_controllerMerged.buttonJoystick);
+                controllerState.buttonJoystick2.Merge(ref state_controllerMerged.buttonJoystick2);
                 controllerState.buttonGrip.Merge(ref state_controllerMerged.buttonGrip);
                 controllerState.buttonMenu.Merge(ref state_controllerMerged.buttonMenu);
 
@@ -316,6 +349,7 @@ namespace VRstudios
 
                 controllerState.touchTrigger.Merge(ref state_controllerMerged.touchTrigger);
                 controllerState.touchJoystick.Merge(ref state_controllerMerged.touchJoystick);
+                controllerState.touchJoystick2.Merge(ref state_controllerMerged.touchJoystick2);
                 controllerState.touchGrip.Merge(ref state_controllerMerged.touchGrip);
                 controllerState.touchMenu.Merge(ref state_controllerMerged.touchMenu);
 
@@ -326,6 +360,7 @@ namespace VRstudios
 
                 controllerState.trigger.Merge(ref state_controllerMerged.trigger);
                 controllerState.joystick.Merge(ref state_controllerMerged.joystick);
+                controllerState.joystick2.Merge(ref state_controllerMerged.joystick2);
             }
 
             // fire events
@@ -335,6 +370,9 @@ namespace VRstudios
 
             TestButtonEvent(ButtonJoystickOnEvent, ButtonJoystickDownEvent, ButtonJoystickUpEvent, ref state_controllerRight.buttonJoystick, XRControllerSide.Right);
             TestButtonEvent(ButtonJoystickOnEvent, ButtonJoystickDownEvent, ButtonJoystickUpEvent, ref state_controllerLeft.buttonJoystick, XRControllerSide.Left);
+
+            TestButtonEvent(ButtonJoystick2OnEvent, ButtonJoystick2DownEvent, ButtonJoystick2UpEvent, ref state_controllerRight.buttonJoystick2, XRControllerSide.Right);
+            TestButtonEvent(ButtonJoystick2OnEvent, ButtonJoystick2DownEvent, ButtonJoystick2UpEvent, ref state_controllerLeft.buttonJoystick2, XRControllerSide.Left);
 
             TestButtonEvent(ButtonGripOnEvent, ButtonGripDownEvent, ButtonGripUpEvent, ref state_controllerRight.buttonGrip, XRControllerSide.Right);
             TestButtonEvent(ButtonGripOnEvent, ButtonGripDownEvent, ButtonGripUpEvent, ref state_controllerLeft.buttonGrip, XRControllerSide.Left);
@@ -361,6 +399,9 @@ namespace VRstudios
             TestButtonEvent(TouchJoystickOnEvent, TouchJoystickDownEvent, TouchJoystickUpEvent, ref state_controllerRight.touchJoystick, XRControllerSide.Right);
             TestButtonEvent(TouchJoystickOnEvent, TouchJoystickDownEvent, TouchJoystickUpEvent, ref state_controllerLeft.touchJoystick, XRControllerSide.Left);
 
+            TestButtonEvent(TouchJoystick2OnEvent, TouchJoystick2DownEvent, TouchJoystick2UpEvent, ref state_controllerRight.touchJoystick2, XRControllerSide.Right);
+            TestButtonEvent(TouchJoystick2OnEvent, TouchJoystick2DownEvent, TouchJoystick2UpEvent, ref state_controllerLeft.touchJoystick2, XRControllerSide.Left);
+
             TestButtonEvent(TouchGripOnEvent, TouchGripDownEvent, TouchGripUpEvent, ref state_controllerRight.touchGrip, XRControllerSide.Right);
             TestButtonEvent(TouchGripOnEvent, TouchGripDownEvent, TouchGripUpEvent, ref state_controllerLeft.touchGrip, XRControllerSide.Left);
 
@@ -385,6 +426,9 @@ namespace VRstudios
 
             TestJoystickEvent(JoystickActiveEvent, ref state_controllerRight.joystick, XRControllerSide.Right);
             TestJoystickEvent(JoystickActiveEvent, ref state_controllerLeft.joystick, XRControllerSide.Left);
+
+            TestJoystickEvent(Joystick2ActiveEvent, ref state_controllerRight.joystick2, XRControllerSide.Right);
+            TestJoystickEvent(Joystick2ActiveEvent, ref state_controllerLeft.joystick2, XRControllerSide.Left);
         }
 
 	    private void InputDevices_deviceConnected(InputDevice device)
@@ -450,6 +494,7 @@ namespace VRstudios
 
         public static event ButtonEvent ButtonTriggerOnEvent, ButtonTriggerDownEvent, ButtonTriggerUpEvent;
         public static event ButtonEvent ButtonJoystickOnEvent, ButtonJoystickDownEvent, ButtonJoystickUpEvent;
+        public static event ButtonEvent ButtonJoystick2OnEvent, ButtonJoystick2DownEvent, ButtonJoystick2UpEvent;
         public static event ButtonEvent ButtonGripOnEvent, ButtonGripDownEvent, ButtonGripUpEvent;
         public static event ButtonEvent ButtonMenuOnEvent, ButtonMenuDownEvent, ButtonMenuUpEvent;
         public static event ButtonEvent Button1OnEvent, Button1DownEvent, Button1UpEvent;
@@ -459,6 +504,7 @@ namespace VRstudios
 
         public static event ButtonEvent TouchTriggerOnEvent, TouchTriggerDownEvent, TouchTriggerUpEvent;
         public static event ButtonEvent TouchJoystickOnEvent, TouchJoystickDownEvent, TouchJoystickUpEvent;
+        public static event ButtonEvent TouchJoystick2OnEvent, TouchJoystick2DownEvent, TouchJoystick2UpEvent;
         public static event ButtonEvent TouchGripOnEvent, TouchGripDownEvent, TouchGripUpEvent;
         public static event ButtonEvent TouchMenuOnEvent, TouchMenuDownEvent, TouchMenuUpEvent;
         public static event ButtonEvent Touch1OnEvent, Touch1DownEvent, Touch1UpEvent;
@@ -467,7 +513,7 @@ namespace VRstudios
         public static event ButtonEvent Touch4OnEvent, Touch4DownEvent, Touch4UpEvent;
 
         public static event AnalogEvent TriggerActiveEvent;
-        public static event JoystickEvent JoystickActiveEvent;
+        public static event JoystickEvent JoystickActiveEvent, Joystick2ActiveEvent;
 
         private static void TestButtonEvent(ButtonEvent onEvent, ButtonEvent downEvent, ButtonEvent upEvent, ref XRControllerButton button, XRControllerSide side)
         {
@@ -521,6 +567,18 @@ namespace VRstudios
                 case XRController.Left: return singleton.state_controllerLeft.buttonJoystick;
                 case XRController.Right: return singleton.state_controllerRight.buttonJoystick;
                 case XRController.Merged: return singleton.state_controllerMerged.buttonJoystick;
+            }
+            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+        }
+
+        public static XRControllerButton ButtonJoystick2(XRController controller)
+        {
+            switch (controller)
+            {
+                case XRController.First: return singleton.state_controllerFirst.buttonJoystick2;
+                case XRController.Left: return singleton.state_controllerLeft.buttonJoystick2;
+                case XRController.Right: return singleton.state_controllerRight.buttonJoystick2;
+                case XRController.Merged: return singleton.state_controllerMerged.buttonJoystick2;
             }
             throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
         }
@@ -621,6 +679,18 @@ namespace VRstudios
             throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
         }
 
+        public static XRControllerButton TouchJoystick2(XRController controller)
+        {
+            switch (controller)
+            {
+                case XRController.First: return singleton.state_controllerFirst.touchJoystick2;
+                case XRController.Left: return singleton.state_controllerLeft.touchJoystick2;
+                case XRController.Right: return singleton.state_controllerRight.touchJoystick2;
+                case XRController.Merged: return singleton.state_controllerMerged.touchJoystick2;
+            }
+            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+        }
+
         public static XRControllerButton TouchGrip(XRController controller)
         {
             switch (controller)
@@ -716,6 +786,18 @@ namespace VRstudios
             }
             throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
         }
+
+        public static XRControllerJoystick Joystick2(XRController controller)
+        {
+            switch (controller)
+            {
+                case XRController.First: return singleton.state_controllerFirst.joystick2;
+                case XRController.Left: return singleton.state_controllerLeft.joystick2;
+                case XRController.Right: return singleton.state_controllerRight.joystick2;
+                case XRController.Merged: return singleton.state_controllerMerged.joystick2;
+            }
+            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+        }
         #endregion
     }
 
@@ -753,12 +835,12 @@ namespace VRstudios
     {
         public bool connected;
         public XRControllerSide side;
-        public XRControllerButton touchTrigger, touchJoystick, touchGrip, touchMenu;
+        public XRControllerButton touchTrigger, touchJoystick, touchJoystick2, touchGrip, touchMenu;
         public XRControllerButton touch1, touch2, touch3, touch4;
-        public XRControllerButton buttonTrigger, buttonJoystick, buttonGrip, buttonMenu;
+        public XRControllerButton buttonTrigger, buttonJoystick, buttonJoystick2, buttonGrip, buttonMenu;
         public XRControllerButton button1, button2 ,button3, button4;
         public XRControllerAnalog trigger;
-        public XRControllerJoystick joystick;
+        public XRControllerJoystick joystick, joystick2;
     }
 
     public struct XRControllerButton
@@ -788,7 +870,7 @@ namespace VRstudios
     public struct XRControllerAnalog
     {
         public float value;
-        public const float tolerance = 0.1f;
+        public static float tolerance = 0.2f;
 
         internal void Update(float value)
         {
@@ -805,7 +887,7 @@ namespace VRstudios
     public struct XRControllerJoystick
     {
         public Vector2 value;
-        public const float tolerance = 0.1f;
+        public static float tolerance = 0.2f;
 
         internal void Update(Vector2 value)
         {

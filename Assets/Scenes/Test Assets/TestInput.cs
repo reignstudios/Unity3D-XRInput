@@ -14,6 +14,7 @@ namespace VRstudios
             // touch
             PrintButton(stateL.touchTrigger, "Left - TouchTrigger");
             PrintButton(stateL.touchJoystick, "Left - TouchJoystick");
+            PrintButton(stateL.touchJoystick2, "Left - TouchJoystick2");
             PrintButton(stateL.touchGrip, "Left - TouchGrip");
             PrintButton(stateL.touchMenu, "Left - TouchMenu");
             PrintButton(stateL.touch1, "Left - Touch1");
@@ -24,6 +25,7 @@ namespace VRstudios
             // buttons
             PrintButton(stateL.buttonTrigger, "Left - ButtonTrigger");
             PrintButton(stateL.buttonJoystick, "Left - ButtonJoystick");
+            PrintButton(stateL.buttonJoystick2, "Left - ButtonJoystick2");
             PrintButton(stateL.buttonGrip, "Left - ButtonGrip");
             PrintButton(stateL.buttonMenu, "Left - ButtonMenu");
             PrintButton(stateL.button1, "Left - Button1");
@@ -36,6 +38,7 @@ namespace VRstudios
 
             // triggers
             PrintJoystick(stateL.joystick, "Left - Joystick");
+            PrintJoystick(stateL.joystick2, "Left - Joystick2");
 
             // =====================================
             // right
@@ -45,6 +48,7 @@ namespace VRstudios
             // touch
             PrintButton(stateR.touchTrigger, "Right - TouchTrigger");
             PrintButton(stateR.touchJoystick, "Right - TouchJoystick");
+            PrintButton(stateR.touchJoystick2, "Right - TouchJoystick2");
             PrintButton(stateR.touchGrip, "Right - TouchGrip");
             PrintButton(stateR.touchMenu, "Right - TouchMenu");
             PrintButton(stateR.touch1, "Right - Touch1");
@@ -55,6 +59,7 @@ namespace VRstudios
             // buttons
             PrintButton(stateR.buttonTrigger, "Right - ButtonTrigger");
             PrintButton(stateR.buttonJoystick, "Right - ButtonJoystick");
+            PrintButton(stateR.buttonJoystick2, "Right - ButtonJoystick2");
             PrintButton(stateR.buttonGrip, "Right - ButtonGrip");
             PrintButton(stateR.buttonMenu, "Right - ButtonMenu");
             PrintButton(stateR.button1, "Right - Button1");
@@ -67,6 +72,7 @@ namespace VRstudios
 
             // triggers
             PrintJoystick(stateR.joystick, "Right - Joystick");
+            PrintJoystick(stateR.joystick2, "Right - Joystick2");
         }
 
         void PrintButton(XRControllerButton button, string name)
