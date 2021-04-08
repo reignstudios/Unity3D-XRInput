@@ -112,22 +112,30 @@ namespace VRstudios
                             // touch
                             controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
                             controller.touch1.Update((state.ulButtonTouched & 4294967296) != 0);
-                        }
+
+							// update joystick states
+							if (state.ulButtonTouched != 0) controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
+							else controller.joystick.Update(Vector2.zero);
+						}
                         else if (propertyText.Equals(propertyText_IndexController))// specialize input for odd Vive button layout
                         {
-                            Debug.Log(state.ulButtonPressed.ToString());
                             // buttons
-                            //controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
-                            //controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
-                            //controller.buttonMenu.Update((state.ulButtonPressed & 2) != 0);
-                            //controller.button1.Update((state.ulButtonPressed & 4294967296) != 0);
+                            controller.buttonJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
+                            controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
+                            controller.button1.Update((state.ulButtonPressed & 4) != 0);
+                            controller.button2.Update((state.ulButtonPressed & 2) != 0);
 
                             // touch
-                            //controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
-                            //controller.touch1.Update((state.ulButtonTouched & 4294967296) != 0);
+                            controller.touchJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
+                            controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
+                            controller.touch1.Update((state.ulButtonTouched & 4) != 0);
+                            controller.touch2.Update((state.ulButtonTouched & 2) != 0);
+
+                            // update joystick states
+							controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
                         }
                     }
-                    else// normal controller mappings
+                    else// agnostic controller mappings
                     {
                         // buttons
                         bool triggerButton = (state.ulButtonPressed & 8589934592) != 0;// get normal trigger button state if avaliable
@@ -146,14 +154,13 @@ namespace VRstudios
                         controller.touchGrip.Update((state.ulButtonTouched & 17179869188) != 0);
                         controller.touch1.Update((state.ulButtonTouched & 128) != 0);
                         controller.touch2.Update((state.ulButtonTouched & 2) != 0);
+
+                        // update joystick states
+						controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
                     }
 
-                    /*// update analog states
+                    // update analog states
                     controller.trigger.Update(state.rAxis1.x);
-
-                    // update joystick states
-                    if (state.ulButtonTouched != 0) controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
-                    else controller.joystick.Update(Vector2.zero);*/
 
                     // update controller side
                     var role = system.GetControllerRoleForTrackedDeviceIndex(i);

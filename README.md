@@ -16,6 +16,3 @@ This API acts as its own easy-to-use agnostic XR-Input layer allowing you to wri
     * Get full input state of controller: XRInput.ControllerState(...)
     * Get specific input state of controller: XRInput.ButtonTrigger(...), XRInput.Button1(...), etc
     * Get specific input state via callbacks: ButtonTriggerOnEvent, ButtonTriggerDownEvent, Button1DownEvent, etc
-
-# TODO
-* Vive-Index needs to be specifically mapped to support all input features
