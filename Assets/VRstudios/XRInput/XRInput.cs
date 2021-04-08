@@ -123,14 +123,16 @@ namespace VRstudios
                             // buttons
                             controller.buttonJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
                             controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
-                            controller.button1.Update((state.ulButtonPressed & 4) != 0);
-                            controller.button2.Update((state.ulButtonPressed & 2) != 0);
+                            controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
+                            //controller.button2.Update((state.ulButtonPressed & 4) != 0);// button 2 is the same as grip
+                            controller.button1.Update((state.ulButtonPressed & 2) != 0);
 
                             // touch
                             controller.touchJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
                             controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
-                            controller.touch1.Update((state.ulButtonTouched & 4) != 0);
-                            controller.touch2.Update((state.ulButtonTouched & 2) != 0);
+                            controller.touchGrip.Update((state.ulButtonTouched & 4) != 0);
+                            //controller.touch2.Update((state.ulButtonTouched & 4) != 0);// button 2 is the same as grip
+                            controller.touch1.Update((state.ulButtonTouched & 2) != 0);
 
                             // update joystick states
 							controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
