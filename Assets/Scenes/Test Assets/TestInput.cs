@@ -36,7 +36,10 @@ namespace VRstudios
             // triggers
             PrintAnalog(stateL.trigger, "Left - Trigger");
 
-            // triggers
+            // grips
+            PrintAnalog(stateL.grip, "Left - Grip");
+
+            // joysticks
             PrintJoystick(stateL.joystick, "Left - Joystick");
             PrintJoystick(stateL.joystick2, "Left - Joystick2");
 
@@ -70,7 +73,10 @@ namespace VRstudios
             // triggers
             PrintAnalog(stateR.trigger, "Right - Trigger");
 
-            // triggers
+            // grips
+            PrintAnalog(stateR.grip, "Right - Grip");
+
+            // joysticks
             PrintJoystick(stateR.joystick, "Right - Joystick");
             PrintJoystick(stateR.joystick2, "Right - Joystick2");
         }
