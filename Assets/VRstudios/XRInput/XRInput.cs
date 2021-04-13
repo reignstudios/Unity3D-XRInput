@@ -48,14 +48,18 @@ namespace VRstudios
 		    }
             DontDestroyOnLoad(gameObject);
             singleton = this;
-            
+
+            // add existing devices
             InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, controllers);
             devices.AddRange(controllers);
+            foreach (var device in controllers) UpdateDevice(device, false);
 
+            // watch for device changes
             InputDevices.deviceConnected += InputDevices_deviceConnected;
 		    InputDevices.deviceDisconnected += InputDevices_deviceDisconnected;
 		    InputDevices.deviceConfigChanged += InputDevices_deviceConfigChanged;
 
+            // init openvr
             #if VRSTUDIOS_XRINPUT_OPENVR
             EVRInitError e = EVRInitError.None;
             var system = OpenVR.Init(ref e);
@@ -78,6 +82,7 @@ namespace VRstudios
         {
             state_controllerCount = 0;
             bool leftSet = false, rightSet = false;
+            int leftSetIndex = -1, rightSetIndex = -1;
 
             #if VRSTUDIOS_XRINPUT_OPENVR
             var system = OpenVR.System;
@@ -173,12 +178,14 @@ namespace VRstudios
                             controller.side = XRControllerSide.Left;
                             state_controllerLeft = controller;
                             leftSet = true;
+                            leftSetIndex = i;
                             break;
 
                         case ETrackedControllerRole.RightHand:
                             controller.side = XRControllerSide.Right;
                             state_controllerRight = controller;
                             rightSet = true;
+                            rightSetIndex = i;
                             break;
 
                         default: controller.side = XRControllerSide.Unknown; break;
@@ -189,6 +196,7 @@ namespace VRstudios
                 }
             }
             #else
+            int controllerIndex = 0;
             foreach (var c in controllers)
             {
                 if (!c.isValid || (c.characteristics & InputDeviceCharacteristics.Controller) == 0) continue;
@@ -291,12 +299,16 @@ namespace VRstudios
                     controller.side = XRControllerSide.Left;
                     state_controllerLeft = controller;
                     leftSet = true;
+                    leftSetIndex = controllerIndex;
+                    handLeft = c;
                 }
                 else if ((c.characteristics & InputDeviceCharacteristics.Right) != 0)
                 {
                     controller.side = XRControllerSide.Right;
                     state_controllerRight = controller;
                     rightSet = true;
+                    rightSetIndex = controllerIndex;
+                    handRight = c;
                 }
                 else
                 {
@@ -305,6 +317,7 @@ namespace VRstudios
 
                 state_controllers[state_controllerCount] = controller;
                 ++state_controllerCount;
+                ++controllerIndex;
             }
             #endif
 
@@ -315,6 +328,10 @@ namespace VRstudios
                 {
                     if (!leftSet && !rightSet)
                     {
+                        #if !VRSTUDIOS_XRINPUT_OPENVR
+                        handRight = controllers[0];
+                        #endif
+
                         state_controllerRight = state_controllers[0];
                         state_controllers[0].side = XRControllerSide.Right;
                         rightSet = true;
@@ -322,10 +339,39 @@ namespace VRstudios
 				}
                 else if (state_controllerCount >= 2)
                 {
-                    state_controllerRight = state_controllers[0];
-                    state_controllerLeft = state_controllers[1];
-                    state_controllers[0].side = XRControllerSide.Right;
-                    state_controllers[1].side = XRControllerSide.Left;
+                    int rightI = 0;
+                    int leftI = 1;
+
+                    if (!rightSet && !leftSet)
+                    {
+                        rightI = 0;
+                        leftI = 1;
+                        #if !VRSTUDIOS_XRINPUT_OPENVR
+                        handRight = controllers[rightI];
+                        handLeft = controllers[leftI];
+                        #endif
+                    }
+                    else if (!rightSet)
+                    {
+                        rightI = rightSetIndex;
+                        leftI = rightI == 0 ? 1 : 0;
+                        #if !VRSTUDIOS_XRINPUT_OPENVR
+                        handRight = controllers[rightI];
+                        #endif
+                    }
+                    else if (!leftSet)
+                    {
+                        leftI = leftSetIndex;
+                        rightI = leftI == 0 ? 1 : 0;
+                        #if !VRSTUDIOS_XRINPUT_OPENVR
+                        handLeft = controllers[leftI];
+                        #endif
+                    }
+
+                    state_controllerRight = state_controllers[rightI];
+                    state_controllerLeft = state_controllers[leftI];
+                    state_controllers[rightI].side = XRControllerSide.Right;
+                    state_controllers[leftI].side = XRControllerSide.Left;
                     rightSet = true;
                     leftSet = true;
                 }
@@ -490,14 +536,30 @@ namespace VRstudios
 
                 if (device.characteristics.HasFlag(InputDeviceCharacteristics.Left))
                 {
-                    if (!removingDevice) handLeft = device;
-                    else handLeft = new InputDevice();
+                    if (!removingDevice)
+                    {
+                        Debug.Log("XR Device Left-Hand added");
+                        handLeft = device;
+                    }
+                    else
+                    {
+                        Debug.Log("XR Device Left-Hand removed");
+                        handLeft = new InputDevice();
+                    }
 			    }
                 else if (device.characteristics.HasFlag(InputDeviceCharacteristics.Right))
                 {
-                    if (!removingDevice) handRight = device;
-                    else handRight = new InputDevice();
-			    }
+                    if (!removingDevice)
+                    {
+                        Debug.Log("XR Device Right-Hand added");
+                        handLeft = device;
+                    }
+                    else
+                    {
+                        Debug.Log("XR Device Right-Hand removed");
+                        handLeft = new InputDevice();
+                    }
+                }
             }
 	    }
 
@@ -824,6 +886,29 @@ namespace VRstudios
             }
             throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
         }
+
+        public static bool SetRumble(XRControllerActionSide controller, float strength, float duration = .1f)
+        {
+            if (controller == XRControllerActionSide.Left || controller == XRControllerActionSide.Both)
+            {
+                HapticCapabilities capabilities;
+                if (singleton.handLeft.TryGetHapticCapabilities(out capabilities))
+                {
+                    if (capabilities.supportsImpulse) return singleton.handLeft.SendHapticImpulse(0, strength, duration);
+                }
+            }
+
+            if (controller == XRControllerActionSide.Right || controller == XRControllerActionSide.Both)
+            {
+                HapticCapabilities capabilities;
+                if (singleton.handRight.TryGetHapticCapabilities(out capabilities))
+                {
+                    if (capabilities.supportsImpulse) return singleton.handRight.SendHapticImpulse(0, strength, duration);
+                }
+            }
+
+            return false;
+        }
         #endregion
     }
 
@@ -856,6 +941,13 @@ namespace VRstudios
         Left,
         Right
 	}
+
+    public enum XRControllerActionSide
+    {
+        Both,
+        Left,
+        Right
+    }
 
     public struct XRControllerState
     {

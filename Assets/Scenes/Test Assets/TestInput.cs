@@ -43,6 +43,9 @@ namespace VRstudios
             PrintJoystick(stateL.joystick, "Left - Joystick");
             PrintJoystick(stateL.joystick2, "Left - Joystick2");
 
+            // rumble
+            if (stateL.trigger.value != 0) XRInput.SetRumble(XRControllerActionSide.Left, stateL.trigger.value);
+
             // =====================================
             // right
             // =====================================
@@ -79,6 +82,9 @@ namespace VRstudios
             // joysticks
             PrintJoystick(stateR.joystick, "Right - Joystick");
             PrintJoystick(stateR.joystick2, "Right - Joystick2");
+
+            // rumble
+            if (stateR.trigger.value != 0) XRInput.SetRumble(XRControllerActionSide.Right, stateR.trigger.value);
         }
 
         void PrintButton(XRControllerButton button, string name)
