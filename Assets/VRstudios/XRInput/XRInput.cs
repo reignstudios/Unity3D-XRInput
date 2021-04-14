@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using System.Runtime.InteropServices;
+
+using XrResult = System.Int32;
 
 #if VRSTUDIOS_XRINPUT_OPENVR
 using Valve.VR;
@@ -18,7 +21,6 @@ namespace VRstudios
     {
         public static XRInput singleton { get; private set; }
 
-        public List<InputDevice> devices { get; private set; } = new List<InputDevice>();
         public List<InputDevice> controllers { get; private set; } = new List<InputDevice>();
         public InputDevice handLeft { get; private set; }
         public InputDevice handRight { get; private set; }
@@ -51,8 +53,7 @@ namespace VRstudios
 
             // add existing devices
             InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, controllers);
-            devices.AddRange(controllers);
-            foreach (var device in controllers) UpdateDevice(device, false);
+            foreach (var c in controllers) UpdateDevice(c, false);
 
             // watch for device changes
             InputDevices.deviceConnected += InputDevices_deviceConnected;
@@ -346,27 +347,22 @@ namespace VRstudios
                     {
                         rightI = 0;
                         leftI = 1;
-                        #if !VRSTUDIOS_XRINPUT_OPENVR
-                        handRight = controllers[rightI];
-                        handLeft = controllers[leftI];
-                        #endif
                     }
                     else if (!rightSet)
                     {
-                        rightI = rightSetIndex;
-                        leftI = rightI == 0 ? 1 : 0;
-                        #if !VRSTUDIOS_XRINPUT_OPENVR
-                        handRight = controllers[rightI];
-                        #endif
+                        leftI = leftSetIndex;
+                        rightI = leftI == 0 ? 1 : 0;
                     }
                     else if (!leftSet)
                     {
-                        leftI = leftSetIndex;
-                        rightI = leftI == 0 ? 1 : 0;
-                        #if !VRSTUDIOS_XRINPUT_OPENVR
-                        handLeft = controllers[leftI];
-                        #endif
+                        rightI = rightSetIndex;
+                        leftI = rightI == 0 ? 1 : 0;
                     }
+
+                    #if !VRSTUDIOS_XRINPUT_OPENVR
+                    handRight = controllers[rightI];
+                    handLeft = controllers[leftI];
+                    #endif
 
                     state_controllerRight = state_controllers[rightI];
                     state_controllerLeft = state_controllers[leftI];
@@ -491,25 +487,51 @@ namespace VRstudios
             TestJoystickEvent(Joystick2ActiveEvent, ref state_controllerLeft.joystick2, XRControllerSide.Left);
         }
 
+        private bool ControllersMatch(InputDevice device1, InputDevice device2)
+        {
+            return device1.characteristics == device2.characteristics && device1.serialNumber == device2.serialNumber && device1.name == device2.name;
+        }
+
+        private bool FindExistingController(InputDevice device, out int index)
+        {
+            if (controllers.Exists(x => ControllersMatch(x, device)))
+            {
+                index = controllers.FindIndex(x => x.serialNumber == device.serialNumber);
+                return true;
+            }
+
+            index = -1;
+            return false;
+        }
+
+        private bool ReplaceControllerIfExists(InputDevice device)
+        {
+            if (FindExistingController(device, out int index))
+            {
+                controllers[index] = device;
+                return true;
+            }
+            return false;
+        }
+
 	    private void InputDevices_deviceConnected(InputDevice device)
 	    {
             Debug.Log("XR Device connected: " + device.name);
-            devices.Add(device);
+            if (!ReplaceControllerIfExists(device)) controllers.Add(device);
             UpdateDevice(device, false);
         }
 
         private void InputDevices_deviceDisconnected(InputDevice device)
         {
             Debug.Log("XR Device disconnected: " + device.name);
-            devices.Remove(device);
+            controllers.Remove(device);
             UpdateDevice(device, true);
         }
 
         private void InputDevices_deviceConfigChanged(InputDevice device)
         {
             Debug.Log("XR Device config changed: " + device.name);
-            var index = devices.FindIndex(x => x.name == device.name);
-            devices[index] = device;
+            ReplaceControllerIfExists(device);
             UpdateDevice(device, false);
         }
 
@@ -517,11 +539,10 @@ namespace VRstudios
         {
             if (device.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
             {
-                if (controllers.Exists(x => x.name == device.name))
+                if (FindExistingController(device, out int index))
                 {
 				    if (!removingDevice)
 				    {
-					    var index = controllers.FindIndex(x => x.name == device.name);
 					    controllers[index] = device;
 				    }
                     else
@@ -886,6 +907,9 @@ namespace VRstudios
             }
             throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
         }
+
+        [DllImport("openxr_loader.dll")]
+        private static extern XrResult xrApplyHapticFeedback();
 
         public static bool SetRumble(XRControllerActionSide controller, float strength, float duration = .1f)
         {
