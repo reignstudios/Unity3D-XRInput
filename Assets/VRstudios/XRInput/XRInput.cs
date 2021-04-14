@@ -1,42 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
-using System.Runtime.InteropServices;
-
-using XrResult = System.Int32;
-
-#if VRSTUDIOS_XRINPUT_OPENVR
-using Valve.VR;
-using System.Runtime.InteropServices;
-using System.Text;
-#else
-using Unity.XR.Oculus;
-#endif
+using VRstudios.API;
 
 namespace VRstudios
 {
+    public enum XRInputAPIType
+    {
+        //AutoDetect,// TODO
+        InputManager_Old,
+        InputSystem_Package,
+        OpenVR_Legacy
+    }
+
     [DefaultExecutionOrder(-99)]
     public sealed class XRInput : MonoBehaviour
     {
         public static XRInput singleton { get; private set; }
 
-        public List<InputDevice> controllers { get; private set; } = new List<InputDevice>();
-        public InputDevice handLeft { get; private set; }
-        public InputDevice handRight { get; private set; }
+        public XRInputAPIType apiType;
+        private XRInputAPI api;
+        private bool disposeAPI;
 
-        #if VRSTUDIOS_XRINPUT_OPENVR
-        private const uint controllerStateLength = OpenVR.k_unMaxTrackedDeviceCount;
-        private StringBuilder propertyText = new StringBuilder(256);
-        private StringBuilder propertyText_ViveController = new StringBuilder("vive_controller", 256);// capacity must match 'propertyText' for equals to work
-        private StringBuilder propertyText_IndexController = new StringBuilder("knuckles", 256);// capacity must match 'propertyText' for equals to work
-        #else
         private const int controllerStateLength = 4;
-        private const string deviceName_MixedReality = "Spatial Controller";
-        #endif
-
         private XRControllerState[] state_controllers = new XRControllerState[controllerStateLength];
-        private uint state_controllerCount;
         private XRControllerState state_controllerLeft, state_controllerRight;
         private XRControllerState state_controllerFirst, state_controllerMerged;
 
@@ -45,344 +31,58 @@ namespace VRstudios
             // only one can exist in scene at a time
             if (singleton != null)
             {
+                disposeAPI = false;// don't dispose apis if we're not the owner of possible native instances
                 Destroy(gameObject);
                 return;
 		    }
             DontDestroyOnLoad(gameObject);
             singleton = this;
 
-            // add existing devices
-            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, controllers);
-            foreach (var c in controllers) UpdateDevice(c, false);
+            disposeAPI = true;
+            switch (apiType)
+            {
+                case XRInputAPIType.InputManager_Old: api = new InputManager_Old(); break;
+                case XRInputAPIType.InputSystem_Package: api = new InputSystem_Package(); break;
+                case XRInputAPIType.OpenVR_Legacy: api = new OpenVR_Legacy(); break;
+                default: throw new NotImplementedException();
+            }
 
-            // watch for device changes
-            InputDevices.deviceConnected += InputDevices_deviceConnected;
-		    InputDevices.deviceDisconnected += InputDevices_deviceDisconnected;
-		    InputDevices.deviceConfigChanged += InputDevices_deviceConfigChanged;
-
-            // init openvr
-            #if VRSTUDIOS_XRINPUT_OPENVR
-            EVRInitError e = EVRInitError.None;
-            var system = OpenVR.Init(ref e);
-            Debug.Log("OpenVR version: " + system.GetRuntimeVersion());
-            #endif
+            api.Init();
         }
 
 	    private void OnDestroy()
 	    {
-            #if VRSTUDIOS_XRINPUT_OPENVR
-            OpenVR.Shutdown();
-            #endif
-
-            InputDevices.deviceConnected -= InputDevices_deviceConnected;
-            InputDevices.deviceDisconnected -= InputDevices_deviceDisconnected;
-            InputDevices.deviceConfigChanged -= InputDevices_deviceConfigChanged;
+            if (disposeAPI && api != null)
+            {
+                api.Dispose();
+                api = null;
+            }
         }
 
 	    private void Update()
         {
-            state_controllerCount = 0;
-            bool leftSet = false, rightSet = false;
-            int leftSetIndex = -1, rightSetIndex = -1;
+            if (api == null) return;
 
-            #if VRSTUDIOS_XRINPUT_OPENVR
-            var system = OpenVR.System;
-            if (system == null || !system.IsInputAvailable()) return;
-
-            for (uint i = 0; i != controllerStateLength; ++i)
-            {
-                if (!system.IsTrackedDeviceConnected(i)) continue;
-
-                // update controller state
-                if (system.GetTrackedDeviceClass(i) != ETrackedDeviceClass.Controller) continue;
-                var state = new VRControllerState_t();
-                if (system.GetControllerState(i, ref state, (uint)Marshal.SizeOf<VRControllerState_t>()))
-                {
-                    var controller = state_controllers[state_controllerCount];
-                    controller.connected = true;
-
-                    // get controller type
-                    ETrackedPropertyError e = ETrackedPropertyError.TrackedProp_Success;
-                    system.GetStringTrackedDeviceProperty(i, ETrackedDeviceProperty.Prop_ControllerType_String, propertyText, (uint)propertyText.Capacity, ref e);
-
-                    // update button & touch states
-                    if (e == ETrackedPropertyError.TrackedProp_Success)
-                    {
-                        if (propertyText.Equals(propertyText_ViveController))// specialize input for odd Vive button layout
-                        {
-                            // buttons
-                            controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
-                            controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
-                            controller.buttonMenu.Update((state.ulButtonPressed & 2) != 0);
-                            controller.button1.Update((state.ulButtonPressed & 4294967296) != 0);
-
-                            // touch
-                            controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
-                            controller.touch1.Update((state.ulButtonTouched & 4294967296) != 0);
-
-							// update joystick states
-							if (state.ulButtonTouched != 0) controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
-							else controller.joystick.Update(Vector2.zero);
-						}
-                        else if (propertyText.Equals(propertyText_IndexController))// specialize input for odd Vive button layout
-                        {
-                            // buttons
-                            controller.buttonJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
-                            controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
-                            controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
-                            //controller.button2.Update((state.ulButtonPressed & 4) != 0);// button 2 is the same as grip
-                            controller.button1.Update((state.ulButtonPressed & 2) != 0);
-
-                            // touch
-                            controller.touchJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
-                            controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
-                            controller.touchGrip.Update((state.ulButtonTouched & 4) != 0);
-                            //controller.touch2.Update((state.ulButtonTouched & 4) != 0);// button 2 is the same as grip
-                            controller.touch1.Update((state.ulButtonTouched & 2) != 0);
-
-                            // update joystick states
-							controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
-                        }
-                    }
-                    else// agnostic controller mappings
-                    {
-                        // buttons
-                        bool triggerButton = (state.ulButtonPressed & 8589934592) != 0;// get normal trigger button state if avaliable
-                        if (state.rAxis1.x >= .75f) triggerButton = true;// virtually simulate trigger button in case it doesn't exist
-                        else triggerButton = false;
-                        controller.buttonTrigger.Update(triggerButton);
-
-                        controller.buttonJoystick.Update((state.ulButtonPressed & 4294967296) != 0);
-                        controller.buttonGrip.Update((state.ulButtonPressed & 17179869188) != 0);
-						controller.button1.Update((state.ulButtonPressed & 128) != 0);
-                        controller.button2.Update((state.ulButtonPressed & 2) != 0);
-
-                        // touch
-                        controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
-                        controller.touchJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
-                        controller.touchGrip.Update((state.ulButtonTouched & 17179869188) != 0);
-                        controller.touch1.Update((state.ulButtonTouched & 128) != 0);
-                        controller.touch2.Update((state.ulButtonTouched & 2) != 0);
-
-                        // update joystick states
-						controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
-                    }
-
-                    // update analog states
-                    controller.trigger.Update(state.rAxis1.x);
-
-                    // update controller side
-                    var role = system.GetControllerRoleForTrackedDeviceIndex(i);
-                    switch (role)
-                    {
-                        case ETrackedControllerRole.LeftHand:
-                            controller.side = XRControllerSide.Left;
-                            state_controllerLeft = controller;
-                            leftSet = true;
-                            leftSetIndex = i;
-                            break;
-
-                        case ETrackedControllerRole.RightHand:
-                            controller.side = XRControllerSide.Right;
-                            state_controllerRight = controller;
-                            rightSet = true;
-                            rightSetIndex = i;
-                            break;
-
-                        default: controller.side = XRControllerSide.Unknown; break;
-                    }
-
-                    state_controllers[state_controllerCount] = controller;
-                    ++state_controllerCount;
-                }
-            }
-            #else
-            int controllerIndex = 0;
-            foreach (var c in controllers)
-            {
-                if (!c.isValid || (c.characteristics & InputDeviceCharacteristics.Controller) == 0) continue;
-
-                var controller = state_controllers[state_controllerCount];
-                controller.connected = true;
-                bool isMixedReality = c.name.StartsWith(deviceName_MixedReality);
-                bool simulateGripAnalog = !c.name.StartsWith("Oculus");
-
-                // update buttons states
-                bool triggerValueValid = c.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
-                bool triggerButton = false;
-                if (!c.TryGetFeatureValue(CommonUsages.triggerButton, out triggerButton))
-                {
-                    if (triggerValueValid)
-                    {
-                        if (triggerValue >= .75f) triggerButton = true;// virtually simulate trigger button in case it doesn't exist
-                        else triggerButton = false;
-                    }
-                    else
-                    {
-                        triggerButton = false;
-                    }
-                }
-                controller.buttonTrigger.Update(triggerButton);
-
-                if (isMixedReality)
-				{
-                    if (c.TryGetFeatureValue(CommonUsages.secondary2DAxisClick, out bool joystickButton)) controller.buttonJoystick.Update(joystickButton);
-                    else controller.buttonJoystick.Update(false);
-
-                    if (c.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out bool joystickButton2)) controller.buttonJoystick2.Update(joystickButton2);
-                    else controller.buttonJoystick2.Update(false);
-				}
-                else
-				{
-                    if (c.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out bool joystickButton)) controller.buttonJoystick.Update(joystickButton);
-                    else controller.buttonJoystick.Update(false);
-				}
-
-                if (c.TryGetFeatureValue(CommonUsages.gripButton, out bool gripButton)) controller.buttonGrip.Update(gripButton);
-                else controller.buttonGrip.Update(false);
-
-                if (c.TryGetFeatureValue(CommonUsages.menuButton, out bool menuButton)) controller.buttonMenu.Update(menuButton);
-                else controller.buttonMenu.Update(false);
-
-                if (c.TryGetFeatureValue(CommonUsages.primaryButton, out bool button1)) controller.button1.Update(button1);
-                else controller.button1.Update(false);
-
-                if (c.TryGetFeatureValue(CommonUsages.secondaryButton, out bool button2)) controller.button2.Update(button2);
-                else controller.button2.Update(false);
-
-                // update analog states
-                if (triggerValueValid) controller.trigger.Update(triggerValue);
-                else controller.trigger.Update(0);
-
-                if (simulateGripAnalog && controller.buttonGrip.on) controller.grip.Update(1);
-                else if (c.TryGetFeatureValue(CommonUsages.grip, out float gripValue)) controller.grip.Update(gripValue);
-                else controller.grip.Update(0);
-
-                // update joystick states
-                if (isMixedReality)
-				{
-                    if (c.TryGetFeatureValue(CommonUsages.secondary2DAxis, out Vector2 joystick)) controller.joystick.Update(joystick);
-                    else controller.joystick.Update(Vector2.zero);
-
-                    if (c.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 joystick2)) controller.joystick2.Update(joystick2);
-                    else controller.joystick2.Update(Vector2.zero);
-				}
-                else
-				{
-                    if (c.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 joystick)) controller.joystick.Update(joystick);
-                    else controller.joystick.Update(Vector2.zero);
-				}
-
-                // update touch states
-                if (isMixedReality)
-				{
-                    controller.touchJoystick.Update(false);
-                    controller.touchJoystick2.Update(controller.joystick2.value.magnitude >= XRControllerJoystick.tolerance);
-				}
-                else
-				{
-                    if (c.TryGetFeatureValue(OculusUsages.indexTouch, out bool triggerTouch)) controller.touchTrigger.Update(triggerTouch);
-                    else controller.touchTrigger.Update(false);
-
-                    if (c.TryGetFeatureValue(OculusUsages.thumbTouch, out bool joystickTouch)) controller.touchJoystick.Update(joystickTouch);
-                    else controller.touchJoystick.Update(false);
-				}
-
-                if (c.TryGetFeatureValue(CommonUsages.primaryTouch, out bool touch1)) controller.touch1.Update(touch1);
-                else controller.touch1.Update(false);
-
-                if (c.TryGetFeatureValue(CommonUsages.secondaryTouch, out bool touch2)) controller.touch2.Update(touch2);
-                else controller.touch2.Update(false);
-
-                // update controller side
-                if ((c.characteristics & InputDeviceCharacteristics.Left) != 0)
-                {
-                    controller.side = XRControllerSide.Left;
-                    state_controllerLeft = controller;
-                    leftSet = true;
-                    leftSetIndex = controllerIndex;
-                    handLeft = c;
-                }
-                else if ((c.characteristics & InputDeviceCharacteristics.Right) != 0)
-                {
-                    controller.side = XRControllerSide.Right;
-                    state_controllerRight = controller;
-                    rightSet = true;
-                    rightSetIndex = controllerIndex;
-                    handRight = c;
-                }
-                else
-                {
-                    controller.side = XRControllerSide.Unknown;
-                }
-
-                state_controllers[state_controllerCount] = controller;
-                ++state_controllerCount;
-                ++controllerIndex;
-            }
-            #endif
+            int controllerCount;
+            bool leftSet, rightSet;
+            int leftSetIndex, rightSetIndex;
+            SideToSet sideToSet;
+            if (!api.GatherInput(state_controllers, out controllerCount, out leftSet, out leftSetIndex, out rightSet, out rightSetIndex, out sideToSet)) return;
 
             // if left or right not known use controller index as side
-            if (!leftSet || !rightSet)
-            {
-                if (state_controllerCount == 1)
-                {
-                    if (!leftSet && !rightSet)
-                    {
-                        #if !VRSTUDIOS_XRINPUT_OPENVR
-                        handRight = controllers[0];
-                        #endif
-
-                        state_controllerRight = state_controllers[0];
-                        state_controllers[0].side = XRControllerSide.Right;
-                        rightSet = true;
-                    }
-				}
-                else if (state_controllerCount >= 2)
-                {
-                    int rightI = 0;
-                    int leftI = 1;
-
-                    if (!rightSet && !leftSet)
-                    {
-                        rightI = 0;
-                        leftI = 1;
-                    }
-                    else if (!rightSet)
-                    {
-                        leftI = leftSetIndex;
-                        rightI = leftI == 0 ? 1 : 0;
-                    }
-                    else if (!leftSet)
-                    {
-                        rightI = rightSetIndex;
-                        leftI = rightI == 0 ? 1 : 0;
-                    }
-
-                    #if !VRSTUDIOS_XRINPUT_OPENVR
-                    handRight = controllers[rightI];
-                    handLeft = controllers[leftI];
-                    #endif
-
-                    state_controllerRight = state_controllers[rightI];
-                    state_controllerLeft = state_controllers[leftI];
-                    state_controllers[rightI].side = XRControllerSide.Right;
-                    state_controllers[leftI].side = XRControllerSide.Left;
-                    rightSet = true;
-                    leftSet = true;
-                }
-            }
+            if (sideToSet == SideToSet.Left || sideToSet == SideToSet.Both) state_controllerLeft = state_controllers[leftSetIndex];
+            if (sideToSet == SideToSet.Right || sideToSet == SideToSet.Both) state_controllerRight = state_controllers[rightSetIndex];
 
             // null memory if no state
             if (!leftSet) state_controllerLeft = new XRControllerState();
             if (!rightSet) state_controllerRight = new XRControllerState();
 
             // buffer special controller states
-            if (state_controllerCount != 0) state_controllerFirst = state_controllers[0];
+            if (controllerCount != 0) state_controllerFirst = state_controllers[0];
             else state_controllerFirst = new XRControllerState();
 
             state_controllerMerged = new XRControllerState();
-            for (uint i = 0; i != singleton.state_controllerCount; ++i)
+            for (uint i = 0; i != controllerCount; ++i)
             {
                 var controllerState = singleton.state_controllers[i];
                 if (controllerState.connected) state_controllerMerged.connected = true;
@@ -486,103 +186,6 @@ namespace VRstudios
             TestJoystickEvent(Joystick2ActiveEvent, ref state_controllerRight.joystick2, XRControllerSide.Right);
             TestJoystickEvent(Joystick2ActiveEvent, ref state_controllerLeft.joystick2, XRControllerSide.Left);
         }
-
-        private bool ControllersMatch(InputDevice device1, InputDevice device2)
-        {
-            return device1.characteristics == device2.characteristics && device1.serialNumber == device2.serialNumber && device1.name == device2.name;
-        }
-
-        private bool FindExistingController(InputDevice device, out int index)
-        {
-            if (controllers.Exists(x => ControllersMatch(x, device)))
-            {
-                index = controllers.FindIndex(x => x.serialNumber == device.serialNumber);
-                return true;
-            }
-
-            index = -1;
-            return false;
-        }
-
-        private bool ReplaceControllerIfExists(InputDevice device)
-        {
-            if (FindExistingController(device, out int index))
-            {
-                controllers[index] = device;
-                return true;
-            }
-            return false;
-        }
-
-	    private void InputDevices_deviceConnected(InputDevice device)
-	    {
-            Debug.Log("XR Device connected: " + device.name);
-            if (!ReplaceControllerIfExists(device)) controllers.Add(device);
-            UpdateDevice(device, false);
-        }
-
-        private void InputDevices_deviceDisconnected(InputDevice device)
-        {
-            Debug.Log("XR Device disconnected: " + device.name);
-            controllers.Remove(device);
-            UpdateDevice(device, true);
-        }
-
-        private void InputDevices_deviceConfigChanged(InputDevice device)
-        {
-            Debug.Log("XR Device config changed: " + device.name);
-            ReplaceControllerIfExists(device);
-            UpdateDevice(device, false);
-        }
-
-        private void UpdateDevice(InputDevice device, bool removingDevice)
-        {
-            if (device.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
-            {
-                if (FindExistingController(device, out int index))
-                {
-				    if (!removingDevice)
-				    {
-					    controllers[index] = device;
-				    }
-                    else
-                    {
-                        controllers.Remove(device);
-                    }
-                }
-                else
-                {
-                    if (!removingDevice) controllers.Add(device);
-                }
-
-                if (device.characteristics.HasFlag(InputDeviceCharacteristics.Left))
-                {
-                    if (!removingDevice)
-                    {
-                        Debug.Log("XR Device Left-Hand added");
-                        handLeft = device;
-                    }
-                    else
-                    {
-                        Debug.Log("XR Device Left-Hand removed");
-                        handLeft = new InputDevice();
-                    }
-			    }
-                else if (device.characteristics.HasFlag(InputDeviceCharacteristics.Right))
-                {
-                    if (!removingDevice)
-                    {
-                        Debug.Log("XR Device Right-Hand added");
-                        handLeft = device;
-                    }
-                    else
-                    {
-                        Debug.Log("XR Device Right-Hand removed");
-                        handLeft = new InputDevice();
-                    }
-                }
-            }
-	    }
 
 		#region Public static interface
         public delegate void ButtonEvent(XRControllerSide side);
@@ -908,30 +511,9 @@ namespace VRstudios
             throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
         }
 
-        [DllImport("openxr_loader.dll")]
-        private static extern XrResult xrApplyHapticFeedback();
-
-        public static bool SetRumble(XRControllerActionSide controller, float strength, float duration = .1f)
+        public static bool SetRumble(XRControllerRumbleSide controller, float strength, float duration = .1f)
         {
-            if (controller == XRControllerActionSide.Left || controller == XRControllerActionSide.Both)
-            {
-                HapticCapabilities capabilities;
-                if (singleton.handLeft.TryGetHapticCapabilities(out capabilities))
-                {
-                    if (capabilities.supportsImpulse) return singleton.handLeft.SendHapticImpulse(0, strength, duration);
-                }
-            }
-
-            if (controller == XRControllerActionSide.Right || controller == XRControllerActionSide.Both)
-            {
-                HapticCapabilities capabilities;
-                if (singleton.handRight.TryGetHapticCapabilities(out capabilities))
-                {
-                    if (capabilities.supportsImpulse) return singleton.handRight.SendHapticImpulse(0, strength, duration);
-                }
-            }
-
-            return false;
+            return singleton.api.SetRumble(controller, strength, duration);
         }
         #endregion
     }
@@ -966,7 +548,7 @@ namespace VRstudios
         Right
 	}
 
-    public enum XRControllerActionSide
+    public enum XRControllerRumbleSide
     {
         Both,
         Left,

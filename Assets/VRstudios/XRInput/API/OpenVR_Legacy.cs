@@ -1,0 +1,156 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+using Valve.VR;
+using System.Runtime.InteropServices;
+using System.Text;
+
+namespace VRstudios.API
+{
+    public sealed class OpenVR_Legacy : XRInputAPI
+    {
+        private const uint controllerStateLength = OpenVR.k_unMaxTrackedDeviceCount;
+
+        // NOTE: capacity must match 'propertyText' for equals to work (in this case 256)
+        private StringBuilder propertyText = new StringBuilder(256);
+        private StringBuilder propertyText_ViveController = new StringBuilder("vive_controller", 256);
+        private StringBuilder propertyText_IndexController = new StringBuilder("knuckles", 256);
+
+		public override void Init()
+		{
+			base.Init();
+
+            // make sure OpenVR is init right away
+            EVRInitError e = EVRInitError.None;
+            var system = OpenVR.Init(ref e);
+            Debug.Log("OpenVR version: " + system.GetRuntimeVersion());
+        }
+
+		public override void Dispose()
+		{
+            OpenVR.Shutdown();
+            base.Dispose();
+		}
+
+		public override bool GatherInput(XRControllerState[] state_controllers, out int controllerCount, out bool leftSet, out int leftSetIndex, out bool rightSet, out int rightSetIndex, out SideToSet sideToSet)
+        {
+            // defaults
+            GatherInputDefaults(out controllerCount, out leftSet, out leftSetIndex, out rightSet, out rightSetIndex, out sideToSet);
+
+            // validate OpenVR is avaliable
+            var system = OpenVR.System;
+            if (system == null || !system.IsInputAvailable()) return false;
+
+            // gather input
+            for (uint i = 0; i != controllerStateLength; ++i)
+            {
+                if (!system.IsTrackedDeviceConnected(i)) continue;
+
+                // update controller state
+                if (system.GetTrackedDeviceClass(i) != ETrackedDeviceClass.Controller) continue;
+                var state = new VRControllerState_t();
+                if (system.GetControllerState(i, ref state, (uint)Marshal.SizeOf<VRControllerState_t>()))
+                {
+                    var controller = state_controllers[controllerCount];
+                    controller.connected = true;
+
+                    // get controller type
+                    ETrackedPropertyError e = ETrackedPropertyError.TrackedProp_Success;
+                    system.GetStringTrackedDeviceProperty(i, ETrackedDeviceProperty.Prop_ControllerType_String, propertyText, (uint)propertyText.Capacity, ref e);
+
+                    // update button & touch states
+                    if (e == ETrackedPropertyError.TrackedProp_Success)
+                    {
+                        if (propertyText.Equals(propertyText_ViveController))// specialize input for odd Vive button layout
+                        {
+                            // buttons
+                            controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
+                            controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
+                            controller.buttonMenu.Update((state.ulButtonPressed & 2) != 0);
+                            controller.button1.Update((state.ulButtonPressed & 4294967296) != 0);
+
+                            // touch
+                            controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
+                            controller.touch1.Update((state.ulButtonTouched & 4294967296) != 0);
+
+                            // update joystick states
+                            if (state.ulButtonTouched != 0) controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
+                            else controller.joystick.Update(Vector2.zero);
+                        }
+                        else if (propertyText.Equals(propertyText_IndexController))// specialize input for odd Vive button layout
+                        {
+                            // buttons
+                            controller.buttonJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
+                            controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
+                            controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
+                            //controller.button2.Update((state.ulButtonPressed & 4) != 0);// button 2 is the same as grip
+                            controller.button1.Update((state.ulButtonPressed & 2) != 0);
+
+                            // touch
+                            controller.touchJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
+                            controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
+                            controller.touchGrip.Update((state.ulButtonTouched & 4) != 0);
+                            //controller.touch2.Update((state.ulButtonTouched & 4) != 0);// button 2 is the same as grip
+                            controller.touch1.Update((state.ulButtonTouched & 2) != 0);
+
+                            // update joystick states
+                            controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
+                        }
+                    }
+                    else// agnostic controller mappings
+                    {
+                        // buttons
+                        bool triggerButton = (state.ulButtonPressed & 8589934592) != 0;// get normal trigger button state if avaliable
+                        if (state.rAxis1.x >= .75f) triggerButton = true;// virtually simulate trigger button in case it doesn't exist
+                        controller.buttonTrigger.Update(triggerButton);
+
+                        controller.buttonJoystick.Update((state.ulButtonPressed & 4294967296) != 0);
+                        controller.buttonGrip.Update((state.ulButtonPressed & 17179869188) != 0);
+                        controller.button1.Update((state.ulButtonPressed & 128) != 0);
+                        controller.button2.Update((state.ulButtonPressed & 2) != 0);
+
+                        // touch
+                        controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
+                        controller.touchJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
+                        controller.touchGrip.Update((state.ulButtonTouched & 17179869188) != 0);
+                        controller.touch1.Update((state.ulButtonTouched & 128) != 0);
+                        controller.touch2.Update((state.ulButtonTouched & 2) != 0);
+
+                        // update joystick states
+                        controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
+                    }
+
+                    // update analog states
+                    controller.trigger.Update(state.rAxis1.x);
+
+                    // update controller side
+                    var role = system.GetControllerRoleForTrackedDeviceIndex(i);
+                    switch (role)
+                    {
+                        case ETrackedControllerRole.LeftHand:
+                            controller.side = XRControllerSide.Left;
+                            leftSet = true;
+                            leftSetIndex = (int)i;
+                            break;
+
+                        case ETrackedControllerRole.RightHand:
+                            controller.side = XRControllerSide.Right;
+                            rightSet = true;
+                            rightSetIndex = (int)i;
+                            break;
+
+                        default: controller.side = XRControllerSide.Unknown; break;
+                    }
+
+                    state_controllers[controllerCount] = controller;
+                    ++controllerCount;
+                }
+            }
+
+            // finish
+            GatherInputFinish(state_controllers, controllerCount, ref leftSet, ref leftSetIndex, ref rightSet, ref rightSetIndex, ref sideToSet);
+            return true;
+        }
+    }
+}

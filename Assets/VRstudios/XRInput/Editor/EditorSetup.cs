@@ -9,7 +9,7 @@ namespace VRstudios
 {
     static class EditorSetup
     {
-        [MenuItem("Assets/VRstudios/XRInput/Enable for Steam")]
+        /*[MenuItem("Assets/VRstudios/XRInput/Enable for Steam")]
         public static void EnableForOpenVR()
         {
             EnsureSingleExists(new string[] { "VRSTUDIOS_XRINPUT_OPENVR" }, null);
@@ -19,7 +19,7 @@ namespace VRstudios
         public static void EnableForOculus()
         {
             EnsureSingleExists(null, new string[] { "VRSTUDIOS_XRINPUT_OPENVR" });
-        }
+        }*/
 
         private static void EnsureSingleExists(string[] definesToAdd, string[] definesToRemove)
         {

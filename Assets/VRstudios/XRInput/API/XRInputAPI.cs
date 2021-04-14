@@ -1,0 +1,97 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace VRstudios.API
+{
+    public enum SideToSet
+    {
+        None,
+        Both,
+        Left,
+        Right
+    }
+
+    public abstract class XRInputAPI
+    {
+        public virtual void Init()
+        {
+            // do nothing...
+		}
+
+        public virtual void Dispose()
+        {
+            // do nothing...
+		}
+
+        protected void GatherInputDefaults(out int state_controllerCount, out bool leftSet, out int leftSetIndex, out bool rightSet, out int rightSetIndex, out SideToSet sideToSet)
+        {
+            state_controllerCount = 0;
+            leftSet = false;
+            leftSetIndex = -1;
+            rightSet = false;
+            rightSetIndex = -1;
+            sideToSet = SideToSet.None;
+        }
+
+        public abstract bool GatherInput(XRControllerState[] state_controllers, out int controllerCount, out bool leftSet, out int leftSetIndex, out bool rightSet, out int rightSetIndex, out SideToSet sideToSet);
+
+        protected void GatherInputFinish(XRControllerState[] state_controllers, int controllerCount, ref bool leftSet, ref int leftSetIndex, ref bool rightSet, ref int rightSetIndex, ref SideToSet sideToSet)
+        {
+            // if left or right not known use controller index as side (also makes sure not to override used index)
+            if (!leftSet || !rightSet)
+            {
+                if (controllerCount == 1)
+                {
+                    if (!leftSet && !rightSet)
+                    {
+                        state_controllers[0].side = XRControllerSide.Right;
+
+                        rightSet = true;
+                        sideToSet = SideToSet.Right;
+                    }
+				}
+                else if (controllerCount >= 2)
+                {
+                    int rightI = 0;
+                    int leftI = 1;
+
+                    if (!rightSet && !leftSet)
+                    {
+                        rightI = 0;
+                        leftI = 1;
+                    }
+                    else if (!rightSet)
+                    {
+                        leftI = leftSetIndex;
+                        rightI = leftI == 0 ? 1 : 0;
+                    }
+                    else if (!leftSet)
+                    {
+                        rightI = rightSetIndex;
+                        leftI = rightI == 0 ? 1 : 0;
+                    }
+
+                    state_controllers[rightI].side = XRControllerSide.Right;
+                    state_controllers[leftI].side = XRControllerSide.Left;
+
+                    leftSetIndex = leftI;
+                    rightSetIndex = rightI;
+                    rightSet = true;
+                    leftSet = true;
+                    sideToSet = SideToSet.Both;
+                }
+            }
+            else
+            {
+                sideToSet = SideToSet.Both;
+			}
+		}
+
+        public virtual bool SetRumble(XRControllerRumbleSide controller, float strength, float duration)
+        {
+            return false;
+        }
+    }
+}
