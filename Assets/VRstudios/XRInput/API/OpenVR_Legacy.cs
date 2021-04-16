@@ -72,7 +72,7 @@ namespace VRstudios.API
                     {
                         if (propertyText.Equals(propertyText_ViveController))// specialize input for odd Vive button layout
                         {
-                            controller.type = XRInputControllerType.ViveHTC;
+                            controller.type = XRInputControllerType.HTCVive;
 
                             // buttons
                             controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
@@ -90,7 +90,7 @@ namespace VRstudios.API
                         }
                         else if (propertyText.Equals(propertyText_IndexController))// specialize input for odd Vive button layout
                         {
-                            controller.type = XRInputControllerType.ViveIndex;
+                            controller.type = XRInputControllerType.ValveIndex;
 
                             // buttons
                             controller.buttonJoystick.Update((state.ulButtonTouched & 4294967296) != 0);

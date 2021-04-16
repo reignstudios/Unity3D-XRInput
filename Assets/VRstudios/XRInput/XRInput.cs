@@ -598,8 +598,8 @@ namespace VRstudios
     {
         Unknown,
         Oculus,
-        ViveHTC,
-        ViveIndex,
+        HTCVive,
+        ValveIndex,
         WMR,
         WMR_G2
     }

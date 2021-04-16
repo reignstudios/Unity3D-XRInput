@@ -8,9 +8,6 @@ namespace VRstudios.API
 {
     public sealed class UnityEngine_XR : XRInputAPI
     {
-        private const string deviceName_MixedReality = "Spatial Controller";
-        private const string deviceName_Oculus = "Oculus";
-
         private List<InputDevice> controllers;
         private InputDevice handLeft;
         private InputDevice handRight;
@@ -52,13 +49,18 @@ namespace VRstudios.API
 
                 var controller = state_controllers[controllerCount];
                 controller.connected = true;
-                bool isMixedReality = c.name.StartsWith(deviceName_MixedReality);
-                bool isOculus = c.name.StartsWith(deviceName_Oculus);
+                bool isMixedReality = c.name.StartsWith("Spatial Controller");
+                bool isOculus = c.name.StartsWith("Oculus");
+                bool isHTCVive = c.name.StartsWith("HTC Vive");
+                bool isValveIndex = c.name.StartsWith("Index Controller");
                 bool simulateGripAnalog = !isOculus;
+                //Debug.Log(c.name);
 
                 // set type
                 if (isOculus) controller.type = XRInputControllerType.Oculus;
                 else if (isMixedReality) controller.type = XRInputControllerType.WMR;
+                else if (isHTCVive) controller.type = XRInputControllerType.HTCVive;
+                else if (isValveIndex) controller.type = XRInputControllerType.ValveIndex;
                 else controller.type = XRInputControllerType.Unknown;
 
                 // update buttons states
@@ -125,6 +127,9 @@ namespace VRstudios.API
                 {
                     if (c.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 joystick)) controller.joystick.Update(joystick);
                     else controller.joystick.Update(Vector2.zero);
+
+                    if (c.TryGetFeatureValue(CommonUsages.secondary2DAxis, out Vector2 joystick2)) controller.joystick2.Update(joystick2);
+                    else controller.joystick2.Update(Vector2.zero);
                 }
 
                 // update touch states
