@@ -6,7 +6,7 @@ using Unity.XR.Oculus;
 
 namespace VRstudios.API
 {
-    public sealed class InputManager_Old : XRInputAPI
+    public sealed class UnityEngine_XR : XRInputAPI
     {
         private const string deviceName_MixedReality = "Spatial Controller";
         private const string deviceName_Oculus = "Oculus";
@@ -53,7 +53,13 @@ namespace VRstudios.API
                 var controller = state_controllers[controllerCount];
                 controller.connected = true;
                 bool isMixedReality = c.name.StartsWith(deviceName_MixedReality);
-                bool simulateGripAnalog = !c.name.StartsWith(deviceName_Oculus);
+                bool isOculus = c.name.StartsWith(deviceName_Oculus);
+                bool simulateGripAnalog = !isOculus;
+
+                // set type
+                if (isOculus) controller.type = XRInputControllerType.Oculus;
+                else if (isMixedReality) controller.type = XRInputControllerType.WMR;
+                else controller.type = XRInputControllerType.Unknown;
 
                 // update buttons states
                 bool triggerValueValid = c.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
@@ -127,7 +133,7 @@ namespace VRstudios.API
                     controller.touchJoystick.Update(false);
                     controller.touchJoystick2.Update(controller.joystick2.value.magnitude >= XRControllerJoystick.tolerance);
                 }
-                else
+                else if (isOculus)
                 {
                     if (c.TryGetFeatureValue(OculusUsages.indexTouch, out bool triggerTouch)) controller.touchTrigger.Update(triggerTouch);
                     else controller.touchTrigger.Update(false);

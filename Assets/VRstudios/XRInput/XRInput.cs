@@ -1,14 +1,18 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.XR;
+using UnityEngine.XR.Management;
+using UnityEngine.XR.OpenXR;
+using Unity.XR.OpenVR;
 using VRstudios.API;
 
 namespace VRstudios
 {
     public enum XRInputAPIType
     {
-        //AutoDetect,// TODO
-        InputManager_Old,
-        InputSystem_Package,
+        AutoDetect,
+        UnityEngine_XR,
+        //UnityEngine_InputSystem_XR,
         OpenVR_Legacy
     }
 
@@ -38,11 +42,28 @@ namespace VRstudios
             DontDestroyOnLoad(gameObject);
             singleton = this;
 
+            // auto detect
+            if (apiType == XRInputAPIType.AutoDetect)
+            {
+                if (!XRSettings.enabled)
+                {
+                    Debug.LogError("XR not enabled!");
+                    return;
+				}
+
+                var loader = XRGeneralSettings.Instance.Manager.activeLoader;
+                var loaderType = loader.GetType();
+                Debug.Log($"XR-Loader: '{loader.name}' TYPE:{loaderType}");
+                if (loaderType == typeof(OpenVRLoader)) apiType = XRInputAPIType.OpenVR_Legacy;
+                else apiType = XRInputAPIType.UnityEngine_XR;
+            }
+
+            // init api
             disposeAPI = true;
             switch (apiType)
             {
-                case XRInputAPIType.InputManager_Old: api = new InputManager_Old(); break;
-                case XRInputAPIType.InputSystem_Package: api = new InputSystem_Package(); break;
+                case XRInputAPIType.UnityEngine_XR: api = new UnityEngine_XR(); break;
+                //case XRInputAPIType.UnityEngine_InputSystem_XR: api = new UnityEngine_InputSystem_XR(); break;
                 case XRInputAPIType.OpenVR_Legacy: api = new OpenVR_Legacy(); break;
                 default: throw new NotImplementedException();
             }
@@ -244,8 +265,8 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight;
                 case XRController.Merged: return singleton.state_controllerMerged;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
-	    }
+            throw new NotImplementedException();
+        }
 
         public static XRControllerButton ButtonTrigger(XRController controller)
         {
@@ -256,7 +277,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.buttonTrigger;
                 case XRController.Merged: return singleton.state_controllerMerged.buttonTrigger;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton ButtonJoystick(XRController controller)
@@ -268,7 +289,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.buttonJoystick;
                 case XRController.Merged: return singleton.state_controllerMerged.buttonJoystick;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton ButtonJoystick2(XRController controller)
@@ -280,7 +301,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.buttonJoystick2;
                 case XRController.Merged: return singleton.state_controllerMerged.buttonJoystick2;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton ButtonGrip(XRController controller)
@@ -292,7 +313,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.buttonGrip;
                 case XRController.Merged: return singleton.state_controllerMerged.buttonGrip;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton ButtonMenu(XRController controller)
@@ -304,7 +325,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.buttonMenu;
                 case XRController.Merged: return singleton.state_controllerMerged.buttonMenu;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton Button1(XRController controller)
@@ -316,7 +337,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.button1;
                 case XRController.Merged: return singleton.state_controllerMerged.button1;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton Button2(XRController controller)
@@ -328,7 +349,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.button2;
                 case XRController.Merged: return singleton.state_controllerMerged.button2;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton Button3(XRController controller)
@@ -340,7 +361,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.button3;
                 case XRController.Merged: return singleton.state_controllerMerged.button3;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton Button4(XRController controller)
@@ -352,7 +373,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.button4;
                 case XRController.Merged: return singleton.state_controllerMerged.button4;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton TouchTrigger(XRController controller)
@@ -364,7 +385,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.touchTrigger;
                 case XRController.Merged: return singleton.state_controllerMerged.touchTrigger;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton TouchJoystick(XRController controller)
@@ -376,7 +397,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.touchJoystick;
                 case XRController.Merged: return singleton.state_controllerMerged.touchJoystick;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton TouchJoystick2(XRController controller)
@@ -388,7 +409,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.touchJoystick2;
                 case XRController.Merged: return singleton.state_controllerMerged.touchJoystick2;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton TouchGrip(XRController controller)
@@ -400,7 +421,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.touchGrip;
                 case XRController.Merged: return singleton.state_controllerMerged.touchGrip;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton TouchMenu(XRController controller)
@@ -412,7 +433,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.touchMenu;
                 case XRController.Merged: return singleton.state_controllerMerged.touchMenu;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton Touch1(XRController controller)
@@ -424,7 +445,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.touch1;
                 case XRController.Merged: return singleton.state_controllerMerged.touch1;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton Touch2(XRController controller)
@@ -436,7 +457,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.touch2;
                 case XRController.Merged: return singleton.state_controllerMerged.touch2;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton Touch3(XRController controller)
@@ -448,7 +469,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.touch3;
                 case XRController.Merged: return singleton.state_controllerMerged.touch3;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerButton Touch4(XRController controller)
@@ -460,7 +481,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.touch4;
                 case XRController.Merged: return singleton.state_controllerMerged.touch4;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerAnalog Trigger(XRController controller)
@@ -472,7 +493,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.trigger;
                 case XRController.Merged: return singleton.state_controllerMerged.trigger;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerAnalog Grip(XRController controller)
@@ -484,7 +505,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.grip;
                 case XRController.Merged: return singleton.state_controllerMerged.grip;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerJoystick Joystick(XRController controller)
@@ -496,7 +517,7 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.joystick;
                 case XRController.Merged: return singleton.state_controllerMerged.joystick;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static XRControllerJoystick Joystick2(XRController controller)
@@ -508,12 +529,23 @@ namespace VRstudios
                 case XRController.Right: return singleton.state_controllerRight.joystick2;
                 case XRController.Merged: return singleton.state_controllerMerged.joystick2;
             }
-            throw new NotImplementedException("XR Controller type not implemented" + controller.ToString());
+            throw new NotImplementedException();
         }
 
         public static bool SetRumble(XRControllerRumbleSide controller, float strength, float duration = .1f)
         {
             return singleton.api.SetRumble(controller, strength, duration);
+        }
+
+        public static XRInputControllerType GetControllerType(XRInputControllerTypeSide controller)
+        {
+            switch (controller)
+            {
+                case XRInputControllerTypeSide.First: return singleton.state_controllerFirst.type;
+                case XRInputControllerTypeSide.Left: return singleton.state_controllerLeft.type;
+                case XRInputControllerTypeSide.Right: return singleton.state_controllerRight.type;
+            }
+            throw new NotImplementedException();
         }
         #endregion
     }
@@ -555,9 +587,27 @@ namespace VRstudios
         Right
     }
 
+    public enum XRInputControllerTypeSide
+    {
+        First,
+        Left,
+        Right
+    }
+
+    public enum XRInputControllerType
+    {
+        Unknown,
+        Oculus,
+        ViveHTC,
+        ViveIndex,
+        WMR,
+        WMR_G2
+    }
+
     public struct XRControllerState
     {
         public bool connected;
+        public XRInputControllerType type;
         public XRControllerSide side;
         public XRControllerButton touchTrigger, touchJoystick, touchJoystick2, touchGrip, touchMenu;
         public XRControllerButton touch1, touch2, touch3, touch4;

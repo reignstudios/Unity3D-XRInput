@@ -64,6 +64,8 @@ namespace VRstudios.API
                     {
                         if (propertyText.Equals(propertyText_ViveController))// specialize input for odd Vive button layout
                         {
+                            controller.type = XRInputControllerType.ViveHTC;
+
                             // buttons
                             controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
                             controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
@@ -80,6 +82,8 @@ namespace VRstudios.API
                         }
                         else if (propertyText.Equals(propertyText_IndexController))// specialize input for odd Vive button layout
                         {
+                            controller.type = XRInputControllerType.ViveIndex;
+
                             // buttons
                             controller.buttonJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
                             controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
@@ -100,6 +104,8 @@ namespace VRstudios.API
                     }
                     else// agnostic controller mappings
                     {
+                        controller.type = XRInputControllerType.Unknown;
+
                         // buttons
                         bool triggerButton = (state.ulButtonPressed & 8589934592) != 0;// get normal trigger button state if avaliable
                         if (state.rAxis1.x >= .75f) triggerButton = true;// virtually simulate trigger button in case it doesn't exist
