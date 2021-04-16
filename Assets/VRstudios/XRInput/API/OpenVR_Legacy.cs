@@ -11,6 +11,8 @@ namespace VRstudios.API
     public sealed class OpenVR_Legacy : XRInputAPI
     {
         private const uint controllerStateLength = OpenVR.k_unMaxTrackedDeviceCount;
+        private CVRSystem system;
+        private int leftHand = -1, rightHand = -1;
 
         // NOTE: capacity must match 'propertyText' for equals to work (in this case 256)
         private StringBuilder propertyText = new StringBuilder(256);
@@ -23,13 +25,17 @@ namespace VRstudios.API
 
             // make sure OpenVR is init right away
             EVRInitError e = EVRInitError.None;
-            var system = OpenVR.Init(ref e);
+            system = OpenVR.Init(ref e);
             Debug.Log("OpenVR version: " + system.GetRuntimeVersion());
         }
 
 		public override void Dispose()
 		{
-            OpenVR.Shutdown();
+            if (system != null)
+            {
+                OpenVR.Shutdown();
+                system = null;
+			}
             base.Dispose();
 		}
 
@@ -37,6 +43,8 @@ namespace VRstudios.API
         {
             // defaults
             GatherInputDefaults(out controllerCount, out leftSet, out leftSetIndex, out rightSet, out rightSetIndex, out sideToSet);
+            leftHand = -1;
+            rightHand = -1;
 
             // validate OpenVR is avaliable
             var system = OpenVR.System;
@@ -137,13 +145,15 @@ namespace VRstudios.API
                         case ETrackedControllerRole.LeftHand:
                             controller.side = XRControllerSide.Left;
                             leftSet = true;
-                            leftSetIndex = (int)i;
+                            leftSetIndex = controllerCount;
+                            leftHand = (int)i;
                             break;
 
                         case ETrackedControllerRole.RightHand:
                             controller.side = XRControllerSide.Right;
                             rightSet = true;
-                            rightSetIndex = (int)i;
+                            rightSetIndex = controllerCount;
+                            rightHand = (int)i;
                             break;
 
                         default: controller.side = XRControllerSide.Unknown; break;
@@ -158,5 +168,20 @@ namespace VRstudios.API
             GatherInputFinish(state_controllers, controllerCount, ref leftSet, ref leftSetIndex, ref rightSet, ref rightSetIndex, ref sideToSet);
             return true;
         }
-    }
+
+		public override bool SetRumble(XRControllerRumbleSide controller, float strength, float duration)
+		{
+            if (leftHand >= 0 && (controller == XRControllerRumbleSide.Left || controller == XRControllerRumbleSide.Both))
+            {
+                system.TriggerHapticPulse((uint)leftHand, 0, (ushort)(duration * 1000000));
+			}
+			
+            if (rightHand >= 0 && (controller == XRControllerRumbleSide.Right || controller == XRControllerRumbleSide.Both))
+            {
+                system.TriggerHapticPulse((uint)rightHand, 0, (ushort)(duration * 1000000));
+			}
+
+            return true;
+		}
+	}
 }
