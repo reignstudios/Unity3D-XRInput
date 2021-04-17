@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
@@ -30,17 +31,26 @@ namespace VRstudios
         private XRControllerState state_controllerLeft, state_controllerRight;
         private XRControllerState state_controllerFirst, state_controllerMerged;
 
-        private void Start()
+        private IEnumerator Start()
         {
             // only one can exist in scene at a time
             if (singleton != null)
             {
                 disposeAPI = false;// don't dispose apis if we're not the owner of possible native instances
                 Destroy(gameObject);
-                return;
+                yield break;
 		    }
             DontDestroyOnLoad(gameObject);
             singleton = this;
+
+            // give XR some time to start
+            var wait = new WaitForEndOfFrame();
+            yield return wait;
+            yield return wait;
+            yield return wait;
+            yield return wait;
+            yield return wait;
+            yield return new WaitForSeconds(1);
 
             // auto detect
             if (apiType == XRInputAPIType.AutoDetect)
@@ -48,7 +58,7 @@ namespace VRstudios
                 if (!XRSettings.enabled)
                 {
                     Debug.LogError("XR not enabled!");
-                    return;
+                    yield break;
 				}
 
                 var loader = XRGeneralSettings.Instance.Manager.activeLoader;

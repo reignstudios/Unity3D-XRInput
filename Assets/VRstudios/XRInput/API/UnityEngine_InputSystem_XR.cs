@@ -4,6 +4,7 @@ using Unity.XR.Oculus.Input;
 using Unity.XR.OpenVR;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using static UnityEngine.XR.OpenXR.Features.Interactions.HTCViveControllerProfile;
 
 namespace VRstudios.API
 {
@@ -20,13 +21,18 @@ namespace VRstudios.API
 			var leftHand = XRControllerWithRumble.leftHand;
 			if (leftHand != null)
 			{
-				Debug.Log(leftHand.displayName);
-				Debug.Log(leftHand.GetType().ToString());
+				//Debug.Log(leftHand.displayName);
+				//Debug.Log(leftHand.GetType().ToString());
 				
 				//var t = leftHand as OculusTouchController;
-				var t = leftHand as XRControllerWithRumble;
-				Debug.Log((leftHand != null).ToString());
-				t.SendImpulse(1, .1f);
+				var t = leftHand as ViveController;
+				//var t = leftHand as XRControllerWithRumble;
+				//Debug.Log((leftHand != null).ToString());
+				t.SendImpulse(1, 10000);
+				if (t.gripPressed.isPressed)
+				{
+					Debug.Log("yahoo");
+				}
 			}
 
 			// finish
