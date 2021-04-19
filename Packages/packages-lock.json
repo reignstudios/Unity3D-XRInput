@@ -86,7 +86,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.timeline": {
-      "version": "1.4.6",
+      "version": "1.4.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -158,7 +158,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.oculus": {
-      "version": "1.8.1",
+      "version": "1.9.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {

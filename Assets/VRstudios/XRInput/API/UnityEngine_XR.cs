@@ -50,15 +50,17 @@ namespace VRstudios.API
                 var controller = state_controllers[controllerCount];
                 controller.connected = true;
                 bool isMixedReality = c.name.StartsWith("Spatial Controller");
+                bool isMixedReality_G2 = c.name.StartsWith("HP Reverb G2 Controller");
                 bool isOculus = c.name.StartsWith("Oculus");
                 bool isHTCVive = c.name.StartsWith("HTC Vive");
                 bool isValveIndex = c.name.StartsWith("Index Controller");
                 bool simulateGripAnalog = !isOculus;
-                //Debug.Log(c.name);
+                Debug.Log(c.name);
 
                 // set type
                 if (isOculus) controller.type = XRInputControllerType.Oculus;
                 else if (isMixedReality) controller.type = XRInputControllerType.WMR;
+                else if (isMixedReality_G2) controller.type = XRInputControllerType.WMR_G2;
                 else if (isHTCVive) controller.type = XRInputControllerType.HTCVive;
                 else if (isValveIndex) controller.type = XRInputControllerType.ValveIndex;
                 else controller.type = XRInputControllerType.Unknown;
