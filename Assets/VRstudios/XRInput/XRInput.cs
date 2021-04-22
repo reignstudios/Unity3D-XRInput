@@ -14,6 +14,7 @@ namespace VRstudios
         AutoDetect,
         UnityEngine_XR,
         //UnityEngine_InputSystem_XR,
+        OpenVR,
         OpenVR_Legacy
     }
 
@@ -74,6 +75,7 @@ namespace VRstudios
             {
                 case XRInputAPIType.UnityEngine_XR: api = new UnityEngine_XR(); break;
                 //case XRInputAPIType.UnityEngine_InputSystem_XR: api = new UnityEngine_InputSystem_XR(); break;
+                case XRInputAPIType.OpenVR: api = new OpenVR_New(); break;
                 case XRInputAPIType.OpenVR_Legacy: api = new OpenVR_Legacy(); break;
                 default: throw new NotImplementedException();
             }
