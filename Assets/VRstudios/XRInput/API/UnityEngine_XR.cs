@@ -55,7 +55,7 @@ namespace VRstudios.API
                 bool isHTCVive = c.name.StartsWith("HTC Vive");
                 bool isValveIndex = c.name.StartsWith("Index Controller");
                 bool simulateGripAnalog = !isOculus;
-                Debug.Log(c.name);
+                //Debug.Log(c.name);
 
                 // set type
                 if (isOculus) controller.type = XRInputControllerType.Oculus;

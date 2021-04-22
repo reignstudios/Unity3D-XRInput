@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-using Valve.VR;
 using System.Runtime.InteropServices;
 using System.Text;
 
+#if UNITY_STANDALONE
+using Valve.VR;
+#endif
+
 namespace VRstudios.API
 {
+#if UNITY_STANDALONE
     public sealed class OpenVR_Legacy : XRInputAPI
     {
         private const uint controllerStateLength = OpenVR.k_unMaxTrackedDeviceCount;
@@ -184,4 +187,16 @@ namespace VRstudios.API
             return true;
 		}
 	}
+#else
+    /// <summary>
+    /// Shim when Unity not in standalone/PC mode
+    /// </summary>
+	public sealed class OpenVR_Legacy : XRInputAPI
+	{
+		public override bool GatherInput(XRControllerState[] state_controllers, out int controllerCount, out bool leftSet, out int leftSetIndex, out bool rightSet, out int rightSetIndex, out SideToSet sideToSet)
+		{
+			throw new System.NotImplementedException();
+		}
+	}
+#endif
 }

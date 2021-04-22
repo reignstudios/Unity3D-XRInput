@@ -64,8 +64,13 @@ namespace VRstudios
                 var loader = XRGeneralSettings.Instance.Manager.activeLoader;
                 var loaderType = loader.GetType();
                 Debug.Log($"XR-Loader: '{loader.name}' TYPE:{loaderType}");
+
+                #if UNITY_STANDALONE
                 if (loaderType == typeof(OpenVRLoader)) apiType = XRInputAPIType.OpenVR_Legacy;
                 else apiType = XRInputAPIType.UnityEngine_XR;
+                #else
+                apiType = XRInputAPIType.UnityEngine_XR;
+                #endif
             }
 
             // init api
@@ -218,7 +223,7 @@ namespace VRstudios
             TestJoystickEvent(Joystick2ActiveEvent, ref state_controllerLeft.joystick2, XRControllerSide.Left);
         }
 
-		#region Public static interface
+#region Public static interface
         public delegate void ButtonEvent(XRControllerSide side);
         public delegate void AnalogEvent(XRControllerSide side, float value);
         public delegate void JoystickEvent(XRControllerSide side, Vector2 value);
@@ -557,7 +562,7 @@ namespace VRstudios
             }
             throw new NotImplementedException();
         }
-        #endregion
+#endregion
     }
 
 	public enum XRController
