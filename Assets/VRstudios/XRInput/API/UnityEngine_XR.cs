@@ -49,21 +49,16 @@ namespace VRstudios.API
 
                 var controller = state_controllers[controllerCount];
                 controller.connected = true;
-                bool isMixedReality = c.name.StartsWith("Spatial Controller");
-                bool isMixedReality_G2 = c.name.StartsWith("HP Reverb G2 Controller");
-                bool isOculus = c.name.StartsWith("Oculus");
-                bool isHTCVive = c.name.StartsWith("HTC Vive");
-                bool isValveIndex = c.name.StartsWith("Index Controller");
-                bool simulateGripAnalog = !isOculus;
-                //Debug.Log(c.name);
 
                 // set type
-                if (isOculus) controller.type = XRInputControllerType.Oculus;
-                else if (isMixedReality) controller.type = XRInputControllerType.WMR;
-                else if (isMixedReality_G2) controller.type = XRInputControllerType.WMR_G2;
-                else if (isHTCVive) controller.type = XRInputControllerType.HTCVive;
-                else if (isValveIndex) controller.type = XRInputControllerType.ValveIndex;
+                if (c.name.StartsWith("Oculus")) controller.type = XRInputControllerType.Oculus;
+                else if (c.name.StartsWith("Spatial Controller")) controller.type = XRInputControllerType.WMR;
+                else if (c.name.StartsWith("HP Reverb G2 Controller")) controller.type = XRInputControllerType.WMR_G2;
+                else if (c.name.StartsWith("HTC Vive")) controller.type = XRInputControllerType.HTCVive;
+                else if (c.name.StartsWith("Index Controller")) controller.type = XRInputControllerType.ValveIndex;
                 else controller.type = XRInputControllerType.Unknown;
+
+                bool simulateGripAnalog = controller.type != XRInputControllerType.Oculus && controller.type != XRInputControllerType.WMR_G2;
 
                 // update buttons states
                 bool triggerValueValid = c.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
@@ -82,7 +77,7 @@ namespace VRstudios.API
                 }
                 controller.buttonTrigger.Update(triggerButton);
 
-                if (isMixedReality)
+                if (controller.type == XRInputControllerType.WMR)
                 {
                     if (c.TryGetFeatureValue(CommonUsages.secondary2DAxisClick, out bool joystickButton)) controller.buttonJoystick.Update(joystickButton);
                     else controller.buttonJoystick.Update(false);
@@ -117,7 +112,7 @@ namespace VRstudios.API
                 else controller.grip.Update(0);
 
                 // update joystick states
-                if (isMixedReality)
+                if (controller.type == XRInputControllerType.WMR)
                 {
                     if (c.TryGetFeatureValue(CommonUsages.secondary2DAxis, out Vector2 joystick)) controller.joystick.Update(joystick);
                     else controller.joystick.Update(Vector2.zero);
@@ -135,12 +130,12 @@ namespace VRstudios.API
                 }
 
                 // update touch states
-                if (isMixedReality)
+                if (controller.type == XRInputControllerType.WMR)
                 {
                     controller.touchJoystick.Update(false);
                     controller.touchJoystick2.Update(controller.joystick2.value.magnitude >= XRControllerJoystick.tolerance);
                 }
-                else if (isOculus)
+                else if (controller.type == XRInputControllerType.Oculus)
                 {
                     if (c.TryGetFeatureValue(OculusUsages.indexTouch, out bool triggerTouch)) controller.touchTrigger.Update(triggerTouch);
                     else controller.touchTrigger.Update(false);
