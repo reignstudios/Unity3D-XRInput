@@ -40,6 +40,9 @@ namespace VRstudios.API
 		{
 			// defaults
 			GatherInputDefaults(out controllerCount, out leftSet, out leftSetIndex, out rightSet, out rightSetIndex, out sideToSet);
+
+            // reset controllers
+            ResetControllers(state_controllers);
             
             // gather input
             int controllerIndex = 0;

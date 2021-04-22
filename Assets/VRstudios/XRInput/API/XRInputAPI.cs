@@ -48,6 +48,7 @@ namespace VRstudios.API
                     {
                         state_controllers[0].side = XRControllerSide.Right;
 
+                        rightSetIndex = 0;
                         rightSet = true;
                         sideToSet = SideToSet.Right;
                     }
@@ -86,6 +87,14 @@ namespace VRstudios.API
             else
             {
                 sideToSet = SideToSet.Both;
+			}
+		}
+
+        protected void ResetControllers(XRControllerState[] state_controllers)
+        {
+            for (int i = 0; i != state_controllers.Length; ++i)
+            {
+                state_controllers[i].connected = false;
 			}
 		}
 

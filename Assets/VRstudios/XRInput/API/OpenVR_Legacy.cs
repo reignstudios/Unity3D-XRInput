@@ -13,7 +13,6 @@ namespace VRstudios.API
 #if UNITY_STANDALONE
     public sealed class OpenVR_Legacy : XRInputAPI
     {
-        private const uint controllerStateLength = OpenVR.k_unMaxTrackedDeviceCount;
         private CVRSystem system;
         private int leftHand = -1, rightHand = -1;
 
@@ -28,17 +27,20 @@ namespace VRstudios.API
 
             // make sure OpenVR is init right away
             EVRInitError e = EVRInitError.None;
-            system = OpenVR.Init(ref e);
+            system = OpenVR.System;
+            if (system == null) system = OpenVR.Init(ref e);
             Debug.Log("OpenVR version: " + system.GetRuntimeVersion());
         }
 
 		public override void Dispose()
 		{
+            #if !UNITY_EDITOR
             if (system != null)
             {
                 OpenVR.Shutdown();
                 system = null;
 			}
+            #endif
             base.Dispose();
 		}
 
@@ -49,12 +51,15 @@ namespace VRstudios.API
             leftHand = -1;
             rightHand = -1;
 
+            // reset controllers
+            ResetControllers(state_controllers);
+
             // validate OpenVR is avaliable
             var system = OpenVR.System;
             if (system == null || !system.IsInputAvailable()) return false;
 
             // gather input
-            for (uint i = 0; i != controllerStateLength; ++i)
+            for (uint i = 0; i != OpenVR.k_unMaxTrackedDeviceCount; ++i)
             {
                 if (!system.IsTrackedDeviceConnected(i)) continue;
 

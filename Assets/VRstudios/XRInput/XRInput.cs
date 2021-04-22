@@ -67,7 +67,7 @@ namespace VRstudios
                 Debug.Log($"XR-Loader: '{loader.name}' TYPE:{loaderType}");
 
                 #if UNITY_STANDALONE
-                if (loaderType == typeof(OpenVRLoader)) apiType = XRInputAPIType.OpenVR_Legacy;
+                if (loaderType == typeof(OpenVRLoader)) apiType = XRInputAPIType.OpenVR;
                 else apiType = XRInputAPIType.UnityEngine_XR;
                 #else
                 apiType = XRInputAPIType.UnityEngine_XR;
@@ -86,10 +86,26 @@ namespace VRstudios
             }
 
             api.Init();
+
+            // ensure we dispose before stopping to avoid editor race-condition bugs
+            #if UNITY_EDITOR
+            UnityEditor.EditorApplication.playModeStateChanged += EditorApplication_playModeStateChanged;
+            #endif
         }
+
+        #if UNITY_EDITOR
+		private void EditorApplication_playModeStateChanged(UnityEditor.PlayModeStateChange change)
+		{
+			if (change == UnityEditor.PlayModeStateChange.ExitingPlayMode) OnDestroy();
+		}
+        #endif
 
 	    private void OnDestroy()
 	    {
+            #if UNITY_EDITOR
+            UnityEditor.EditorApplication.playModeStateChanged -= EditorApplication_playModeStateChanged;
+            #endif
+
             if (disposeAPI && api != null)
             {
                 api.Dispose();
@@ -97,7 +113,7 @@ namespace VRstudios
             }
         }
 
-	    private void Update()
+		private void Update()
         {
             if (api == null) return;
 
