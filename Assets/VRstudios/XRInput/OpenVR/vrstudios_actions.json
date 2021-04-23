@@ -23,6 +23,14 @@
       "name": "/actions/vrstudios/in/gripbutton",
       "type": "boolean"
     },
+    {
+      "name": "/actions/vrstudios/in/button1",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/vrstudios/in/button2",
+      "type": "boolean"
+    },
 
     // triggers
     {
@@ -33,6 +41,12 @@
     // touchpads
     {
       "name": "/actions/vrstudios/in/touchpad1",
+      "type": "vector2"
+    },
+
+    // joysticks
+    {
+      "name": "/actions/vrstudios/in/joystick1",
       "type": "vector2"
     },
 
