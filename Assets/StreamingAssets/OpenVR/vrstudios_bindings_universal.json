@@ -100,7 +100,7 @@
             "path": "/user/hand/left/input/grip"
           },
 
-          // button 1
+          // button 1 (path 1)
           {
             "inputs": {
               "click": {
@@ -126,7 +126,7 @@
             "path": "/user/hand/right/input/a"
           },
 
-          // button 2
+          // button 2 (path 1)
           {
             "inputs": {
               "click": {
@@ -150,6 +150,58 @@
             },
             "mode": "button",
             "path": "/user/hand/right/input/b"
+          },
+
+          // button 1 (path 2)
+          {
+            "inputs": {
+              "click": {
+                "output": "/actions/vrstudios/in/button1"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/touch1"
+              }
+            },
+            "mode": "button",
+            "path": "/user/hand/left/input/x"
+          },
+          {
+            "inputs": {
+              "click": {
+                "output": "/actions/vrstudios/in/button1"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/touch1"
+              }
+            },
+            "mode": "button",
+            "path": "/user/hand/right/input/x"
+          },
+
+          // button 2 (path 2)
+          {
+            "inputs": {
+              "click": {
+                "output": "/actions/vrstudios/in/button2"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/touch2"
+              }
+            },
+            "mode": "button",
+            "path": "/user/hand/left/input/y"
+          },
+          {
+            "inputs": {
+              "click": {
+                "output": "/actions/vrstudios/in/button2"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/touch2"
+              }
+            },
+            "mode": "button",
+            "path": "/user/hand/right/input/y"
           },
 
           // trigger
@@ -198,7 +250,7 @@
             "path": "/user/hand/left/input/trackpad"
           },
 
-          // joystick 1
+          // joystick 1 (path 1)
           {
             "inputs": {
               "position": {
@@ -228,6 +280,38 @@
             },
             "mode": "joystick",
             "path": "/user/hand/left/input/thumbstick"
+          },
+
+          // joystick 1 (path 2)
+          {
+            "inputs": {
+              "position": {
+                "output": "/actions/vrstudios/in/joystick1"
+              },
+              "click": {
+                "output": "/actions/vrstudios/in/joystick1_button"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/joystick1_touch"
+              }
+            },
+            "mode": "joystick",
+            "path": "/user/hand/right/input/joystick"
+          },
+          {
+            "inputs": {
+              "position": {
+                "output": "/actions/vrstudios/in/joystick1"
+              },
+              "click": {
+                "output": "/actions/vrstudios/in/joystick1_button"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/joystick1_touch"
+              }
+            },
+            "mode": "joystick",
+            "path": "/user/hand/left/input/joystick"
           }
         ]
       }

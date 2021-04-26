@@ -193,8 +193,13 @@ namespace VRstudios.API
                 {
                     if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_ViveController)) controller.type = XRInputControllerType.HTCVive;
                     else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_IndexController)) controller.type = XRInputControllerType.ValveIndex;
+                    else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_WMR)) controller.type = XRInputControllerType.WMR;
+                    else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_WMR_G2)) controller.type = XRInputControllerType.WMR_G2;
                     else controller.type = XRInputControllerType.Unknown;
 				}
+
+                //Debug.Log(OpenVR_Shared.propertyText);
+                //Debug.Log(controller.type.ToString());
 
                 // update controller side
                 var role = system.GetControllerRoleForTrackedDeviceIndex(i);
@@ -263,6 +268,10 @@ namespace VRstudios.API
             controllerLeft.button2.Update(GetButtonState(viveAction_Button2, viveSource_LeftHand));
             controllerRight.touch2.Update(GetButtonState(viveAction_Touch2, viveSource_RightHand));
             controllerLeft.touch2.Update(GetButtonState(viveAction_Touch2, viveSource_LeftHand));
+
+            // update grip (just simulate)
+            controllerRight.grip.Update(controllerRight.buttonGrip.on ? 1 : 0);
+            controllerLeft.grip.Update(controllerLeft.buttonGrip.on ? 1 : 0);
 
             // update triggers
             controllerRight.trigger.Update(GetAnalogState(viveAction_Trigger, viveSource_RightHand).x);
