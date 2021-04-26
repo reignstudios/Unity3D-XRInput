@@ -5,6 +5,7 @@ using UnityEngine;
 using Valve.VR;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.IO;
 
 namespace VRstudios.API
 {
@@ -17,15 +18,11 @@ namespace VRstudios.API
         private CVRInput input;
         private ulong viveSource_RightHand, viveSource_LeftHand;
         private ulong viveActionSetHandle;
-        private ulong viveAction_TriggerButton, viveAction_GripButton, viveAction_MenuButton, viveAction_Button1, viveAction_Button2;
+        private ulong viveAction_TriggerTouch, viveAction_GripTouch, viveAction_MenuTouch, viveAction_Touch1, viveAction_Touch2, viveAction_Joystick1_Touch;
+        private ulong viveAction_TriggerButton, viveAction_GripButton, viveAction_MenuButton, viveAction_Button1, viveAction_Button2, viveAction_Touchpad1_Button, viveAction_Joystick1_Button;
         private ulong viveAction_Trigger, viveAction_Touchpad1, viveAction_Joystick1;
         private ulong viveAction_Rumble_RightHand, viveAction_Rumble_LeftHand;
         private VRActiveActionSet_t[] actionSets;
-
-        // NOTE: capacity must match 'propertyText' for equals to work (in this case 256)
-        private StringBuilder propertyText = new StringBuilder(256);
-        private StringBuilder propertyText_ViveController = new StringBuilder("vive_controller", 256);
-        private StringBuilder propertyText_IndexController = new StringBuilder("knuckles", 256);
 
         private bool GetInputSourceHandle(string path, ref ulong handle)
         {
@@ -72,7 +69,10 @@ namespace VRstudios.API
 
             // init input system
             input = OpenVR.Input;
-            var error = input.SetActionManifestPath(@"D:\Dev\VRstudios\Unity3D-XRInput\Assets\VRstudios\XRInput\OpenVR\vrstudios_actions.json");// TODO: use reletive path
+            string actionsPath = Path.Combine(Application.dataPath, "StreamingAssets", "OpenVR", "vrstudios_actions.json");
+            actionsPath = actionsPath.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
+            Debug.Log($"Loading OpenVR Input actions: '{actionsPath}'");
+            var error = input.SetActionManifestPath(actionsPath);
             if (error != EVRInputError.None)
             {
                 Debug.LogError("Failed: 'SetActionManifestPath': " + error.ToString());
@@ -88,12 +88,22 @@ namespace VRstudios.API
             if (!GetActionSetHandle("/actions/vrstudios", ref viveActionSetHandle)) return;
             actionSets[0].ulActionSet = viveActionSetHandle;
 
+            // get object actions (touch)
+            GetActionHandle("/actions/vrstudios/in/triggertouch", ref viveAction_TriggerTouch);
+            GetActionHandle("/actions/vrstudios/in/griptouch", ref viveAction_GripTouch);
+            GetActionHandle("/actions/vrstudios/in/menutouch", ref viveAction_MenuTouch);
+            GetActionHandle("/actions/vrstudios/in/touch1", ref viveAction_Touch1);
+            GetActionHandle("/actions/vrstudios/in/touch2", ref viveAction_Touch2);
+            GetActionHandle("/actions/vrstudios/in/joystick1_touch", ref viveAction_Joystick1_Touch);
+
             // get object actions (buttons)
             GetActionHandle("/actions/vrstudios/in/triggerbutton", ref viveAction_TriggerButton);
             GetActionHandle("/actions/vrstudios/in/gripbutton", ref viveAction_GripButton);
             GetActionHandle("/actions/vrstudios/in/menubutton", ref viveAction_MenuButton);
             GetActionHandle("/actions/vrstudios/in/button1", ref viveAction_Button1);
             GetActionHandle("/actions/vrstudios/in/button2", ref viveAction_Button2);
+            GetActionHandle("/actions/vrstudios/in/touchpad1_button", ref viveAction_Touchpad1_Button);
+            GetActionHandle("/actions/vrstudios/in/joystick1_button", ref viveAction_Joystick1_Button);
 
             // get object actions (triggers)
             GetActionHandle("/actions/vrstudios/in/trigger", ref viveAction_Trigger);
@@ -152,7 +162,6 @@ namespace VRstudios.API
                 return Vector3.zero;
 			}
             #endif
-            //Debug.Log($"{data.x},{data.y},{data.z}");
             return new Vector3(data.x, data.y, data.z);
 		}
 
@@ -176,6 +185,16 @@ namespace VRstudios.API
 
                 var controller = state_controllers[controllerCount];
                 controller.connected = true;
+
+                // get controller type
+                ETrackedPropertyError e = ETrackedPropertyError.TrackedProp_Success;
+                system.GetStringTrackedDeviceProperty(i, ETrackedDeviceProperty.Prop_ControllerType_String, OpenVR_Shared.propertyText, (uint)OpenVR_Shared.propertyText.Capacity, ref e);
+                if (e == ETrackedPropertyError.TrackedProp_Success)
+                {
+                    if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_ViveController)) controller.type = XRInputControllerType.HTCVive;
+                    else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_IndexController)) controller.type = XRInputControllerType.ValveIndex;
+                    else controller.type = XRInputControllerType.Unknown;
+				}
 
                 // update controller side
                 var role = system.GetControllerRoleForTrackedDeviceIndex(i);
@@ -215,37 +234,78 @@ namespace VRstudios.API
             if (rightSet) controllerRight = state_controllers[rightSetIndex];
             if (leftSet) controllerLeft = state_controllers[leftSetIndex];
             
-            // update trigger buttons
+            // update trigger buttons/touch
             controllerRight.buttonTrigger.Update(GetButtonState(viveAction_TriggerButton, viveSource_RightHand));
             controllerLeft.buttonTrigger.Update(GetButtonState(viveAction_TriggerButton, viveSource_LeftHand));
+            controllerRight.touchTrigger.Update(GetButtonState(viveAction_TriggerTouch, viveSource_RightHand));
+            controllerLeft.touchTrigger.Update(GetButtonState(viveAction_TriggerTouch, viveSource_LeftHand));
 
-            // update grip buttons
+            // update grip buttons/touch
             controllerRight.buttonGrip.Update(GetButtonState(viveAction_GripButton, viveSource_RightHand));
             controllerLeft.buttonGrip.Update(GetButtonState(viveAction_GripButton, viveSource_LeftHand));
+            controllerRight.touchGrip.Update(GetButtonState(viveAction_GripTouch, viveSource_RightHand));
+            controllerLeft.touchGrip.Update(GetButtonState(viveAction_GripTouch, viveSource_LeftHand));
 
-            // update menu buttons
+            // update menu buttons/touch
             controllerRight.buttonMenu.Update(GetButtonState(viveAction_MenuButton, viveSource_RightHand));
             controllerLeft.buttonMenu.Update(GetButtonState(viveAction_MenuButton, viveSource_LeftHand));
+            controllerRight.touchMenu.Update(GetButtonState(viveAction_MenuTouch, viveSource_RightHand));
+            controllerLeft.touchMenu.Update(GetButtonState(viveAction_MenuTouch, viveSource_LeftHand));
 
-            // update button 1
+            // update button/touch 1
             controllerRight.button1.Update(GetButtonState(viveAction_Button1, viveSource_RightHand));
             controllerLeft.button1.Update(GetButtonState(viveAction_Button1, viveSource_LeftHand));
+            controllerRight.touch1.Update(GetButtonState(viveAction_Touch1, viveSource_RightHand));
+            controllerLeft.touch1.Update(GetButtonState(viveAction_Touch1, viveSource_LeftHand));
 
-            // update button 2
+            // update button/touch 2
             controllerRight.button2.Update(GetButtonState(viveAction_Button2, viveSource_RightHand));
             controllerLeft.button2.Update(GetButtonState(viveAction_Button2, viveSource_LeftHand));
+            controllerRight.touch2.Update(GetButtonState(viveAction_Touch2, viveSource_RightHand));
+            controllerLeft.touch2.Update(GetButtonState(viveAction_Touch2, viveSource_LeftHand));
 
             // update triggers
             controllerRight.trigger.Update(GetAnalogState(viveAction_Trigger, viveSource_RightHand).x);
             controllerLeft.trigger.Update(GetAnalogState(viveAction_Trigger, viveSource_LeftHand).x);
 
-            // update trackpads
-            controllerRight.joystick2.Update(GetAnalogState(viveAction_Touchpad1, viveSource_RightHand));
-            controllerLeft.joystick2.Update(GetAnalogState(viveAction_Touchpad1, viveSource_LeftHand));
+            // update trackpads / touch / button
+            if (controllerRight.type == XRInputControllerType.HTCVive)
+            {
+                controllerRight.joystick.Update(GetAnalogState(viveAction_Touchpad1, viveSource_RightHand));
+                controllerRight.buttonJoystick.Update(GetButtonState(viveAction_Touchpad1_Button, viveSource_RightHand));
+			}
+            else
+            {
+                controllerRight.joystick2.Update(GetAnalogState(viveAction_Touchpad1, viveSource_RightHand));
+                controllerRight.buttonJoystick2.Update(GetButtonState(viveAction_Touchpad1_Button, viveSource_RightHand));
+			}
 
-            // update joysticks
-            controllerRight.joystick.Update(GetAnalogState(viveAction_Joystick1, viveSource_RightHand));
-            controllerLeft.joystick.Update(GetAnalogState(viveAction_Joystick1, viveSource_LeftHand));
+            if (controllerLeft.type == XRInputControllerType.HTCVive)
+            {
+                controllerLeft.joystick.Update(GetAnalogState(viveAction_Touchpad1, viveSource_LeftHand));
+                controllerLeft.buttonJoystick.Update(GetButtonState(viveAction_Touchpad1_Button, viveSource_LeftHand));
+			}
+            else
+            {
+                controllerLeft.joystick2.Update(GetAnalogState(viveAction_Touchpad1, viveSource_LeftHand));
+                controllerLeft.buttonJoystick2.Update(GetButtonState(viveAction_Touchpad1_Button, viveSource_LeftHand));
+			}
+
+
+            // update joysticks / touch / button
+            if (controllerRight.type != XRInputControllerType.HTCVive)
+            {
+                controllerRight.joystick.Update(GetAnalogState(viveAction_Joystick1, viveSource_RightHand));
+                controllerRight.touchJoystick.Update(GetButtonState(viveAction_Joystick1_Touch, viveSource_RightHand));
+                controllerRight.buttonJoystick.Update(GetButtonState(viveAction_Joystick1_Button, viveSource_RightHand));
+			}
+            
+            if (controllerLeft.type != XRInputControllerType.HTCVive)
+            {
+                controllerLeft.joystick.Update(GetAnalogState(viveAction_Joystick1, viveSource_LeftHand));
+                controllerLeft.touchJoystick.Update(GetButtonState(viveAction_Joystick1_Touch, viveSource_LeftHand));
+                controllerLeft.buttonJoystick.Update(GetButtonState(viveAction_Joystick1_Button, viveSource_LeftHand));
+			}
 
             // copy back hand updates
             if (rightSet) state_controllers[rightSetIndex] = controllerRight;

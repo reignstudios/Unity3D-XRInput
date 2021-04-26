@@ -1,15 +1,37 @@
 {
       "default_bindings": [
-         //{
-         //   "controller_type" : "vive_controller",
-         //   "binding_url" : "hellovr_bindings_vive_controller.json"
-         //},
          {
             "controller_type" : "generic",
-            "binding_url" : "vrstudios_bindings_generic.json"
+            "binding_url" : "vrstudios_bindings_universal.json"
          }
       ],
   "actions": [
+    // touch
+    {
+      "name": "/actions/vrstudios/in/triggertouch",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/vrstudios/in/menutouch",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/vrstudios/in/griptouch",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/vrstudios/in/touch1",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/vrstudios/in/touch2",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/vrstudios/in/joystick1_touch",
+      "type": "boolean"
+    },
+
     // buttons
     {
       "name": "/actions/vrstudios/in/triggerbutton",
@@ -29,6 +51,14 @@
     },
     {
       "name": "/actions/vrstudios/in/button2",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/vrstudios/in/touchpad1_button",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/vrstudios/in/joystick1_button",
       "type": "boolean"
     },
 

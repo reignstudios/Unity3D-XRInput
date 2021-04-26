@@ -27,6 +27,9 @@
             "inputs": {
               "click": {
                 "output": "/actions/vrstudios/in/triggerbutton"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/triggertouch"
               }
             },
             "mode": "trigger",
@@ -36,6 +39,9 @@
             "inputs": {
               "click": {
                 "output": "/actions/vrstudios/in/triggerbutton"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/triggertouch"
               }
             },
             "mode": "trigger",
@@ -47,6 +53,9 @@
             "inputs": {
               "click": {
                 "output": "/actions/vrstudios/in/menubutton"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/menutouch"
               }
             },
             "mode": "button",
@@ -56,6 +65,9 @@
             "inputs": {
               "click": {
                 "output": "/actions/vrstudios/in/menubutton"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/menutouch"
               }
             },
             "mode": "button",
@@ -67,6 +79,9 @@
             "inputs": {
               "click": {
                 "output": "/actions/vrstudios/in/gripbutton"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/griptouch"
               }
             },
             "mode": "button",
@@ -76,6 +91,9 @@
             "inputs": {
               "click": {
                 "output": "/actions/vrstudios/in/gripbutton"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/griptouch"
               }
             },
             "mode": "button",
@@ -87,6 +105,9 @@
             "inputs": {
               "click": {
                 "output": "/actions/vrstudios/in/button1"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/touch1"
               }
             },
             "mode": "button",
@@ -96,6 +117,9 @@
             "inputs": {
               "click": {
                 "output": "/actions/vrstudios/in/button1"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/touch1"
               }
             },
             "mode": "button",
@@ -107,6 +131,9 @@
             "inputs": {
               "click": {
                 "output": "/actions/vrstudios/in/button2"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/touch2"
               }
             },
             "mode": "button",
@@ -116,6 +143,9 @@
             "inputs": {
               "click": {
                 "output": "/actions/vrstudios/in/button2"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/touch2"
               }
             },
             "mode": "button",
@@ -147,6 +177,9 @@
             "inputs": {
               "position": {
                 "output": "/actions/vrstudios/in/touchpad1"
+              },
+              "click": {
+                "output": "/actions/vrstudios/in/touchpad1_button"
               }
             },
             "mode": "trackpad",
@@ -156,6 +189,9 @@
             "inputs": {
               "position": {
                 "output": "/actions/vrstudios/in/touchpad1"
+              },
+              "click": {
+                "output": "/actions/vrstudios/in/touchpad1_button"
               }
             },
             "mode": "trackpad",
@@ -167,6 +203,12 @@
             "inputs": {
               "position": {
                 "output": "/actions/vrstudios/in/joystick1"
+              },
+              "click": {
+                "output": "/actions/vrstudios/in/joystick1_button"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/joystick1_touch"
               }
             },
             "mode": "joystick",
@@ -176,6 +218,12 @@
             "inputs": {
               "position": {
                 "output": "/actions/vrstudios/in/joystick1"
+              },
+              "click": {
+                "output": "/actions/vrstudios/in/joystick1_button"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/joystick1_touch"
               }
             },
             "mode": "joystick",

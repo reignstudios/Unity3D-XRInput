@@ -16,11 +16,6 @@ namespace VRstudios.API
         private CVRSystem system;
         private int leftHand = -1, rightHand = -1;
 
-        // NOTE: capacity must match 'propertyText' for equals to work (in this case 256)
-        private StringBuilder propertyText = new StringBuilder(256);
-        private StringBuilder propertyText_ViveController = new StringBuilder("vive_controller", 256);
-        private StringBuilder propertyText_IndexController = new StringBuilder("knuckles", 256);
-
 		public override void Init()
 		{
 			base.Init();
@@ -73,12 +68,12 @@ namespace VRstudios.API
 
                     // get controller type
                     ETrackedPropertyError e = ETrackedPropertyError.TrackedProp_Success;
-                    system.GetStringTrackedDeviceProperty(i, ETrackedDeviceProperty.Prop_ControllerType_String, propertyText, (uint)propertyText.Capacity, ref e);
+                    system.GetStringTrackedDeviceProperty(i, ETrackedDeviceProperty.Prop_ControllerType_String, OpenVR_Shared.propertyText, (uint)OpenVR_Shared.propertyText.Capacity, ref e);
 
                     // update button & touch states
                     if (e == ETrackedPropertyError.TrackedProp_Success)
                     {
-                        if (propertyText.Equals(propertyText_ViveController))// specialize input for odd Vive button layout
+                        if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_ViveController))// specialize input for odd Vive button layout
                         {
                             controller.type = XRInputControllerType.HTCVive;
 
@@ -96,7 +91,7 @@ namespace VRstudios.API
                             if (state.ulButtonTouched != 0) controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
                             else controller.joystick.Update(Vector2.zero);
                         }
-                        else if (propertyText.Equals(propertyText_IndexController))// specialize input for odd Vive button layout
+                        else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_IndexController))// specialize input for odd Vive button layout
                         {
                             controller.type = XRInputControllerType.ValveIndex;
 
