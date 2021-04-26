@@ -189,18 +189,17 @@ namespace VRstudios.API
                 // get controller type
                 ETrackedPropertyError e = ETrackedPropertyError.TrackedProp_Success;
                 system.GetStringTrackedDeviceProperty(i, ETrackedDeviceProperty.Prop_ControllerType_String, OpenVR_Shared.propertyText, (uint)OpenVR_Shared.propertyText.Capacity, ref e);
+
                 if (e == ETrackedPropertyError.TrackedProp_Success)
                 {
                     if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_ViveController)) controller.type = XRInputControllerType.HTCVive;
                     else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_IndexController)) controller.type = XRInputControllerType.ValveIndex;
+                    else if (OpenVR_Shared.propertyText.ToString().StartsWith(OpenVR_Shared.propertyText_Oculus.ToString())) controller.type = XRInputControllerType.Oculus;
                     else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_WMR)) controller.type = XRInputControllerType.WMR;
                     else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_WMR_G2)) controller.type = XRInputControllerType.WMR_G2;
                     else controller.type = XRInputControllerType.Unknown;
 				}
-
-                //Debug.Log(OpenVR_Shared.propertyText);
-                //Debug.Log(controller.type.ToString());
-
+                
                 // update controller side
                 var role = system.GetControllerRoleForTrackedDeviceIndex(i);
                 switch (role)

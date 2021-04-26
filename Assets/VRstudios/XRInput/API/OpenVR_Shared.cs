@@ -8,6 +8,7 @@ namespace VRstudios
         public static StringBuilder propertyText = new StringBuilder(256);
         public static StringBuilder propertyText_ViveController = new StringBuilder("vive_controller", 256);
         public static StringBuilder propertyText_IndexController = new StringBuilder("knuckles", 256);
+        public static StringBuilder propertyText_Oculus = new StringBuilder("oculus", 256);// oculus_touch
         public static StringBuilder propertyText_WMR = new StringBuilder("holographic_controller", 256);
         public static StringBuilder propertyText_WMR_G2 = new StringBuilder("hpmotioncontroller", 256);
     }
