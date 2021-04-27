@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 using Valve.VR;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.IO;
 
 namespace VRstudios.API

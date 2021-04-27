@@ -23,14 +23,25 @@ namespace VRstudios
     {
         public static XRInput singleton { get; private set; }
 
+        public delegate void InitializedMethod(bool success);
+        public static event InitializedMethod InitializedCallback;
+
+        public delegate void DisposedMethod();
+        public static event DisposedMethod DisposedCallback;
+
+        public delegate void ControllerConstructionMethod(XRControllerSide side);
+        public static event ControllerConstructionMethod ControllerConnectedCallback, ControllerDisconnectedMethod;
+
         public XRInputAPIType apiType;
         private XRInputAPI api;
         private bool disposeAPI;
 
         private const int controllerStateLength = 4;
-        private XRControllerState[] state_controllers = new XRControllerState[controllerStateLength];
+        private int lastControllerCount;
+        private XRControllerState[] state_controllers = new XRControllerState[controllerStateLength], state_controllers_last = new XRControllerState[controllerStateLength];
         private XRControllerState state_controllerLeft, state_controllerRight;
         private XRControllerState state_controllerFirst, state_controllerMerged;
+        private Guid state_controllerMerged_ID = Guid.NewGuid();
 
         private IEnumerator Start()
         {
@@ -53,44 +64,60 @@ namespace VRstudios
             yield return wait;
             yield return new WaitForSeconds(1);
 
-            // auto detect
-            if (apiType == XRInputAPIType.AutoDetect)
+            try
             {
-                if (!XRSettings.enabled)
+                // init controller instance IDs
+                for (int i = 0; i != state_controllers.Length; ++i)
                 {
-                    Debug.LogError("XR not enabled!");
-                    yield break;
+                    state_controllers[i].id = Guid.NewGuid();
 				}
 
-                var loader = XRGeneralSettings.Instance.Manager.activeLoader;
-                var loaderType = loader.GetType();
-                Debug.Log($"XR-Loader: '{loader.name}' TYPE:{loaderType}");
+                // auto detect
+                if (apiType == XRInputAPIType.AutoDetect)
+                {
+                    if (!XRSettings.enabled)
+                    {
+                        Debug.LogError("XR not enabled!");
+                        yield break;
+				    }
 
-                #if UNITY_STANDALONE
-                if (loaderType == typeof(OpenVRLoader)) apiType = XRInputAPIType.OpenVR;
-                else apiType = XRInputAPIType.UnityEngine_XR;
-                #else
-                apiType = XRInputAPIType.UnityEngine_XR;
+                    var loader = XRGeneralSettings.Instance.Manager.activeLoader;
+                    var loaderType = loader.GetType();
+                    Debug.Log($"XR-Loader: '{loader.name}' TYPE:{loaderType}");
+
+                    #if UNITY_STANDALONE
+                    if (loaderType == typeof(OpenVRLoader)) apiType = XRInputAPIType.OpenVR;
+                    else apiType = XRInputAPIType.UnityEngine_XR;
+                    #else
+                    apiType = XRInputAPIType.UnityEngine_XR;
+                    #endif
+                }
+
+                // init api
+                disposeAPI = true;
+                switch (apiType)
+                {
+                    case XRInputAPIType.UnityEngine_XR: api = new UnityEngine_XR(); break;
+                    //case XRInputAPIType.UnityEngine_InputSystem_XR: api = new UnityEngine_InputSystem_XR(); break;
+                    case XRInputAPIType.OpenVR: api = new OpenVR_New(); break;
+                    case XRInputAPIType.OpenVR_Legacy: api = new OpenVR_Legacy(); break;
+                    default: throw new NotImplementedException();
+                }
+
+                api.Init();
+
+                // ensure we dispose before stopping to avoid editor race-condition bugs
+                #if UNITY_EDITOR
+                UnityEditor.EditorApplication.playModeStateChanged += EditorApplication_playModeStateChanged;
                 #endif
-            }
 
-            // init api
-            disposeAPI = true;
-            switch (apiType)
+                if (InitializedCallback != null) InitializedCallback(true);
+            }
+            catch (Exception e)
             {
-                case XRInputAPIType.UnityEngine_XR: api = new UnityEngine_XR(); break;
-                //case XRInputAPIType.UnityEngine_InputSystem_XR: api = new UnityEngine_InputSystem_XR(); break;
-                case XRInputAPIType.OpenVR: api = new OpenVR_New(); break;
-                case XRInputAPIType.OpenVR_Legacy: api = new OpenVR_Legacy(); break;
-                default: throw new NotImplementedException();
-            }
-
-            api.Init();
-
-            // ensure we dispose before stopping to avoid editor race-condition bugs
-            #if UNITY_EDITOR
-            UnityEditor.EditorApplication.playModeStateChanged += EditorApplication_playModeStateChanged;
-            #endif
+                if (InitializedCallback != null) InitializedCallback(false);
+                throw e;
+			}
         }
 
         #if UNITY_EDITOR
@@ -111,9 +138,11 @@ namespace VRstudios
                 api.Dispose();
                 api = null;
             }
+
+            if (DisposedCallback != null) DisposedCallback();
         }
 
-		private void Update()
+        private void Update()
         {
             if (api == null) return;
 
@@ -122,6 +151,29 @@ namespace VRstudios
             int leftSetIndex, rightSetIndex;
             SideToSet sideToSet;
             if (!api.GatherInput(state_controllers, out controllerCount, out leftSet, out leftSetIndex, out rightSet, out rightSetIndex, out sideToSet)) return;
+
+            // track controller connection/disconnections
+            if (lastControllerCount != controllerCount)
+            {
+                for (int i = 0; i != state_controllers.Length; ++i)
+                {
+                    var currentController = state_controllers[i];
+                    var lastController = state_controllers_last[i];
+                    if (currentController.connected != lastController.connected)
+                    {
+                        if (currentController.connected)
+                        {
+                            if (ControllerConnectedCallback != null) ControllerConnectedCallback(currentController.side);
+                        }
+                        else
+                        {
+                            if (ControllerDisconnectedMethod != null) ControllerDisconnectedMethod(currentController.side);
+                        }
+					}
+                }
+			}
+            Array.Copy(state_controllers, state_controllers_last, state_controllers.Length);
+            lastControllerCount = controllerCount;
 
             // if left or right not known use controller index as side
             if (sideToSet == SideToSet.Left || sideToSet == SideToSet.Both) state_controllerLeft = state_controllers[leftSetIndex];
@@ -135,7 +187,10 @@ namespace VRstudios
             if (controllerCount != 0) state_controllerFirst = state_controllers[0];
             else state_controllerFirst = new XRControllerState();
 
-            state_controllerMerged = new XRControllerState();
+            state_controllerMerged = new XRControllerState()
+            {
+                id = state_controllerMerged_ID// keep a constant ID
+            };
             for (uint i = 0; i != controllerCount; ++i)
             {
                 var controllerState = singleton.state_controllers[i];
@@ -639,6 +694,11 @@ namespace VRstudios
 
     public struct XRControllerState
     {
+        /// <summary>
+        /// Unique ID of this controller instance
+        /// </summary>
+        public Guid id;
+
         public bool connected;
         public XRInputControllerType type;
         public XRControllerSide side;
