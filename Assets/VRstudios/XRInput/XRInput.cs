@@ -29,7 +29,7 @@ namespace VRstudios
         public delegate void DisposedMethod();
         public static event DisposedMethod DisposedCallback;
 
-        public delegate void ControllerConstructionMethod(XRControllerSide side);
+        public delegate void ControllerConstructionMethod(Guid id, XRControllerSide side, XRInputControllerType type);
         public static event ControllerConstructionMethod ControllerConnectedCallback, ControllerDisconnectedMethod;
 
         public XRInputAPIType apiType;
@@ -137,9 +137,8 @@ namespace VRstudios
             {
                 api.Dispose();
                 api = null;
+                if (DisposedCallback != null) DisposedCallback();
             }
-
-            if (DisposedCallback != null) DisposedCallback();
         }
 
         private void Update()
@@ -163,11 +162,11 @@ namespace VRstudios
                     {
                         if (currentController.connected)
                         {
-                            if (ControllerConnectedCallback != null) ControllerConnectedCallback(currentController.side);
+                            if (ControllerConnectedCallback != null) ControllerConnectedCallback(currentController.id, currentController.side, currentController.type);
                         }
                         else
                         {
-                            if (ControllerDisconnectedMethod != null) ControllerDisconnectedMethod(currentController.side);
+                            if (ControllerDisconnectedMethod != null) ControllerDisconnectedMethod(currentController.id, currentController.side, currentController.type);
                         }
 					}
                 }

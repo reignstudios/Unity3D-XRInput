@@ -1,10 +1,39 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace VRstudios
 {
     public class TestInput : MonoBehaviour
     {
-        void Update()
+		private void Start()
+		{
+			XRInput.InitializedCallback += XRInput_InitializedCallback;
+			XRInput.DisposedCallback += XRInput_DisposedCallback;
+			XRInput.ControllerConnectedCallback += XRInput_ControllerConnectedCallback;
+			XRInput.ControllerDisconnectedMethod += XRInput_ControllerDisconnectedMethod;
+		}
+
+        private void XRInput_InitializedCallback(bool success)
+        {
+            Debug.Log("CALLBACK: XRInput Initilized!");
+        }
+
+        private void XRInput_DisposedCallback()
+        {
+            Debug.Log("CALLBACK: XRInput Disposed!");
+        }
+
+        private void XRInput_ControllerConnectedCallback(Guid id, XRControllerSide side, XRInputControllerType type)
+        {
+            Debug.Log("CALLBACK: XRInput Controller-Connected: " + side.ToString());
+        }
+
+        private void XRInput_ControllerDisconnectedMethod(Guid id, XRControllerSide side, XRInputControllerType type)
+		{
+            Debug.Log("CALLBACK: XRInput Controller-Disconnected: " + side.ToString());
+        }
+
+		private void Update()
         {
             // =====================================
             // left
