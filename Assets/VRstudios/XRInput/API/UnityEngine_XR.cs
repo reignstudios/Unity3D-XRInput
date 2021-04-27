@@ -45,7 +45,6 @@ namespace VRstudios.API
             ResetControllers(state_controllers);
             
             // gather input
-            int controllerIndex = 0;
             foreach (var c in controllers)
             {
                 if (!c.isValid || (c.characteristics & InputDeviceCharacteristics.Controller) == 0) continue;
@@ -156,17 +155,37 @@ namespace VRstudios.API
                 // update controller side
                 if ((c.characteristics & InputDeviceCharacteristics.Left) != 0)
                 {
-                    controller.side = XRControllerSide.Left;
-                    leftSet = true;
-                    leftSetIndex = controllerIndex;
-                    handLeft = c;
+                    if (leftSet)// if left already set, assume this is right
+                    {
+                        controller.side = XRControllerSide.Right;
+                        rightSet = true;
+                        rightSetIndex = controllerCount;
+                        handRight = c;
+                    }
+                    else
+                    {
+                        controller.side = XRControllerSide.Left;
+                        leftSet = true;
+                        leftSetIndex = controllerCount;
+                        handLeft = c;
+                    }
                 }
                 else if ((c.characteristics & InputDeviceCharacteristics.Right) != 0)
                 {
-                    controller.side = XRControllerSide.Right;
-                    rightSet = true;
-                    rightSetIndex = controllerIndex;
-                    handRight = c;
+                    if (rightSet)// if right already set, assume this is left
+                    {
+                        controller.side = XRControllerSide.Left;
+                        leftSet = true;
+                        leftSetIndex = controllerCount;
+                        handLeft = c;
+                    }
+                    else
+                    {
+                        controller.side = XRControllerSide.Right;
+                        rightSet = true;
+                        rightSetIndex = controllerCount;
+                        handRight = c;
+                    }
                 }
                 else
                 {
@@ -175,7 +194,6 @@ namespace VRstudios.API
 
                 state_controllers[controllerCount] = controller;
                 ++controllerCount;
-                ++controllerIndex;
             }
 
             // finish
@@ -195,7 +213,7 @@ namespace VRstudios.API
         {
             if (controllers.Exists(x => ControllersMatch(x, device)))
             {
-                index = controllers.FindIndex(x => x.serialNumber == device.serialNumber);
+                index = controllers.FindIndex(x => ControllersMatch(x, device));
                 return true;
             }
 
