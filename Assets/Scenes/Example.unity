@@ -764,9 +764,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18ac43be360e6a4418a30b5a0b0473d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  action: {fileID: -754549590815189078, guid: 2e74de9d27e565845b843ae37fdf6e70, type: 3}
-  _amplitude: 1
-  _duration: 0.1
 --- !u!4 &1526383948
 Transform:
   m_ObjectHideFlags: 0
@@ -1195,7 +1192,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 821027172066052999, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
       propertyPath: openxrRumbleHack
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 980542379300818618, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
       propertyPath: m_RootOrder

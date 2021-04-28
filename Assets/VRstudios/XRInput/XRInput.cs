@@ -32,8 +32,8 @@ namespace VRstudios
         public delegate void ControllerConstructionMethod(Guid id, XRControllerSide side, XRInputControllerType type);
         public static event ControllerConstructionMethod ControllerConnectedCallback, ControllerDisconnectedMethod;
 
-        public bool openxrRumbleHack = true;
-        public int openxrRumbleHackChannel = 1;
+        public bool autoSetRumbleChannel = true;
+        public uint rumbleChannel;
 
         public XRInputAPIType apiType;
         private XRInputAPI api;
@@ -75,6 +75,18 @@ namespace VRstudios
                     state_controllers[i].id = Guid.NewGuid();
 				}
 
+                // get loader type
+                var loader = XRGeneralSettings.Instance.Manager.activeLoader;
+                var loaderType = loader.GetType();
+                Debug.Log($"XR-Loader: '{loader.name}' TYPE:{loaderType}");
+
+                // auto set rumble channel
+                if (autoSetRumbleChannel)
+                {
+                    if (loaderType == typeof(OpenXRLoader)) rumbleChannel = 1;
+                    else rumbleChannel = 0;
+                }
+
                 // auto detect
                 if (apiType == XRInputAPIType.AutoDetect)
                 {
@@ -83,10 +95,6 @@ namespace VRstudios
                         Debug.LogError("XR not enabled!");
                         yield break;
 				    }
-
-                    var loader = XRGeneralSettings.Instance.Manager.activeLoader;
-                    var loaderType = loader.GetType();
-                    Debug.Log($"XR-Loader: '{loader.name}' TYPE:{loaderType}");
 
                     #if UNITY_STANDALONE
                     if (loaderType == typeof(OpenVRLoader)) apiType = XRInputAPIType.OpenVR;

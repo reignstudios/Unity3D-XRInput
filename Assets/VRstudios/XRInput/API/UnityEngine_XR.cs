@@ -307,16 +307,12 @@ namespace VRstudios.API
             if (strength > 1) strength = 1;
             if (duration < 0) duration = 0;
 
-            // OpenXR rumble hack
-            if (XRInput.singleton.openxrRumbleHack) return SetRumble_OpenXR_Hack(controller, strength, duration);
-
-            // standard rumble
             if (controller == XRControllerRumbleSide.Left || controller == XRControllerRumbleSide.Both)
             {
                 HapticCapabilities capabilities;
                 if (handLeft.TryGetHapticCapabilities(out capabilities))
                 {
-                    if (capabilities.supportsImpulse) return handLeft.SendHapticImpulse(0, strength, duration);
+                    if (capabilities.supportsImpulse) return handLeft.SendHapticImpulse(XRInput.singleton.rumbleChannel, strength, duration);
                 }
             }
 
@@ -325,30 +321,11 @@ namespace VRstudios.API
                 HapticCapabilities capabilities;
                 if (handRight.TryGetHapticCapabilities(out capabilities))
                 {
-                    if (capabilities.supportsImpulse) return handRight.SendHapticImpulse(0, strength, duration);
+                    if (capabilities.supportsImpulse) return handRight.SendHapticImpulse(XRInput.singleton.rumbleChannel, strength, duration);
                 }
             }
 
             return false;
         }
-
-        private bool SetRumble_OpenXR_Hack(XRControllerRumbleSide controller, float strength, float duration)
-        {
-            if (controller == XRControllerRumbleSide.Left || controller == XRControllerRumbleSide.Both)
-            {
-                var device = UnityEngine.InputSystem.InputSystem.GetDevice<UnityEngine.InputSystem.XR.XRController>(UnityEngine.InputSystem.CommonUsages.LeftHand);
-                var command = UnityEngine.InputSystem.XR.Haptics.SendHapticImpulseCommand.Create(XRInput.singleton.openxrRumbleHackChannel, strength, duration);
-                device.ExecuteCommand(ref command);
-            }
-
-            if (controller == XRControllerRumbleSide.Right || controller == XRControllerRumbleSide.Both)
-            {
-                var device = UnityEngine.InputSystem.InputSystem.GetDevice<UnityEngine.InputSystem.XR.XRController>(UnityEngine.InputSystem.CommonUsages.RightHand);
-                var command = UnityEngine.InputSystem.XR.Haptics.SendHapticImpulseCommand.Create(XRInput.singleton.openxrRumbleHackChannel, strength, duration);
-                device.ExecuteCommand(ref command);
-            }
-
-            return true;
-		}
     }
 }
