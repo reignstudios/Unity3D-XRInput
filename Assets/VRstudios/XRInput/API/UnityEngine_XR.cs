@@ -303,6 +303,10 @@ namespace VRstudios.API
 
 		public override bool SetRumble(XRControllerRumbleSide controller, float strength, float duration)
 		{
+            if (strength < 0) strength = 0;
+            if (strength > 1) strength = 1;
+            if (duration < 0) duration = 0;
+
             // OpenXR rumble hack
             if (XRInput.singleton.openxrRumbleHack) return SetRumble_OpenXR_Hack(controller, strength, duration);
 
