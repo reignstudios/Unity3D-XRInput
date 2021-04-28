@@ -43,3 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b14d56ee2659c4e8b2a6b6975ab915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  openxrRumbleHack: 1
+  openxrRumbleHackChannel: 1
+  apiType: 0

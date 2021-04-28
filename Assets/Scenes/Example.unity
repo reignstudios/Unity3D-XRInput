@@ -1193,6 +1193,10 @@ PrefabInstance:
       propertyPath: apiType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 821027172066052999, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
+      propertyPath: openxrRumbleHack
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 980542379300818618, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
       propertyPath: m_RootOrder
       value: 0

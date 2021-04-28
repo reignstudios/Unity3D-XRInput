@@ -303,6 +303,10 @@ namespace VRstudios.API
 
 		public override bool SetRumble(XRControllerRumbleSide controller, float strength, float duration)
 		{
+            // OpenXR rumble hack
+            if (XRInput.singleton.openxrRumbleHack) return SetRumble_OpenXR_Hack(controller, strength, duration);
+
+            // standard rumble
             if (controller == XRControllerRumbleSide.Left || controller == XRControllerRumbleSide.Both)
             {
                 HapticCapabilities capabilities;
@@ -323,5 +327,24 @@ namespace VRstudios.API
 
             return false;
         }
-	}
+
+        private bool SetRumble_OpenXR_Hack(XRControllerRumbleSide controller, float strength, float duration)
+        {
+            if (controller == XRControllerRumbleSide.Left || controller == XRControllerRumbleSide.Both)
+            {
+                var device = UnityEngine.InputSystem.InputSystem.GetDevice<UnityEngine.InputSystem.XR.XRController>(UnityEngine.InputSystem.CommonUsages.LeftHand);
+                var command = UnityEngine.InputSystem.XR.Haptics.SendHapticImpulseCommand.Create(XRInput.singleton.openxrRumbleHackChannel, strength, duration);
+                device.ExecuteCommand(ref command);
+            }
+
+            if (controller == XRControllerRumbleSide.Right || controller == XRControllerRumbleSide.Both)
+            {
+                var device = UnityEngine.InputSystem.InputSystem.GetDevice<UnityEngine.InputSystem.XR.XRController>(UnityEngine.InputSystem.CommonUsages.RightHand);
+                var command = UnityEngine.InputSystem.XR.Haptics.SendHapticImpulseCommand.Create(XRInput.singleton.openxrRumbleHackChannel, strength, duration);
+                device.ExecuteCommand(ref command);
+            }
+
+            return true;
+		}
+    }
 }
