@@ -70,6 +70,14 @@ namespace VRstudios.API
             actionsPath = actionsPath.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
             Debug.Log($"Loading OpenVR Input actions: '{actionsPath}'");
             var error = input.SetActionManifestPath(actionsPath);
+
+            for (int i = 0; i != 10; ++i)// keep trying 10 times before giving up
+            {
+                System.Threading.Thread.Sleep(200);
+                error = input.SetActionManifestPath(actionsPath);
+                if (error == EVRInputError.None) break;
+			}
+
             if (error != EVRInputError.None)
             {
                 Debug.LogError("Failed: 'SetActionManifestPath': " + error.ToString());
@@ -327,12 +335,12 @@ namespace VRstudios.API
 
             if (leftHand >= 0 && (controller == XRControllerRumbleSide.Left || controller == XRControllerRumbleSide.Both))
             {
-                input.TriggerHapticVibrationAction(viveAction_Rumble_LeftHand, 0, duration, 4, strength, 0);
+                input.TriggerHapticVibrationAction(viveAction_Rumble_LeftHand, 0, duration, 1, strength, 0);
 			}
 			
             if (rightHand >= 0 && (controller == XRControllerRumbleSide.Right || controller == XRControllerRumbleSide.Both))
             {
-                input.TriggerHapticVibrationAction(viveAction_Rumble_RightHand, 0, duration, 4, strength, 0);
+                input.TriggerHapticVibrationAction(viveAction_Rumble_RightHand, 0, duration, 1, strength, 0);
 			}
 
 			return true;

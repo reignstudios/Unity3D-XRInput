@@ -52,6 +52,10 @@ namespace VRstudios.API
                         rightSet = true;
                         sideToSet = SideToSet.Right;
                     }
+                    else
+                    {
+                        sideToSet = leftSet ? SideToSet.Left : SideToSet.Right;
+					}
 				}
                 else if (controllerCount >= 2)
                 {
