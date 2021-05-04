@@ -11,7 +11,7 @@
     "com.unity.ugui": "1.0.0",
     "com.unity.xr.management": "4.0.3",
     "com.unity.xr.oculus": "1.9.0",
-    "com.unity.xr.openxr": "1.0.3",
+    "com.unity.xr.openxr": "1.1.1",
     "com.unity.xr.windowsmr": "4.4.2",
     "com.valvesoftware.unity.openvr": "file:../ExternalPackages/com.valvesoftware.unity.openvr-1.1.4.tgz",
     "com.unity.modules.ai": "1.0.0",

@@ -66,18 +66,12 @@ namespace VRstudios.API
 
             // init input system
             input = OpenVR.Input;
-            string actionsPath = Path.Combine(Application.dataPath, "StreamingAssets", "OpenVR", "vrstudios_actions.json");
+            string actionsPath;
+            if (XRInput.singleton.steamSDK_InUse) actionsPath = Path.Combine(Application.dataPath, "StreamingAssets", "SteamVR", "actions.json");
+            else actionsPath = Path.Combine(Application.dataPath, "StreamingAssets", "OpenVR", "vrstudios_actions.json");
             actionsPath = actionsPath.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
             Debug.Log($"Loading OpenVR Input actions: '{actionsPath}'");
             var error = input.SetActionManifestPath(actionsPath);
-
-            for (int i = 0; i != 10; ++i)// keep trying 10 times before giving up
-            {
-                System.Threading.Thread.Sleep(200);
-                error = input.SetActionManifestPath(actionsPath);
-                if (error == EVRInputError.None) break;
-			}
-
             if (error != EVRInputError.None)
             {
                 Debug.LogError("Failed: 'SetActionManifestPath': " + error.ToString());

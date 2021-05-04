@@ -18,7 +18,7 @@ namespace VRstudios
         OpenVR_Legacy
     }
 
-    [DefaultExecutionOrder(-99)]
+    [DefaultExecutionOrder(-32000)]
     public sealed class XRInput : MonoBehaviour
     {
         public static XRInput singleton { get; private set; }
@@ -34,6 +34,7 @@ namespace VRstudios
 
         public bool autoSetRumbleChannel = true;
         public uint rumbleChannel;
+        public bool steamSDK_InUse;
 
         public XRInputAPIType apiType;
         private XRInputAPI api;
