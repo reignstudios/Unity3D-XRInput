@@ -103,12 +103,38 @@
     "localization" : [
       {
         "language_tag": "en_US",
+
+        // touch
+        "/actions/vrstudios/in/triggertouch": "Trigger Touch",
+        "/actions/vrstudios/in/menutouch": "Menu Touch",
+        "/actions/vrstudios/in/griptouch": "Grip Touch",
+        "/actions/vrstudios/in/touch1": "Touch 1",
+        "/actions/vrstudios/in/touch2": "Touch 2",
+        "/actions/vrstudios/in/joystick1_touch": "Joystick Touch",
+
+        // buttons
         "/actions/vrstudios/in/triggerbutton": "Trigger Button",
-        "/actions/vrstudios/in/menu": "Menu Button",
-        "/actions/vrstudios/in/grip": "Grip Button",
-        "/actions/vrstudios/in/joystick1": "Joystick 1",
-        "/actions/vrstudios/in/Hand_Right": "Right Hand Pose",
-        "/actions/vrstudios/in/Hand_Left": "Left Hand Pose",
+        "/actions/vrstudios/in/menubutton": "Menu Button",
+        "/actions/vrstudios/in/gripbutton": "Grip Button",
+        "/actions/vrstudios/in/button1": "Button 1",
+        "/actions/vrstudios/in/button2": "Button 2",
+        "/actions/vrstudios/in/touchpad1_button": "Touchpad Button",
+        "/actions/vrstudios/in/joystick1_button": "Joystick Button",
+
+        // triggers
+        "/actions/vrstudios/in/trigger": "Trigger",
+
+        // touchpads
+        "/actions/vrstudios/in/touchpad1": "Touchpad",
+
+        // joysticks
+        "/actions/vrstudios/in/joystick1": "Joystick",
+
+        // tracking
+        "/actions/vrstudios/in/hand_right": "Right Hand Pose",
+        "/actions/vrstudios/in/hand_left": "Left Hand Pose",
+
+        // haptics
         "/actions/vrstudios/out/haptic_left": "Left Haptic Feedback",
         "/actions/vrstudios/out/haptic_right": "Right Haptic Feedback"
       }
