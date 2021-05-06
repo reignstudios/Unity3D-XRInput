@@ -63,12 +63,16 @@ namespace VRstudios.API
                 var state = new VRControllerState_t();
                 if (system.GetControllerState(i, ref state, (uint)Marshal.SizeOf<VRControllerState_t>()))
                 {
-                    var controller = state_controllers[controllerCount];
-                    controller.connected = true;
-
                     // get controller type
                     ETrackedPropertyError e = ETrackedPropertyError.TrackedProp_Success;
                     system.GetStringTrackedDeviceProperty(i, ETrackedDeviceProperty.Prop_ControllerType_String, OpenVR_Shared.propertyText, (uint)OpenVR_Shared.propertyText.Capacity, ref e);
+
+                    // ignore gamepads
+                    if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_Gamepad)) continue;
+
+                    // get controller
+                    var controller = state_controllers[controllerCount];
+                    controller.connected = true;
 
                     // update button & touch states
                     if (e == ETrackedPropertyError.TrackedProp_Success)
