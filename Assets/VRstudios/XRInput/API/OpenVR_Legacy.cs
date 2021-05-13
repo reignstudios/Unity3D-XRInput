@@ -14,9 +14,18 @@ namespace VRstudios.API
     public sealed class OpenVR_Legacy : XRInputAPI
     {
         private CVRSystem system;
-        private int leftHand = -1, rightHand = -1;
 
-		public override void Init()
+        /// <summary>
+        /// Native OpenVR Left-Hand device index
+        /// </summary>
+        public static int leftHand {get; private set;} = -1;
+
+        /// <summary>
+        /// Native OpenVR Right-Hand device index
+        /// </summary>
+        public static int rightHand { get; private set; } = -1;
+
+        public override void Init()
 		{
 			base.Init();
 

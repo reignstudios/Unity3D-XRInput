@@ -9,8 +9,16 @@ namespace VRstudios.API
     public sealed class UnityEngine_XR : XRInputAPI
     {
         private List<InputDevice> controllers;
-        private InputDevice handLeft;
-        private InputDevice handRight;
+
+        /// <summary>
+        /// Native UnityXR Left-Hand device handle
+        /// </summary>
+        public static InputDevice handLeft { get; private set; }
+
+        /// <summary>
+        /// Native UnityXR Right-Hand device handle
+        /// </summary>
+        public static InputDevice handRight { get; private set; }
 
         public override void Init()
 		{

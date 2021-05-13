@@ -1,16 +1,28 @@
 using UnityEngine;
-
-using Valve.VR;
 using System.Runtime.InteropServices;
 using System.IO;
 
+#if UNITY_STANDALONE
+using Valve.VR;
+#endif
+
 namespace VRstudios.API
 {
-	public sealed class OpenVR_New : XRInputAPI
+#if UNITY_STANDALONE
+    public sealed class OpenVR_New : XRInputAPI
 	{
         private CVRSystem system;
         private bool isInit;
-        private int leftHand = -1, rightHand = -1;
+
+        /// <summary>
+        /// Native OpenVR Left-Hand device index
+        /// </summary>
+        public static int leftHand { get; private set; } = -1;
+
+        /// <summary>
+        /// Native OpenVR Right-Hand device index
+        /// </summary>
+        public static int rightHand { get; private set; } = -1;
 
         private CVRInput input;
         private ulong viveSource_RightHand, viveSource_LeftHand;
@@ -345,4 +357,16 @@ namespace VRstudios.API
 			return true;
 		}
 	}
+#else
+    /// <summary>
+    /// Shim when Unity not in standalone/PC mode
+    /// </summary>
+	public sealed class OpenVR_New : XRInputAPI
+	{
+		public override bool GatherInput(XRControllerState[] state_controllers, out int controllerCount, out bool leftSet, out int leftSetIndex, out bool rightSet, out int rightSetIndex, out SideToSet sideToSet)
+		{
+			throw new System.NotImplementedException();
+		}
+	}
+#endif
 }
