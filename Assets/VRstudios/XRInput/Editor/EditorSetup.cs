@@ -1,15 +1,10 @@
-using System;
-using System.Collections;
+#if UNITY_EDITOR
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEditor;
-using UnityEditor.Callbacks;
-using UnityEngine;
-using UnityEngine.XR.Management;
 
 namespace VRstudios
 {
-    static class EditorSetup
+	static class EditorSetup
     {
         /*[DidReloadScripts]
         private static void ValidateCompilerDefines()
@@ -71,3 +66,4 @@ namespace VRstudios
         }
     }
 }
+#endif
