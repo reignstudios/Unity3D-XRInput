@@ -9,7 +9,7 @@ This API acts as its own easy-to-use agnostic XR-Input layer allowing you to wri
     * Copy all .json files from "Assets/StreamingAssets/OpenVR/" to "Assets/StreamingAssets/SteamVR/"
     * In the "SteamVR" folder, rename "vrstudios_actions.json" to "actions.json"
     * Make sure <b>"Steam SDK In Use"</b> is checked on in the XRInput script in your scene
-* NOTE: If you have "Initialize XR on Startup" off & manually create a loader instance, you may need to pass that instance to "XRInput.loaderOverride".
+* <b>NOTE: If you have "Initialize XR on Startup" off & manually create a loader instance, you may need to pass that instance to "XRInput.loaderOverride".</b>
 * Ensure 'com.valvesoftware.unity.openvr' .tgz file is installed via Unity package manager for OpenVR input mode
 * Drop 'Unity3D-XRInput/Assets/VRstudios/XRInput' prefab into scene & thats it.
 * Select Input type and ready to go!
