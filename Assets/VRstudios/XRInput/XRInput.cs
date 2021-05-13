@@ -35,6 +35,7 @@ namespace VRstudios
         public uint rumbleChannel;
         public bool steamSDK_InUse;
 
+        public XRLoader loaderOverride;
         public XRInputAPIType apiType;
         private XRInputAPI api;
         private bool disposeAPI;
@@ -64,7 +65,8 @@ namespace VRstudios
             {
                 try
                 {
-                    loader = XRGeneralSettings.Instance.Manager.activeLoader;
+                    if (loaderOverride != null) loader = loaderOverride;
+                    else loader = XRGeneralSettings.Instance.Manager.activeLoader;
                 }
                 catch { }
                 yield return new WaitForSeconds(1);
