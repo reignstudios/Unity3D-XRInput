@@ -60,7 +60,7 @@ namespace VRstudios
             singleton = this;
 
             // print version
-            Debug.Log("XRInput version: 1.0.0");
+            Debug.Log("XRInput version: 1.0.1");
 
             // wait for XR loader
             XRLoader loader = null;
