@@ -13,7 +13,6 @@ namespace VRstudios
     {
         AutoDetect,
         UnityEngine_XR,
-        //UnityEngine_InputSystem_XR,
         OpenVR,
         OpenVR_Legacy
     }
@@ -90,17 +89,14 @@ namespace VRstudios
 
                 // get loader type
                 var loaderType = loader.GetType();
+                string loaderTypeName = loaderType.Name;
                 Debug.Log($"XR-Loader: '{loader.name}' TYPE:{loaderType}");
 
                 // auto set rumble channel
                 if (autoSetRumbleChannel)
                 {
-                    #if XRINPUT_OPENXR_LOADER
-                    if (loaderType == typeof(OpenXRLoader)) rumbleChannel = 1;
+                    if (loaderTypeName == "OpenXRLoader") rumbleChannel = 1;
                     else rumbleChannel = 0;
-                    #else
-                    rumbleChannel = 0;
-                    #endif
                 }
 
                 // auto detect
@@ -113,12 +109,8 @@ namespace VRstudios
 				    }
 
                     #if UNITY_STANDALONE
-                    #if XRINPUT_OPENVR_LOADER
-                    if (loaderType == typeof(OpenVRLoader)) apiType = XRInputAPIType.OpenVR;
+                    if (loaderTypeName == "OpenVRLoader") apiType = XRInputAPIType.OpenVR;
                     else apiType = XRInputAPIType.UnityEngine_XR;
-                    #else
-                    apiType = XRInputAPIType.UnityEngine_XR;
-                    #endif
                     #else
                     apiType = XRInputAPIType.UnityEngine_XR;
                     #endif
@@ -129,7 +121,6 @@ namespace VRstudios
                 switch (apiType)
                 {
                     case XRInputAPIType.UnityEngine_XR: api = new UnityEngine_XR(); break;
-                    //case XRInputAPIType.UnityEngine_InputSystem_XR: api = new UnityEngine_InputSystem_XR(); break;
                     case XRInputAPIType.OpenVR: api = new OpenVR_New(); break;
                     case XRInputAPIType.OpenVR_Legacy: api = new OpenVR_Legacy(); break;
                     default: throw new NotImplementedException();

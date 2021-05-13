@@ -11,7 +11,7 @@ namespace VRstudios
 {
     static class EditorSetup
     {
-        [DidReloadScripts]
+        /*[DidReloadScripts]
         private static void ValidateCompilerDefines()
         {
            //Debug.Log(typeof(Unity.XR.OpenVR.OpenVRLoader).AssemblyQualifiedName);
@@ -29,7 +29,7 @@ namespace VRstudios
             typeInfo = Type.GetType("UnityEngine.XR.OpenXR.OpenXRLoader, Unity.XR.OpenXR");
             if (typeInfo != null) EnsureCompilerDefines(group, new string[] { "XRINPUT_OPENXR_LOADER" }, null);
             else EnsureCompilerDefines(group, null, new string[] { "XRINPUT_OPENXR_LOADER" });
-        }
+        }*/
 
         private static void EnsureCompilerDefines(BuildTargetGroup group, string[] definesToAdd, string[] definesToRemove)
         {
