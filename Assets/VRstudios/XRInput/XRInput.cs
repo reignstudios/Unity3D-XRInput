@@ -64,7 +64,7 @@ namespace VRstudios
 
             // wait for XR loader
             XRLoader loader = null;
-            while (loader == null)
+            while (loader == null || !XRSettings.enabled)
             {
                 try
                 {
@@ -107,12 +107,6 @@ namespace VRstudios
                 // auto detect
                 if (apiType == XRInputAPIType.AutoDetect)
                 {
-                    if (!XRSettings.enabled)
-                    {
-                        Debug.LogError("XR not enabled!");
-                        yield break;
-				    }
-
                     #if UNITY_STANDALONE
                     if (loaderTypeName == "OpenVRLoader") apiType = XRInputAPIType.OpenVR;
                     else apiType = XRInputAPIType.UnityEngine_XR;
@@ -137,14 +131,14 @@ namespace VRstudios
                 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.playModeStateChanged += EditorApplication_playModeStateChanged;
                 #endif
-
-                if (InitializedCallback != null) InitializedCallback(true);
             }
             catch (Exception e)
             {
                 if (InitializedCallback != null) InitializedCallback(false);
                 throw e;
 			}
+
+            if (InitializedCallback != null) InitializedCallback(true);
         }
 
         #if UNITY_EDITOR
@@ -170,6 +164,7 @@ namespace VRstudios
 
         private void Update()
         {
+            // gather controller states from current API
             if (api == null) return;
 
             int controllerCount;
@@ -763,7 +758,20 @@ namespace VRstudios
 
     public struct XRControllerButton
     {
-        public bool on, down, up;
+        /// <summary>
+        /// True when button is held on
+        /// </summary>
+        public bool on;
+        
+        /// <summary>
+        /// True when button-pressed / state-changes
+        /// </summary>
+        public bool down;
+
+        /// <summary>
+        /// True when button-released / state-changes
+        /// </summary>
+        public bool up;
 
         internal void Update(bool on)
         {
@@ -787,7 +795,14 @@ namespace VRstudios
 
     public struct XRControllerAnalog
     {
+        /// <summary>
+        /// Analog 0-1 value
+        /// </summary>
         public float value;
+
+        /// <summary>
+        /// If the value drops below this, it will clamp to 0
+        /// </summary>
         public static float tolerance = 0.2f;
 
         internal void Update(float value)
@@ -804,7 +819,14 @@ namespace VRstudios
 
     public struct XRControllerJoystick
     {
+        /// <summary>
+        /// Joystick 0-1 value in length
+        /// </summary>
         public Vector2 value;
+
+        /// <summary>
+        /// If the value drops below this, it will clamp to (0,0)
+        /// </summary>
         public static float tolerance = 0.2f;
 
         internal void Update(Vector2 value)
