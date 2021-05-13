@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
@@ -9,23 +11,36 @@ namespace VRstudios
 {
     static class EditorSetup
     {
-        /*[MenuItem("Assets/VRstudios/XRInput/Enable for Steam")]
-        public static void EnableForOpenVR()
+        [DidReloadScripts]
+        private static void ValidateCompilerDefines()
         {
-            EnsureSingleExists(new string[] { "VRSTUDIOS_XRINPUT_OPENVR" }, null);
+           //Debug.Log(typeof(Unity.XR.OpenVR.OpenVRLoader).AssemblyQualifiedName);
+           //Debug.Log(typeof(UnityEngine.XR.OpenXR.OpenXRLoader).AssemblyQualifiedName);
+
+            var target = EditorUserBuildSettings.activeBuildTarget;
+            var group = BuildPipeline.GetBuildTargetGroup(target);
+
+            // openvr loader
+            var typeInfo = Type.GetType("Unity.XR.OpenVR.OpenVRLoader, Unity.XR.OpenVR");
+            if (typeInfo != null) EnsureCompilerDefines(group, new string[] {"XRINPUT_OPENVR_LOADER"}, null);
+            else EnsureCompilerDefines(group, null, new string[] { "XRINPUT_OPENVR_LOADER" });
+
+            // openxr loader
+            typeInfo = Type.GetType("UnityEngine.XR.OpenXR.OpenXRLoader, Unity.XR.OpenXR");
+            if (typeInfo != null) EnsureCompilerDefines(group, new string[] { "XRINPUT_OPENXR_LOADER" }, null);
+            else EnsureCompilerDefines(group, null, new string[] { "XRINPUT_OPENXR_LOADER" });
         }
 
-        [MenuItem("Assets/VRstudios/XRInput/Enable for Generic-Unity-Input")]
-        public static void EnableForOculus()
+        private static void EnsureCompilerDefines(BuildTargetGroup group, string[] definesToAdd, string[] definesToRemove)
         {
-            EnsureSingleExists(null, new string[] { "VRSTUDIOS_XRINPUT_OPENVR" });
-        }*/
+            //Debug.Log("Adding defines to group: " + group.ToString());
+            //if (definesToAdd != null) foreach(string define in definesToAdd) Debug.Log("- DEFINE: " + define);
+            //Debug.Log("Removing defines from group: " + group.ToString());
+            //if (definesToRemove != null) foreach (string define in definesToRemove) Debug.Log("- DEFINE: " + define);
 
-        private static void EnsureSingleExists(string[] definesToAdd, string[] definesToRemove)
-        {
             // get defaults
             bool changes = false;
-            PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, out string[] defines);
+            PlayerSettings.GetScriptingDefineSymbolsForGroup(group, out string[] defines);
             var definesList = new List<string>(defines);
 
             // check if we need to add defines
@@ -52,7 +67,7 @@ namespace VRstudios
 			}
 
             // apply changes if needed
-            if (changes) PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, definesList.ToArray());
+            if (changes) PlayerSettings.SetScriptingDefineSymbolsForGroup(group, definesList.ToArray());
         }
     }
 }

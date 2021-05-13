@@ -1188,7 +1188,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 821027172066052999, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
       propertyPath: apiType
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 821027172066052999, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
       propertyPath: openxrRumbleHack
@@ -1241,6 +1241,10 @@ PrefabInstance:
     - target: {fileID: 3336344627212777408, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
       propertyPath: m_Name
       value: XRInput
+      objectReference: {fileID: 0}
+    - target: {fileID: 3336344627212777408, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}

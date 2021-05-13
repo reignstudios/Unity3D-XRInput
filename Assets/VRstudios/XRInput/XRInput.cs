@@ -59,6 +59,18 @@ namespace VRstudios
             DontDestroyOnLoad(gameObject);
             singleton = this;
 
+            // wait for XR loader
+            XRLoader loader = null;
+            while (loader == null)
+            {
+                try
+                {
+                    loader = XRGeneralSettings.Instance.Manager.activeLoader;
+                }
+                catch { }
+                yield return new WaitForSeconds(1);
+            }
+
             // give XR some time to start
             var wait = new WaitForEndOfFrame();
             yield return wait;
@@ -77,15 +89,18 @@ namespace VRstudios
 				}
 
                 // get loader type
-                var loader = XRGeneralSettings.Instance.Manager.activeLoader;
                 var loaderType = loader.GetType();
                 Debug.Log($"XR-Loader: '{loader.name}' TYPE:{loaderType}");
 
                 // auto set rumble channel
                 if (autoSetRumbleChannel)
                 {
+                    #if XRINPUT_OPENXR_LOADER
                     if (loaderType == typeof(OpenXRLoader)) rumbleChannel = 1;
                     else rumbleChannel = 0;
+                    #else
+                    rumbleChannel = 0;
+                    #endif
                 }
 
                 // auto detect
@@ -98,8 +113,12 @@ namespace VRstudios
 				    }
 
                     #if UNITY_STANDALONE
+                    #if XRINPUT_OPENVR_LOADER
                     if (loaderType == typeof(OpenVRLoader)) apiType = XRInputAPIType.OpenVR;
                     else apiType = XRInputAPIType.UnityEngine_XR;
+                    #else
+                    apiType = XRInputAPIType.UnityEngine_XR;
+                    #endif
                     #else
                     apiType = XRInputAPIType.UnityEngine_XR;
                     #endif
