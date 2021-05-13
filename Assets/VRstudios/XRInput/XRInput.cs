@@ -47,6 +47,9 @@ namespace VRstudios
         private XRControllerState state_controllerFirst, state_controllerMerged;
         private Guid state_controllerMerged_ID = Guid.NewGuid();
 
+        public bool stopLoaderOnAppExit = true;
+        private XRLoader loader;
+
         private IEnumerator Start()
         {
             // only one can exist in scene at a time
@@ -63,7 +66,6 @@ namespace VRstudios
             Debug.Log("XRInput version: 1.0.1");
 
             // wait for XR loader
-            XRLoader loader = null;
             while (loader == null || !XRSettings.enabled)
             {
                 try
@@ -162,7 +164,12 @@ namespace VRstudios
             }
         }
 
-        private void Update()
+		private void OnApplicationQuit()
+		{
+			if (stopLoaderOnAppExit && loader != null) loader.Stop();
+		}
+
+		private void Update()
         {
             // gather controller states from current API
             if (api == null) return;
