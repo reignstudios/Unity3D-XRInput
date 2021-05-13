@@ -59,6 +59,9 @@ namespace VRstudios
             DontDestroyOnLoad(gameObject);
             singleton = this;
 
+            // print version
+            Debug.Log("XRInput version: 1.0.0");
+
             // wait for XR loader
             XRLoader loader = null;
             while (loader == null)
