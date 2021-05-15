@@ -289,10 +289,16 @@ namespace VRstudios.API
             controllerLeft.touch2.Update(GetButtonState(viveAction_Touch2, viveSource_LeftHand));
 
             // update grip
-            //controllerRight.grip.Update(controllerRight.buttonGrip.on ? 1 : 0);
-            //controllerLeft.grip.Update(controllerLeft.buttonGrip.on ? 1 : 0);
-            controllerRight.grip.Update(GetAnalogState(viveAction_Grip, viveSource_RightHand).x);
-            controllerLeft.grip.Update(GetAnalogState(viveAction_Grip, viveSource_LeftHand).x);
+            if (controllerRight.type == XRInputControllerType.HTCVive || controllerRight.type == XRInputControllerType.WMR)
+            {
+                controllerRight.grip.Update(controllerRight.buttonGrip.on ? 1 : 0);// simulate analog state
+                controllerLeft.grip.Update(controllerLeft.buttonGrip.on ? 1 : 0);
+            }
+            else
+            {
+                controllerRight.grip.Update(GetAnalogState(viveAction_Grip, viveSource_RightHand).x);
+                controllerLeft.grip.Update(GetAnalogState(viveAction_Grip, viveSource_LeftHand).x);
+            }
 
             // update triggers
             controllerRight.trigger.Update(GetAnalogState(viveAction_Trigger, viveSource_RightHand).x);
