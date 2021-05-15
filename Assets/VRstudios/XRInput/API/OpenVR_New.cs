@@ -29,6 +29,7 @@ namespace VRstudios.API
         private ulong viveActionSetHandle;
         private ulong viveAction_TriggerTouch, viveAction_GripTouch, viveAction_MenuTouch, viveAction_Touch1, viveAction_Touch2, viveAction_Joystick1_Touch;
         private ulong viveAction_TriggerButton, viveAction_GripButton, viveAction_MenuButton, viveAction_Button1, viveAction_Button2, viveAction_Touchpad1_Button, viveAction_Joystick1_Button;
+        private ulong viveAction_Grip;
         private ulong viveAction_Trigger, viveAction_Touchpad1, viveAction_Joystick1;
         private ulong viveAction_Rumble_RightHand, viveAction_Rumble_LeftHand;
         private VRActiveActionSet_t[] actionSets;
@@ -115,6 +116,9 @@ namespace VRstudios.API
             GetActionHandle("/actions/vrstudios/in/button2", ref viveAction_Button2);
             GetActionHandle("/actions/vrstudios/in/touchpad1_button", ref viveAction_Touchpad1_Button);
             GetActionHandle("/actions/vrstudios/in/joystick1_button", ref viveAction_Joystick1_Button);
+
+            // get object actions (grips)
+            GetActionHandle("/actions/vrstudios/in/grip", ref viveAction_Grip);
 
             // get object actions (triggers)
             GetActionHandle("/actions/vrstudios/in/trigger", ref viveAction_Trigger);
@@ -284,9 +288,11 @@ namespace VRstudios.API
             controllerRight.touch2.Update(GetButtonState(viveAction_Touch2, viveSource_RightHand));
             controllerLeft.touch2.Update(GetButtonState(viveAction_Touch2, viveSource_LeftHand));
 
-            // update grip (just simulate)
-            controllerRight.grip.Update(controllerRight.buttonGrip.on ? 1 : 0);
-            controllerLeft.grip.Update(controllerLeft.buttonGrip.on ? 1 : 0);
+            // update grip
+            //controllerRight.grip.Update(controllerRight.buttonGrip.on ? 1 : 0);
+            //controllerLeft.grip.Update(controllerLeft.buttonGrip.on ? 1 : 0);
+            controllerRight.grip.Update(GetAnalogState(viveAction_Grip, viveSource_RightHand).x);
+            controllerLeft.grip.Update(GetAnalogState(viveAction_Grip, viveSource_LeftHand).x);
 
             // update triggers
             controllerRight.trigger.Update(GetAnalogState(viveAction_Trigger, viveSource_RightHand).x);

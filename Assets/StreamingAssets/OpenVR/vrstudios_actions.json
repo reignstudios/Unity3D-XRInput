@@ -62,6 +62,12 @@
       "type": "boolean"
     },
 
+    // grip
+    {
+      "name": "/actions/vrstudios/in/grip",
+      "type": "vector1"
+    },
+
     // triggers
     {
       "name": "/actions/vrstudios/in/trigger",
@@ -120,6 +126,9 @@
         "/actions/vrstudios/in/button2": "Button 2",
         "/actions/vrstudios/in/touchpad1_button": "Touchpad Button",
         "/actions/vrstudios/in/joystick1_button": "Joystick Button",
+
+        // grip
+        "/actions/vrstudios/in/grip": "Grip",
 
         // triggers
         "/actions/vrstudios/in/trigger": "Trigger",

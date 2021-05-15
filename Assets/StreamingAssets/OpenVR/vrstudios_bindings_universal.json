@@ -74,7 +74,7 @@
             "path": "/user/hand/right/input/application_menu"
           },
 
-          // grip
+          // grip button
           {
             "inputs": {
               "click": {
@@ -202,6 +202,26 @@
             },
             "mode": "button",
             "path": "/user/hand/right/input/y"
+          },
+
+          // grip
+          {
+            "inputs": {
+              "pull": {
+                "output": "/actions/vrstudios/in/grip"
+              }
+            },
+            "mode": "trigger",
+            "path": "/user/hand/right/input/grip"
+          },
+          {
+            "inputs": {
+              "pull": {
+                "output": "/actions/vrstudios/in/grip"
+              }
+            },
+            "mode": "trigger",
+            "path": "/user/hand/left/input/grip"
           },
 
           // trigger
