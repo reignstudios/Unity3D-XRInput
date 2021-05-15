@@ -292,11 +292,18 @@ namespace VRstudios.API
             if (controllerRight.type == XRInputControllerType.HTCVive || controllerRight.type == XRInputControllerType.WMR)
             {
                 controllerRight.grip.Update(controllerRight.buttonGrip.on ? 1 : 0);// simulate analog state
-                controllerLeft.grip.Update(controllerLeft.buttonGrip.on ? 1 : 0);
             }
             else
             {
                 controllerRight.grip.Update(GetAnalogState(viveAction_Grip, viveSource_RightHand).x);
+            }
+
+            if (controllerLeft.type == XRInputControllerType.HTCVive || controllerLeft.type == XRInputControllerType.WMR)
+            {
+                controllerLeft.grip.Update(controllerLeft.buttonGrip.on ? 1 : 0);// simulate analog state
+            }
+            else
+            {
                 controllerLeft.grip.Update(GetAnalogState(viveAction_Grip, viveSource_LeftHand).x);
             }
 
