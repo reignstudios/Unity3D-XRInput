@@ -75,6 +75,7 @@ namespace VRstudios.API
                     // get controller type
                     ETrackedPropertyError e = ETrackedPropertyError.TrackedProp_Success;
                     system.GetStringTrackedDeviceProperty(i, ETrackedDeviceProperty.Prop_ControllerType_String, OpenVR_Shared.propertyText, (uint)OpenVR_Shared.propertyText.Capacity, ref e);
+                    if (e != ETrackedPropertyError.TrackedProp_Success) continue;
 
                     // ignore gamepads
                     if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_Gamepad)) continue;
@@ -84,49 +85,98 @@ namespace VRstudios.API
                     controller.connected = true;
 
                     // update button & touch states
-                    if (e == ETrackedPropertyError.TrackedProp_Success)
+                    if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_ViveController))// specialize input for odd Vive button layout
                     {
-                        if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_ViveController))// specialize input for odd Vive button layout
-                        {
-                            controller.type = XRInputControllerType.HTCVive;
+                        controller.type = XRInputControllerType.HTCVive;
 
-                            // buttons
-                            controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
-                            controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
-                            controller.buttonMenu.Update((state.ulButtonPressed & 2) != 0);
-                            controller.button1.Update((state.ulButtonPressed & 4294967296) != 0);
+                        // buttons
+                        controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
+                        controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
+                        controller.buttonMenu.Update((state.ulButtonPressed & 2) != 0);
+                        controller.button1.Update((state.ulButtonPressed & 4294967296) != 0);
 
-                            // touch
-                            controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
-                            controller.touch1.Update((state.ulButtonTouched & 4294967296) != 0);
+                        // touch
+                        controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
+                        controller.touch1.Update((state.ulButtonTouched & 4294967296) != 0);
 
-                            // update joystick states
-                            if (state.ulButtonTouched != 0) controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
-                            else controller.joystick.Update(Vector2.zero);
-                        }
-                        else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_IndexController))// specialize input for odd Vive button layout
-                        {
-                            controller.type = XRInputControllerType.ValveIndex;
-
-                            // buttons
-                            controller.buttonJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
-                            controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
-                            controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
-                            //controller.button2.Update((state.ulButtonPressed & 4) != 0);// button 2 is the same as grip
-                            controller.button1.Update((state.ulButtonPressed & 2) != 0);
-
-                            // touch
-                            controller.touchJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
-                            controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
-                            controller.touchGrip.Update((state.ulButtonTouched & 4) != 0);
-                            //controller.touch2.Update((state.ulButtonTouched & 4) != 0);// button 2 is the same as grip
-                            controller.touch1.Update((state.ulButtonTouched & 2) != 0);
-
-                            // update joystick states
-                            controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
-                        }
+                        // update joystick states
+                        if (state.ulButtonTouched != 0) controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
+                        else controller.joystick.Update(Vector2.zero);
                     }
-                    else// agnostic controller mappings
+                    else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_IndexController))// specialize input for odd Vive button layout
+                    {
+                        controller.type = XRInputControllerType.ValveIndex;
+
+                        // buttons
+                        controller.buttonJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
+                        controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
+                        controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
+                        //controller.button2.Update((state.ulButtonPressed & 4) != 0);// button 2 is the same as grip
+                        controller.button1.Update((state.ulButtonPressed & 2) != 0);
+
+                        // touch
+                        controller.touchJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
+                        controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
+                        controller.touchGrip.Update((state.ulButtonTouched & 4) != 0);
+                        //controller.touch2.Update((state.ulButtonTouched & 4) != 0);// button 2 is the same as grip
+                        controller.touch1.Update((state.ulButtonTouched & 2) != 0);
+
+                        // update joystick states
+                        controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
+                    }
+                    else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_WMR))// specialize input for WMR button layout
+                    {
+                        controller.type = XRInputControllerType.WMR;
+                        //Debug.Log(state.ulButtonPressed.ToString());
+
+                        // buttons
+                        bool triggerButton = (state.ulButtonPressed & 8589934592) != 0;// get normal trigger button state if avaliable
+                        if (state.rAxis1.x >= .75f) triggerButton = true;// virtually simulate trigger button in case it doesn't exist
+                        controller.buttonTrigger.Update(triggerButton);
+
+                        controller.buttonJoystick.Update((state.ulButtonPressed & 17179869184) != 0);
+                        controller.buttonGrip.Update((state.ulButtonPressed & 34359738372) != 0);
+                        controller.button1.Update(state.ulButtonPressed == 4294967296);
+                        //controller.button2.Update(state.ulButtonPressed == 4294967296);
+                        controller.buttonMenu.Update(state.ulButtonPressed == 2);
+
+                        // touch
+                        controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
+                        controller.touchJoystick.Update((state.ulButtonTouched & 17179869184) != 0);
+                        controller.touchGrip.Update((state.ulButtonTouched & 34359738372) != 0);
+                        controller.touch1.Update(state.ulButtonTouched == 4294967296);
+                        //controller.touch2.Update(state.ulButtonTouched == 4294967296);
+                        controller.touchMenu.Update(state.ulButtonTouched == 2);
+
+                        // update joystick states
+                        controller.joystick.Update(new Vector2(state.rAxis2.x, state.rAxis2.y));
+                        controller.joystick2.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
+                    }
+                    else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_WMR_G2))// specialize input for WMR_G2 button layout
+                    {
+                        controller.type = XRInputControllerType.WMR_G2;
+
+                        // buttons
+                        bool triggerButton = (state.ulButtonPressed & 8589934592) != 0;// get normal trigger button state if avaliable
+                        if (state.rAxis1.x >= .75f) triggerButton = true;// virtually simulate trigger button in case it doesn't exist
+                        controller.buttonTrigger.Update(triggerButton);
+
+                        controller.buttonJoystick.Update((state.ulButtonPressed & 17179869184) != 0);
+                        controller.buttonGrip.Update((state.ulButtonPressed & 34359738372) != 0);
+                        controller.button1.Update(state.ulButtonPressed == 4294967424);
+                        controller.button2.Update(state.ulButtonPressed == 4294967296);
+
+                        // touch
+                        controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
+                        controller.touchJoystick.Update((state.ulButtonTouched & 17179869184) != 0);
+                        controller.touchGrip.Update((state.ulButtonTouched & 34359738372) != 0);
+                        controller.touch1.Update(state.ulButtonTouched == 4294967424);
+                        controller.touch2.Update(state.ulButtonTouched == 4294967296);
+
+                        // update joystick states
+                        controller.joystick.Update(new Vector2(state.rAxis2.x, state.rAxis2.y));
+					}
+                    else// agnostic controller mappings (defaults to Oculus mappings)
                     {
                         controller.type = XRInputControllerType.Unknown;
 
