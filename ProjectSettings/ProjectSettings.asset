@@ -8,7 +8,7 @@ PlayerSettings:
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
-  defaultScreenOrientation: 4
+  defaultScreenOrientation: 3
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
@@ -131,7 +131,8 @@ PlayerSettings:
   preloadedAssets:
   - {fileID: 11400000, guid: 0b74ce7b365159547831e428d4dcfa53, type: 2}
   - {fileID: 11400000, guid: 8d08c72e20981d54c8ec6409c2e73162, type: 2}
-  - {fileID: -4215122150394294499, guid: 85e271ebf6800fa4e87713d8561d6a04, type: 2}
+  - {fileID: 11400000, guid: b568004f2ba230b40bf9df2936fa62e0, type: 2}
+  - {fileID: -4885159569379785120, guid: 85e271ebf6800fa4e87713d8561d6a04, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -149,6 +150,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
+    Android: com.DefaultCompany.Unity3DXRInput
     Standalone: com.DefaultCompany.Unity3D-XRInput
   buildNumber:
     Standalone: 0
@@ -156,7 +158,7 @@ PlayerSettings:
     tvOS: 0
   overrideDefaultApplicationIdentifier: 0
   AndroidBundleVersionCode: 1
-  AndroidMinSdkVersion: 23
+  AndroidMinSdkVersion: 25
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
   aotOptions: 
@@ -394,7 +396,7 @@ PlayerSettings:
   - m_BuildTarget: LuminSupport
     m_GraphicsJobs: 0
   - m_BuildTarget: AndroidPlayer
-    m_GraphicsJobs: 0
+    m_GraphicsJobs: 1
   - m_BuildTarget: WebGLSupport
     m_GraphicsJobs: 0
   m_BuildTargetGraphicsJobMode:
@@ -421,9 +423,9 @@ PlayerSettings:
     m_Devices:
     - Oculus
     - OpenVR
-  openGLRequireES31: 0
-  openGLRequireES31AEP: 0
-  openGLRequireES32: 0
+  openGLRequireES31: 1
+  openGLRequireES31AEP: 1
+  openGLRequireES32: 1
   m_TemplateCustomTags: {}
   mobileMTRendering:
     Android: 1
@@ -678,7 +680,8 @@ PlayerSettings:
     1: XRINPUT_OPENVR_LOADER;XRINPUT_OPENXR_LOADER
   additionalCompilerArguments: {}
   platformArchitecture: {}
-  scriptingBackend: {}
+  scriptingBackend:
+    Android: 1
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}

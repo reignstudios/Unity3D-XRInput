@@ -63,7 +63,7 @@ namespace VRstudios
             singleton = this;
 
             // print version
-            Debug.Log("XRInput version: 1.0.6");
+            Debug.Log("XRInput version: 1.0.7");
 
             // wait for XR loader
             while (loader == null || !XRSettings.enabled)
@@ -740,6 +740,7 @@ namespace VRstudios
         Unknown,
         Oculus,
         HTCVive,
+        HTCViveWave,
         ValveIndex,
         WMR,
         WMR_G2

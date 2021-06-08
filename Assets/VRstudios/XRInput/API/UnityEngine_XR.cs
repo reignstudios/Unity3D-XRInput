@@ -59,12 +59,13 @@ namespace VRstudios.API
 
                 var controller = state_controllers[controllerCount];
                 controller.connected = true;
-
+                
                 // set type
                 if (c.name.StartsWith("Oculus")) controller.type = XRInputControllerType.Oculus;
                 else if (c.name.StartsWith("Spatial Controller")) controller.type = XRInputControllerType.WMR;
                 else if (c.name.StartsWith("HP Reverb G2 Controller")) controller.type = XRInputControllerType.WMR_G2;
                 else if (c.name.StartsWith("HTC Vive")) controller.type = XRInputControllerType.HTCVive;
+                else if (c.name.StartsWith("WVR_CR")) controller.type = XRInputControllerType.HTCViveWave;
                 else if (c.name.StartsWith("Index Controller")) controller.type = XRInputControllerType.ValveIndex;
                 else controller.type = XRInputControllerType.Unknown;
 
