@@ -16,7 +16,7 @@ This API acts as its own easy-to-use agnostic XR-Input layer allowing you to wri
     * In the "SteamVR" folder, rename "vrstudios_actions.json" to "actions.json"
     * Make sure <b>"Steam Plugin In Use"</b> is checked on in the XRInput script in your scene
 
-## 'HTC Vive Wave' setup
+## 'HTC VIVE Focus 3' setup
 * Setup docs: https://hub.vive.com/storage/docs/en-us/UnityXR/UnityXRGettingStart.html
 * Configure Unity to get access to Wave OpenXR plugin
     * Open Unity 'Project Settings' & navigate to 'Package Manager'
