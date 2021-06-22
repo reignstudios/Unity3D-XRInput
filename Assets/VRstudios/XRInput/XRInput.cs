@@ -3,8 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
-using UnityEngine.XR.OpenXR;
-using Unity.XR.OpenVR;
 using VRstudios.API;
 
 namespace VRstudios
@@ -63,7 +61,7 @@ namespace VRstudios
             singleton = this;
 
             // print version
-            Debug.Log("XRInput version: 1.0.7");
+            Debug.Log("XRInput version: 1.0.8");
 
             // wait for XR loader
             while (loader == null || !XRSettings.enabled)

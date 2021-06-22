@@ -5,6 +5,10 @@ namespace VRstudios
 {
     public class TestInput : MonoBehaviour
     {
+        [Tooltip("Sets XR render-scale after XRInput is init")]
+        [Range(0.25f, 1f)]
+        public float renderScale = 1;
+
 		private void Start()
 		{
 			XRInput.InitializedCallback += XRInput_InitializedCallback;
@@ -16,6 +20,13 @@ namespace VRstudios
         private void XRInput_InitializedCallback(bool success)
         {
             Debug.Log("CALLBACK: XRInput Initilized!");
+
+            if (renderScale != 1)
+            {
+                var xrSubSystems = new System.Collections.Generic.List<UnityEngine.XR.XRDisplaySubsystem>();
+                SubsystemManager.GetInstances(xrSubSystems);
+                foreach (var ss in xrSubSystems) ss.scaleOfAllRenderTargets = renderScale;
+            }
         }
 
         private void XRInput_DisposedCallback()
