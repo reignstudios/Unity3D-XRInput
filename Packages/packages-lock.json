@@ -10,13 +10,13 @@
       "url": "https://npm-registry.vive.com"
     },
     "com.microsoft.mixedreality.openxr": {
-      "version": "file:MixedReality/com.microsoft.mixedreality.openxr-0.9.0.tgz",
+      "version": "file:MixedReality/com.microsoft.mixedreality.openxr-1.0.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
-        "com.unity.xr.openxr": "1.0.3",
-        "com.unity.xr.arsubsystems": "4.1.5",
-        "com.unity.xr.arfoundation": "4.1.5"
+        "com.unity.xr.openxr": "1.2.2",
+        "com.unity.xr.arsubsystems": "4.1.7",
+        "com.unity.xr.arfoundation": "4.1.7"
       }
     },
     "com.unity.ext.nunit": {
@@ -100,11 +100,11 @@
       }
     },
     "com.unity.xr.arfoundation": {
-      "version": "4.1.5",
+      "version": "4.1.7",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.xr.arsubsystems": "4.1.5",
+        "com.unity.xr.arsubsystems": "4.1.7",
         "com.unity.xr.management": "4.0.1"
       },
       "url": "https://packages.unity.com"

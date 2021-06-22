@@ -17,6 +17,15 @@ This API acts as its own easy-to-use agnostic XR-Input layer allowing you to wri
     * In the "SteamVR" folder, rename "vrstudios_actions.json" to "actions.json"
     * Make sure <b>"Steam Plugin In Use"</b> is checked on in the XRInput script in your scene
 
+## 'Windows Mixed Reality' setup
+* Download and open 'MixedRealityFeatureTool'
+* Open & follow navigation steps...
+    * Click: Start
+    * Select root Unity3D project path & click 'Discover Features'
+    * Expand 'Platform Support' & check 'Mixed Reality OpenXR Plugin'
+    * Click 'Get Features' & close when done
+* In Unity's OpenXR settings: Add 'Microsoft Motion Controller Profile' & 'HP Reverb G2 Controller Profile'
+
 ## 'HTC VIVE Focus 3' setup
 * Setup docs: https://hub.vive.com/storage/docs/en-us/UnityXR/UnityXRGettingStart.html
 * Configure Unity to get access to Wave OpenXR plugin
