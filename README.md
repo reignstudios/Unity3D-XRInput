@@ -7,7 +7,7 @@ This API acts as its own easy-to-use agnostic XR-Input layer allowing you to wri
 * Select Input type and ready to go!
 
 ## 'SteamVR' setup
-* Ensure 'com.valvesoftware.unity.openvr' .tgz file is installed via Unity package manager for OpenVR input mode
+* Ensure <a href="https://github.com/ValveSoftware/unity-xr-plugin/releases">'com.valvesoftware.unity.openvr'</a> .tgz file is installed via Unity package manager for OpenVR input mode
 * NOTE: In 'Packages/manifest.json' you can set packages to be relitive paths like so: "file:../com.some-package.tgz"'
 * <b>NOTE: SteamVR Plugin must NOT be installed for OpenVR_Legacy Input mode to work!</b>
 * <b>NOTE: If SteamVR Plugin is installed follow these steps for OpenVR Input mode to work!</b>
@@ -18,7 +18,7 @@ This API acts as its own easy-to-use agnostic XR-Input layer allowing you to wri
     * Make sure <b>"Steam Plugin In Use"</b> is checked on in the XRInput script in your scene
 
 ## 'Windows Mixed Reality' setup
-* Download and open 'MixedRealityFeatureTool'
+* Download and open <a href="https://www.microsoft.com/en-us/download/details.aspx?id=102778">'MixedRealityFeatureTool'</a>
 * Open & follow navigation steps...
     * Click: Start
     * Select root Unity3D project path & click 'Discover Features'
@@ -42,7 +42,7 @@ This API acts as its own easy-to-use agnostic XR-Input layer allowing you to wri
 ## 'PicoVR' setup
 * Use 'Unity XR Platform SDK' plugin NOT legacy 'PicoVR Unity SDK' plugin
 * 'Unity XR Platform SDK' doesn't ship correctly as a '.tar.tgz' package so follow these steps (NOTE: z7ip ideal here)
-    * Extract 'PicoXR_Platform_SDK-x.x.x_XXX.zip' in a folder named 'package'
+    * Extract <a href="https://developer.pico-interactive.com/sdk/index?id=8">'PicoXR_Platform_SDK-x.x.x_XXX.zip'</a> in a folder named 'package'
     * Compress 'package' folder into '.tar' file
     * Compress '.tar' into '.tgz' file. (NOTE: If file extension is '.gz' just change it to '.tgz')
     * In Unity3D go to package manager and install from tarball option
