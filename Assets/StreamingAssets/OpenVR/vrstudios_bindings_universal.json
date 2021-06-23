@@ -22,6 +22,32 @@
             }
          ],
         "sources": [
+          // bumpers
+          {
+            "inputs": {
+              "click": {
+                "output": "/actions/vrstudios/in/bumperbutton"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/bumpertouch"
+              }
+            },
+            "mode": "button",
+            "path": "/user/hand/left/input/bumper"
+          },
+          {
+            "inputs": {
+              "click": {
+                "output": "/actions/vrstudios/in/bumperbutton"
+              },
+              "touch": {
+                "output": "/actions/vrstudios/in/bumpertouch"
+              }
+            },
+            "mode": "button",
+            "path": "/user/hand/right/input/bumper"
+          },
+
           // trigger button
           {
             "inputs": {

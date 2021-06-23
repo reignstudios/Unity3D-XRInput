@@ -103,12 +103,35 @@ namespace VRstudios.API
                         if (state.ulButtonTouched != 0) controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
                         else controller.joystick.Update(Vector2.zero);
                     }
+                    else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_ViveCosmosController))
+                    {
+                        controller.type = XRInputControllerType.HTCViveCosmos;
+
+                        // buttons
+                        controller.buttonJoystick.Update((state.ulButtonPressed & 4294967296) != 0);
+                        controller.buttonBumper.Update((state.ulButtonPressed & 34359738368) != 0);
+                        controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
+                        controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
+                        controller.button2.Update((state.ulButtonPressed & 2) != 0);// button 2 is the same as grip
+                        controller.button1.Update((state.ulButtonPressed & 128) != 0);
+
+                        // touch
+                        controller.touchJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
+                        controller.touchBumper.Update((state.ulButtonTouched & 34359738368) != 0);
+                        controller.touchTrigger.Update((state.ulButtonTouched & 8589934592) != 0);
+                        controller.touchGrip.Update((state.ulButtonTouched & 4) != 0);
+                        controller.touch2.Update((state.ulButtonTouched & 2) != 0);// button 2 is the same as grip
+                        controller.touch1.Update((state.ulButtonTouched & 128) != 0);
+
+                        // update joystick states
+                        controller.joystick.Update(new Vector2(state.rAxis0.x, state.rAxis0.y));
+                    }
                     else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_IndexController))// specialize input for odd Vive button layout
                     {
                         controller.type = XRInputControllerType.ValveIndex;
 
                         // buttons
-                        controller.buttonJoystick.Update((state.ulButtonTouched & 4294967296) != 0);
+                        controller.buttonJoystick.Update((state.ulButtonPressed & 4294967296) != 0);
                         controller.buttonTrigger.Update((state.ulButtonPressed & 8589934592) != 0);
                         controller.buttonGrip.Update((state.ulButtonPressed & 4) != 0);
                         //controller.button2.Update((state.ulButtonPressed & 4) != 0);// button 2 is the same as grip
@@ -127,7 +150,6 @@ namespace VRstudios.API
                     else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_WMR))// specialize input for WMR button layout
                     {
                         controller.type = XRInputControllerType.WMR;
-                        //Debug.Log(state.ulButtonPressed.ToString());
 
                         // buttons
                         bool triggerButton = (state.ulButtonPressed & 8589934592) != 0;// get normal trigger button state if avaliable

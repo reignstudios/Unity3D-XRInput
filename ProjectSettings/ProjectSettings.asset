@@ -152,7 +152,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.VRstudios.Unity3DXRInput
-    Standalone: com.DefaultCompany.Unity3D-XRInput
+    Standalone: com.VRstudios.Unity3D-XRInput
   buildNumber:
     Standalone: 0
     iPhone: 0

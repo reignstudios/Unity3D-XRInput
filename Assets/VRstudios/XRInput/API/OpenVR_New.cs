@@ -27,7 +27,9 @@ namespace VRstudios.API
         private CVRInput input;
         private ulong viveSource_RightHand, viveSource_LeftHand;
         private ulong viveActionSetHandle;
+        private ulong viveAction_BumperTouch;
         private ulong viveAction_TriggerTouch, viveAction_GripTouch, viveAction_MenuTouch, viveAction_Touch1, viveAction_Touch2, viveAction_Joystick1_Touch;
+        private ulong viveAction_BumperButton;
         private ulong viveAction_TriggerButton, viveAction_GripButton, viveAction_MenuButton, viveAction_Button1, viveAction_Button2, viveAction_Touchpad1_Button, viveAction_Joystick1_Button;
         private ulong viveAction_Grip;
         private ulong viveAction_Trigger, viveAction_Touchpad1, viveAction_Joystick1;
@@ -101,6 +103,7 @@ namespace VRstudios.API
             actionSets[0].ulActionSet = viveActionSetHandle;
 
             // get object actions (touch)
+            GetActionHandle("/actions/vrstudios/in/bumpertouch", ref viveAction_BumperTouch);
             GetActionHandle("/actions/vrstudios/in/triggertouch", ref viveAction_TriggerTouch);
             GetActionHandle("/actions/vrstudios/in/griptouch", ref viveAction_GripTouch);
             GetActionHandle("/actions/vrstudios/in/menutouch", ref viveAction_MenuTouch);
@@ -109,6 +112,7 @@ namespace VRstudios.API
             GetActionHandle("/actions/vrstudios/in/joystick1_touch", ref viveAction_Joystick1_Touch);
 
             // get object actions (buttons)
+            GetActionHandle("/actions/vrstudios/in/bumperbutton", ref viveAction_BumperButton);
             GetActionHandle("/actions/vrstudios/in/triggerbutton", ref viveAction_TriggerButton);
             GetActionHandle("/actions/vrstudios/in/gripbutton", ref viveAction_GripButton);
             GetActionHandle("/actions/vrstudios/in/menubutton", ref viveAction_MenuButton);
@@ -210,9 +214,10 @@ namespace VRstudios.API
                 // get controller
                 var controller = state_controllers[controllerCount];
                 controller.connected = true;
-
+                
                 // get controller type
                 if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_ViveController)) controller.type = XRInputControllerType.HTCVive;
+                else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_ViveCosmosController)) controller.type = XRInputControllerType.HTCViveCosmos;
                 else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_IndexController)) controller.type = XRInputControllerType.ValveIndex;
                 else if (OpenVR_Shared.propertyText.ToString().StartsWith(OpenVR_Shared.propertyText_Oculus.ToString())) controller.type = XRInputControllerType.Oculus;
                 else if (OpenVR_Shared.propertyText.Equals(OpenVR_Shared.propertyText_WMR)) controller.type = XRInputControllerType.WMR;
@@ -255,7 +260,13 @@ namespace VRstudios.API
             var controllerLeft = new XRControllerState();
             if (rightSet) controllerRight = state_controllers[rightSetIndex];
             if (leftSet) controllerLeft = state_controllers[leftSetIndex];
-            
+
+            // update bumper buttons/touch
+            controllerRight.buttonBumper.Update(GetButtonState(viveAction_BumperButton, viveSource_RightHand));
+            controllerLeft.buttonBumper.Update(GetButtonState(viveAction_BumperButton, viveSource_LeftHand));
+            controllerRight.touchBumper.Update(GetButtonState(viveAction_BumperTouch, viveSource_RightHand));
+            controllerLeft.touchBumper.Update(GetButtonState(viveAction_BumperTouch, viveSource_LeftHand));
+
             // update trigger buttons/touch
             controllerRight.buttonTrigger.Update(GetButtonState(viveAction_TriggerButton, viveSource_RightHand));
             controllerLeft.buttonTrigger.Update(GetButtonState(viveAction_TriggerButton, viveSource_LeftHand));

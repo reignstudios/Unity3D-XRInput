@@ -52,6 +52,7 @@ namespace VRstudios
             var stateL = XRInput.ControllerState(XRController.Left);
 
             // touch
+            PrintButton(stateL.touchBumper, "Left - TouchBumper");
             PrintButton(stateL.touchTrigger, "Left - TouchTrigger");
             PrintButton(stateL.touchJoystick, "Left - TouchJoystick");
             PrintButton(stateL.touchJoystick2, "Left - TouchJoystick2");
@@ -63,6 +64,7 @@ namespace VRstudios
             PrintButton(stateL.touch4, "Left - Touch4");
 
             // buttons
+            PrintButton(stateL.buttonBumper, "Left - ButtonBumper");
             PrintButton(stateL.buttonTrigger, "Left - ButtonTrigger");
             PrintButton(stateL.buttonJoystick, "Left - ButtonJoystick");
             PrintButton(stateL.buttonJoystick2, "Left - ButtonJoystick2");
@@ -92,6 +94,7 @@ namespace VRstudios
             var stateR = XRInput.ControllerState(XRController.Right);
 
             // touch
+            PrintButton(stateR.touchBumper, "Right - TouchBumper");
             PrintButton(stateR.touchTrigger, "Right - TouchTrigger");
             PrintButton(stateR.touchJoystick, "Right - TouchJoystick");
             PrintButton(stateR.touchJoystick2, "Right - TouchJoystick2");
@@ -103,6 +106,7 @@ namespace VRstudios
             PrintButton(stateR.touch4, "Right - Touch4");
 
             // buttons
+            PrintButton(stateR.buttonBumper, "Right - ButtonBumper");
             PrintButton(stateR.buttonTrigger, "Right - ButtonTrigger");
             PrintButton(stateR.buttonJoystick, "Right - ButtonJoystick");
             PrintButton(stateR.buttonJoystick2, "Right - ButtonJoystick2");

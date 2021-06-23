@@ -738,6 +738,7 @@ namespace VRstudios
         Unknown,
         Oculus,
         HTCVive,
+        HTCViveCosmos,
         HTCViveWave,
         ValveIndex,
         WMR,
@@ -754,8 +755,10 @@ namespace VRstudios
         public bool connected;
         public XRInputControllerType type;
         public XRControllerSide side;
+        public XRControllerButton touchBumper;
         public XRControllerButton touchTrigger, touchJoystick, touchJoystick2, touchGrip, touchMenu;
         public XRControllerButton touch1, touch2, touch3, touch4;
+        public XRControllerButton buttonBumper;
         public XRControllerButton buttonTrigger, buttonJoystick, buttonJoystick2, buttonGrip, buttonMenu;
         public XRControllerButton button1, button2 ,button3, button4;
         public XRControllerAnalog trigger, grip;

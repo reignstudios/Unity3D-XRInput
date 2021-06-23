@@ -8,6 +8,10 @@
   "actions": [
     // touch
     {
+      "name": "/actions/vrstudios/in/bumpertouch",
+      "type": "boolean"
+    },
+    {
       "name": "/actions/vrstudios/in/triggertouch",
       "type": "boolean"
     },
@@ -33,6 +37,10 @@
     },
 
     // buttons
+    {
+      "name": "/actions/vrstudios/in/bumperbutton",
+      "type": "boolean"
+    },
     {
       "name": "/actions/vrstudios/in/triggerbutton",
       "type": "boolean"
@@ -111,6 +119,7 @@
         "language_tag": "en_US",
 
         // touch
+        "/actions/vrstudios/in/bumpertouch": "Bumper Touch",
         "/actions/vrstudios/in/triggertouch": "Trigger Touch",
         "/actions/vrstudios/in/menutouch": "Menu Touch",
         "/actions/vrstudios/in/griptouch": "Grip Touch",
@@ -119,6 +128,7 @@
         "/actions/vrstudios/in/joystick1_touch": "Joystick Touch",
 
         // buttons
+        "/actions/vrstudios/in/bumperbutton": "Bumper Button",
         "/actions/vrstudios/in/triggerbutton": "Trigger Button",
         "/actions/vrstudios/in/menubutton": "Menu Button",
         "/actions/vrstudios/in/gripbutton": "Grip Button",
