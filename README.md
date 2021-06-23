@@ -19,7 +19,7 @@ This API acts as its own easy-to-use agnostic XR-Input layer allowing you to wri
 
 ## 'Windows Mixed Reality' setup
 * Download and open <a href="https://www.microsoft.com/en-us/download/details.aspx?id=102778">'MixedRealityFeatureTool'</a>
-* Open & follow navigation steps...
+* In the app ollow navigation steps...
     * Click: Start
     * Select root Unity3D project path & click 'Discover Features'
     * Expand 'Platform Support' & check 'Mixed Reality OpenXR Plugin'
