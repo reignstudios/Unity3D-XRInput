@@ -1,5 +1,16 @@
 {
   "dependencies": {
+    "com.htc.upm.vive.openxr.controllers": {
+      "version": "file:../ExternalPackages/com_htc_upm_vive.openxr.controllers-0.1.0-preview.4.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.unity.xr.management": "3.2.16",
+        "com.unity.xr.legacyinputhelpers": "2.1.2",
+        "com.unity.inputsystem": "1.1.0-preview.1",
+        "com.unity.xr.openxr": "0.1.1-preview.1"
+      }
+    },
     "com.htc.upm.wave.xrsdk": {
       "version": "4.0.0-r.39",
       "depth": 0,
@@ -52,7 +63,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.0.2",
+      "version": "1.1.0-preview.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {},

@@ -61,7 +61,7 @@ namespace VRstudios
             singleton = this;
 
             // print version
-            Debug.Log("XRInput version: 1.0.8");
+            Debug.Log("XRInput version: 1.0.9");
 
             // wait for XR loader
             while (loader == null || !XRSettings.enabled)
@@ -100,8 +100,7 @@ namespace VRstudios
                 // auto set rumble channel
                 if (autoSetRumbleChannel)
                 {
-                    if (loaderTypeName == "OpenXRLoader") rumbleChannel = 1;
-                    else rumbleChannel = 0;
+                    rumbleChannel = 0;
                 }
 
                 // auto detect

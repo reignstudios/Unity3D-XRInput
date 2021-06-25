@@ -64,12 +64,14 @@ namespace VRstudios.API
                 if (c.name.StartsWith("Oculus")) controller.type = XRInputControllerType.Oculus;
                 else if (c.name.StartsWith("Spatial Controller")) controller.type = XRInputControllerType.WMR;
                 else if (c.name.StartsWith("HP Reverb G2 Controller")) controller.type = XRInputControllerType.WMR_G2;
+                else if (c.name.StartsWith("HTC Vive Cosmos")) controller.type = XRInputControllerType.HTCViveCosmos;
                 else if (c.name.StartsWith("HTC Vive")) controller.type = XRInputControllerType.HTCVive;
                 else if (c.name.StartsWith("WVR_CR")) controller.type = XRInputControllerType.HTCViveWave;
                 else if (c.name.StartsWith("Index Controller")) controller.type = XRInputControllerType.ValveIndex;
                 else controller.type = XRInputControllerType.Unknown;
 
                 bool simulateGripAnalog = controller.type != XRInputControllerType.Oculus && controller.type != XRInputControllerType.WMR_G2;
+                bool simulateAllTouch = controller.type == XRInputControllerType.WMR || controller.type == XRInputControllerType.HTCViveCosmos;
 
                 // update buttons states
                 bool triggerValueValid = c.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
@@ -141,25 +143,40 @@ namespace VRstudios.API
                 }
 
                 // update touch states
-                if (controller.type == XRInputControllerType.WMR)
+                if (simulateAllTouch)
                 {
-                    controller.touchJoystick.Update(false);
+                    controller.touchJoystick.Update(controller.joystick.value.magnitude >= XRControllerJoystick.tolerance);
                     controller.touchJoystick2.Update(controller.joystick2.value.magnitude >= XRControllerJoystick.tolerance);
+                    controller.touchTrigger.Update(controller.trigger.value >= XRControllerAnalog.tolerance);
+                    controller.touch1.Update(controller.button1.on);
+                    controller.touch2.Update(controller.button2.on);
                 }
-                else if (controller.type == XRInputControllerType.Oculus)
+                else
                 {
-                    if (c.TryGetFeatureValue(OculusUsages.indexTouch, out bool triggerTouch)) controller.touchTrigger.Update(triggerTouch);
-                    else controller.touchTrigger.Update(false);
+                    if (controller.type == XRInputControllerType.Oculus)
+                    {
+                        if (c.TryGetFeatureValue(OculusUsages.indexTouch, out bool triggerTouch)) controller.touchTrigger.Update(triggerTouch);
+                        else controller.touchTrigger.Update(false);
 
-                    if (c.TryGetFeatureValue(OculusUsages.thumbTouch, out bool joystickTouch)) controller.touchJoystick.Update(joystickTouch);
-                    else controller.touchJoystick.Update(false);
+                        if (c.TryGetFeatureValue(OculusUsages.thumbTouch, out bool joystickTouch)) controller.touchJoystick.Update(joystickTouch);
+                        else controller.touchJoystick.Update(false);
+                    }
+                    else
+                    {
+                        controller.touchJoystick.Update(controller.joystick.value.magnitude >= XRControllerJoystick.tolerance);
+                        controller.touchJoystick2.Update(controller.joystick2.value.magnitude >= XRControllerJoystick.tolerance);
+                        controller.touchTrigger.Update(controller.trigger.value >= XRControllerAnalog.tolerance);
+                    }
+
+                    if (c.TryGetFeatureValue(CommonUsages.primaryTouch, out bool touch1)) controller.touch1.Update(touch1);
+                    else controller.touch1.Update(false);
+
+                    if (c.TryGetFeatureValue(CommonUsages.secondaryTouch, out bool touch2)) controller.touch2.Update(touch2);
+                    else controller.touch2.Update(false);
                 }
 
-                if (c.TryGetFeatureValue(CommonUsages.primaryTouch, out bool touch1)) controller.touch1.Update(touch1);
-                else controller.touch1.Update(false);
-
-                if (c.TryGetFeatureValue(CommonUsages.secondaryTouch, out bool touch2)) controller.touch2.Update(touch2);
-                else controller.touch2.Update(false);
+                // simulate missing touch features
+                controller.touchGrip.Update(controller.grip.value >= XRControllerAnalog.tolerance);
 
                 // update controller side
                 if ((c.characteristics & InputDeviceCharacteristics.Left) != 0)
