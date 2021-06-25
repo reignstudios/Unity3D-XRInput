@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.htc.upm.vive.openxr.controllers": {
-      "version": "file:E:/Dev/VRstudios/Unity3D-XRInput/ExternalPackages/com_htc_upm_vive.openxr.controllers-0.1.0-preview.4.tgz",
+      "version": "file:../ExternalPackages/com_htc_upm_vive.openxr.controllers-0.1.0-preview.4.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {

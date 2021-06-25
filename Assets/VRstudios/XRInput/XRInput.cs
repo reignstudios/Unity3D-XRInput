@@ -100,8 +100,7 @@ namespace VRstudios
                 // auto set rumble channel
                 if (autoSetRumbleChannel)
                 {
-                    if (loaderTypeName == "OpenXRLoader") rumbleChannel = 1;
-                    else rumbleChannel = 0;
+                    rumbleChannel = 0;
                 }
 
                 // auto detect

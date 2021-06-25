@@ -9,7 +9,7 @@
     }
   ],
   "dependencies": {
-    "com.htc.upm.vive.openxr.controllers": "file:E:/Dev/VRstudios/Unity3D-XRInput/ExternalPackages/com_htc_upm_vive.openxr.controllers-0.1.0-preview.4.tgz",
+    "com.htc.upm.vive.openxr.controllers": "file:../ExternalPackages/com_htc_upm_vive.openxr.controllers-0.1.0-preview.4.tgz",
     "com.htc.upm.wave.xrsdk": "4.0.0-r.39",
     "com.microsoft.mixedreality.openxr": "file:MixedReality/com.microsoft.mixedreality.openxr-1.0.0.tgz",
     "com.unity.ide.rider": "2.0.7",
