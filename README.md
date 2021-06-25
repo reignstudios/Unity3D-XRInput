@@ -16,7 +16,7 @@ This API acts as its own easy-to-use agnostic XR-Input layer allowing you to wri
     * Copy all .json files from "Assets/StreamingAssets/OpenVR/" to "Assets/StreamingAssets/SteamVR/"
     * In the "SteamVR" folder, rename "vrstudios_actions.json" to "actions.json"
     * Make sure <b>"Steam Plugin In Use"</b> is checked on in the XRInput script in your scene
-* OpenXR with Cosmos controllers
+* OpenXR with Cosmos controllers (NOTE: bumpers don't work in OpenXR mode)
     * Download interaction profile <a href="https://forum.vive.com/topic/9141-vive-cosmos-controller-openxr-feature-for-unity/#comments">here</a>
     * Install "com_htc_upm_vive.openxr.controllers-x.x.x.tgz" in Unity's package manager
     * NOTE: In 'Packages/manifest.json' you can set packages to be relitive paths like so: "file:../com.some-package.tgz"'
