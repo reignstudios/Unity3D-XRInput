@@ -57,7 +57,7 @@ namespace VRstudios.Tools
 						// scale vel
 						linearVel *= linearVelMul;
 
-						// apply vel offset strong the faster we're moving
+						// apply vel offset stronger the faster we're moving
 						newPosition = Vector3.Lerp(newPosition, newPosition + linearVel, Mathf.Min(linearVel.magnitude * linearVelClampMul, 1.0f));
 						prevTransform.posPredicted = newPosition;// capture predicted pos
 					}
@@ -72,7 +72,7 @@ namespace VRstudios.Tools
 						angularVel.ToAngleAxis(out float angle, out var axis);
 						angularVel = Quaternion.AngleAxis(angle * angularVelMul, axis);
 
-						// apply vel offset strong the faster we're moving
+						// apply vel offset stronger the faster we're moving
 						newRotation = Quaternion.Lerp(newRotation, angularVel * newRotation, Mathf.Min(angle * angularVelClampMul, 1.0f));
 						prevTransform.rotPredicted = newRotation;// capture predicted rot
 					}
