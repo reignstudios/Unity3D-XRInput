@@ -12,7 +12,7 @@
       }
     },
     "com.htc.upm.wave.xrsdk": {
-      "version": "4.0.0-r.39",
+      "version": "4.1.0-preview.5.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -47,7 +47,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.9",
+      "version": "2.0.11",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -79,7 +79,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
-      "version": "1.1.24",
+      "version": "1.1.27",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -159,7 +159,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.management": {
-      "version": "4.0.6",
+      "version": "4.0.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -191,7 +191,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.openxr": {
-      "version": "1.2.2",
+      "version": "1.2.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {
