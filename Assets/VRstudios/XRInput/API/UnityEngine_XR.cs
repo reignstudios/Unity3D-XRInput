@@ -27,7 +27,7 @@ namespace VRstudios.API
 
             // add existing devices (this is needed to handle OVR bug where left controller may not be added via callbacks)
             InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, controllers);
-            foreach (var c in controllers) UpdateDevice(c, false);
+            foreach (var c in controllers.ToArray()) UpdateDevice(c, false);
 
             // watch for device changes
             InputDevices.deviceConnected += InputDevices_deviceConnected;

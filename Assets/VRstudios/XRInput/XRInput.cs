@@ -36,7 +36,7 @@ namespace VRstudios
         public XRLoader loaderOverride;
         public XRInputAPIType apiType;
         private XRInputAPI api;
-        private bool disposeAPI;
+        private bool disposeAPI, apiInit;
 
         private const int controllerStateLength = 4;
         private int lastControllerCount;
@@ -61,7 +61,7 @@ namespace VRstudios
             singleton = this;
 
             // print version
-            Debug.Log("XRInput version: 1.0.9");
+            Debug.Log("XRInput version: 1.0.10");
 
             // wait for XR loader
             while (loader == null || !XRSettings.enabled)
@@ -130,6 +130,8 @@ namespace VRstudios
                 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.playModeStateChanged += EditorApplication_playModeStateChanged;
                 #endif
+
+                apiInit = true;
             }
             catch (Exception e)
             {
@@ -153,6 +155,7 @@ namespace VRstudios
             UnityEditor.EditorApplication.playModeStateChanged -= EditorApplication_playModeStateChanged;
             #endif
 
+            apiInit = false;
             if (disposeAPI && api != null)
             {
                 api.Dispose();
@@ -169,7 +172,7 @@ namespace VRstudios
 		private void Update()
         {
             // gather controller states from current API
-            if (api == null) return;
+            if (!apiInit) return;
 
             int controllerCount;
             bool leftSet, rightSet;
