@@ -2,13 +2,13 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 using System.IO;
 
-#if UNITY_STANDALONE
+#if UNITY_STANDALONE && !XRINPUT_DISABLE_STEAMVR
 using Valve.VR;
 #endif
 
 namespace VRstudios.API
 {
-#if UNITY_STANDALONE
+#if UNITY_STANDALONE && !XRINPUT_DISABLE_STEAMVR
     public sealed class OpenVR_New : XRInputAPI
 	{
         private CVRSystem system;
