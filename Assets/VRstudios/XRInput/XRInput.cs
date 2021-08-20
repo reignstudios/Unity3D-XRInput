@@ -61,7 +61,7 @@ namespace VRstudios
             singleton = this;
 
             // print version
-            Debug.Log("XRInput version: 1.0.11");
+            Debug.Log("XRInput version: 1.0.12");
 
             // wait for XR loader
             while (loader == null || !XRSettings.enabled)
@@ -374,7 +374,7 @@ namespace VRstudios
         /// </summary>
         public static XRControllerState ControllerState(XRController controller)
         {
-            if (singleton == null) return new XRControllerState();
+            if (singleton == null || !singleton.apiInit) return new XRControllerState();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst;
@@ -387,7 +387,7 @@ namespace VRstudios
 
         public static XRControllerButton ButtonTrigger(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.buttonTrigger;
@@ -400,7 +400,7 @@ namespace VRstudios
 
         public static XRControllerButton ButtonJoystick(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.buttonJoystick;
@@ -413,7 +413,7 @@ namespace VRstudios
 
         public static XRControllerButton ButtonJoystick2(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.buttonJoystick2;
@@ -426,7 +426,7 @@ namespace VRstudios
 
         public static XRControllerButton ButtonGrip(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.buttonGrip;
@@ -439,7 +439,7 @@ namespace VRstudios
 
         public static XRControllerButton ButtonMenu(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.buttonMenu;
@@ -452,7 +452,7 @@ namespace VRstudios
 
         public static XRControllerButton Button1(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.button1;
@@ -465,7 +465,7 @@ namespace VRstudios
 
         public static XRControllerButton Button2(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.button2;
@@ -478,7 +478,7 @@ namespace VRstudios
 
         public static XRControllerButton Button3(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.button3;
@@ -491,7 +491,7 @@ namespace VRstudios
 
         public static XRControllerButton Button4(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.button4;
@@ -504,7 +504,7 @@ namespace VRstudios
 
         public static XRControllerButton TouchTrigger(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.touchTrigger;
@@ -517,7 +517,7 @@ namespace VRstudios
 
         public static XRControllerButton TouchJoystick(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.touchJoystick;
@@ -530,7 +530,7 @@ namespace VRstudios
 
         public static XRControllerButton TouchJoystick2(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.touchJoystick2;
@@ -543,7 +543,7 @@ namespace VRstudios
 
         public static XRControllerButton TouchGrip(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.touchGrip;
@@ -556,7 +556,7 @@ namespace VRstudios
 
         public static XRControllerButton TouchMenu(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.touchMenu;
@@ -569,7 +569,7 @@ namespace VRstudios
 
         public static XRControllerButton Touch1(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.touch1;
@@ -582,7 +582,7 @@ namespace VRstudios
 
         public static XRControllerButton Touch2(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.touch2;
@@ -595,7 +595,7 @@ namespace VRstudios
 
         public static XRControllerButton Touch3(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.touch3;
@@ -608,7 +608,7 @@ namespace VRstudios
 
         public static XRControllerButton Touch4(XRController controller)
         {
-            if (singleton == null) return new XRControllerButton();
+            if (singleton == null || !singleton.apiInit) return new XRControllerButton();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.touch4;
@@ -621,7 +621,7 @@ namespace VRstudios
 
         public static XRControllerAnalog Trigger(XRController controller)
         {
-            if (singleton == null) return new XRControllerAnalog();
+            if (singleton == null || !singleton.apiInit) return new XRControllerAnalog();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.trigger;
@@ -634,7 +634,7 @@ namespace VRstudios
 
         public static XRControllerAnalog Grip(XRController controller)
         {
-            if (singleton == null) return new XRControllerAnalog();
+            if (singleton == null || !singleton.apiInit) return new XRControllerAnalog();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.grip;
@@ -647,7 +647,7 @@ namespace VRstudios
 
         public static XRControllerJoystick Joystick(XRController controller)
         {
-            if (singleton == null) return new XRControllerJoystick();
+            if (singleton == null || !singleton.apiInit) return new XRControllerJoystick();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.joystick;
@@ -660,7 +660,7 @@ namespace VRstudios
 
         public static XRControllerJoystick Joystick2(XRController controller)
         {
-            if (singleton == null) return new XRControllerJoystick();
+            if (singleton == null || !singleton.apiInit) return new XRControllerJoystick();
             switch (controller)
             {
                 case XRController.First: return singleton.state_controllerFirst.joystick2;
@@ -673,13 +673,13 @@ namespace VRstudios
 
         public static bool SetRumble(XRControllerRumbleSide controller, float strength, float duration = .1f)
         {
-            if (singleton == null) return false;
+            if (singleton == null || !singleton.apiInit) return false;
             return singleton.api.SetRumble(controller, strength, duration);
         }
 
         public static XRInputControllerType GetControllerType(XRInputControllerTypeSide controller)
         {
-            if (singleton == null) return XRInputControllerType.Unknown;
+            if (singleton == null || !singleton.apiInit) return XRInputControllerType.Unknown;
             switch (controller)
             {
                 case XRInputControllerTypeSide.First: return singleton.state_controllerFirst.type;
