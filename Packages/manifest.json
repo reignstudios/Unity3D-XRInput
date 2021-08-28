@@ -19,7 +19,7 @@
     "com.unity.ugui": "1.0.0",
     "com.unity.xr.management": "4.0.7",
     "com.unity.xr.mock-hmd": "1.3.0-preview.1",
-    "com.unity.xr.oculus": "1.9.1",
+    "com.unity.xr.oculus": "1.10.0",
     "com.unity.xr.openxr": "1.2.8",
     "com.unity.xr.picoxr": "file:../ExternalPackages/PicoXR_Platform_SDK-1.2.3_B55.tar.tgz",
     "com.unity.xr.windowsmr": "4.5.0",
