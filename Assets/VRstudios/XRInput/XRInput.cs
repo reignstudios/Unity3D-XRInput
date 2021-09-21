@@ -1086,6 +1086,11 @@ namespace VRstudios
         /// </summary>
         public static float tolerance = 0.2f;
 
+        /// <summary>
+        /// Adjust analog value before virtual buttons trigger
+        /// </summary>
+        public static float virtualButtonThreshold = .85f;
+
         internal void Update(float value)
         {
             if (value < tolerance) value = 0.0f;

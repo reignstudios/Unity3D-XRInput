@@ -153,7 +153,7 @@ namespace VRstudios.API
 
                         // buttons
                         bool triggerButton = (state.ulButtonPressed & 8589934592) != 0;// get normal trigger button state if avaliable
-                        if (state.rAxis1.x >= .75f) triggerButton = true;// virtually simulate trigger button in case it doesn't exist
+                        if (state.rAxis1.x >= XRControllerAnalog.virtualButtonThreshold) triggerButton = true;// virtually simulate trigger button in case it doesn't exist
                         controller.buttonTrigger.Update(triggerButton);
 
                         controller.buttonJoystick.Update((state.ulButtonPressed & 17179869184) != 0);
@@ -180,7 +180,7 @@ namespace VRstudios.API
 
                         // buttons
                         bool triggerButton = (state.ulButtonPressed & 8589934592) != 0;// get normal trigger button state if avaliable
-                        if (state.rAxis1.x >= .75f) triggerButton = true;// virtually simulate trigger button in case it doesn't exist
+                        if (state.rAxis1.x >= XRControllerAnalog.virtualButtonThreshold) triggerButton = true;// virtually simulate trigger button in case it doesn't exist
                         controller.buttonTrigger.Update(triggerButton);
 
                         controller.buttonJoystick.Update((state.ulButtonPressed & 17179869184) != 0);
@@ -204,7 +204,7 @@ namespace VRstudios.API
 
                         // buttons
                         bool triggerButton = (state.ulButtonPressed & 8589934592) != 0;// get normal trigger button state if avaliable
-                        if (state.rAxis1.x >= .75f) triggerButton = true;// virtually simulate trigger button in case it doesn't exist
+                        if (state.rAxis1.x >= XRControllerAnalog.virtualButtonThreshold) triggerButton = true;// virtually simulate trigger button in case it doesn't exist
                         controller.buttonTrigger.Update(triggerButton);
 
                         controller.buttonJoystick.Update((state.ulButtonPressed & 4294967296) != 0);

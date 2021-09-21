@@ -80,7 +80,7 @@ namespace VRstudios.API
                 {
                     if (triggerValueValid)
                     {
-                        if (triggerValue >= .75f) triggerButton = true;// virtually simulate trigger button in case it doesn't exist
+                        if (triggerValue >= XRControllerAnalog.virtualButtonThreshold) triggerButton = true;// virtually simulate trigger button in case it doesn't exist
                         else triggerButton = false;
                     }
                     else

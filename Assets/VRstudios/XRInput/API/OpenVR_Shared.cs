@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace VRstudios
+namespace VRstudios.API
 {
 	public static class OpenVR_Shared
     {
