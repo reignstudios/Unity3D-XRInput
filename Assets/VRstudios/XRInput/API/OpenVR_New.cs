@@ -77,7 +77,7 @@ namespace VRstudios.API
             EVRInitError e = EVRInitError.None;
             system = OpenVR.System;
             if (system == null) system = OpenVR.Init(ref e);
-            Debug.Log("OpenVR version: " + system.GetRuntimeVersion());
+            XRInput.Log("OpenVR version: " + system.GetRuntimeVersion());
 
             // init input system
             input = OpenVR.Input;
@@ -85,7 +85,7 @@ namespace VRstudios.API
             if (XRInput.singleton.steamSDK_InUse) actionsPath = Path.Combine(Application.dataPath, "StreamingAssets", "SteamVR", "actions.json");
             else actionsPath = Path.Combine(Application.dataPath, "StreamingAssets", "OpenVR", "vrstudios_actions.json");
             actionsPath = actionsPath.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
-            Debug.Log($"Loading OpenVR Input actions: '{actionsPath}'");
+            XRInput.Log($"Loading OpenVR Input actions: '{actionsPath}'");
             var error = input.SetActionManifestPath(actionsPath);
             if (error != EVRInputError.None)
             {

@@ -259,21 +259,21 @@ namespace VRstudios.API
 
         private void InputDevices_deviceConnected(InputDevice device)
         {
-            Debug.Log("XR Device connected: " + device.name);
+            XRInput.Log("XR Device connected: " + device.name);
             if (!ReplaceControllerIfExists(device)) controllers.Add(device);
             UpdateDevice(device, false);
         }
 
         private void InputDevices_deviceDisconnected(InputDevice device)
         {
-            Debug.Log("XR Device disconnected: " + device.name);
+            XRInput.Log("XR Device disconnected: " + device.name);
             controllers.Remove(device);
             UpdateDevice(device, true);
         }
 
         private void InputDevices_deviceConfigChanged(InputDevice device)
         {
-            Debug.Log("XR Device config changed: " + device.name);
+            XRInput.Log("XR Device config changed: " + device.name);
             ReplaceControllerIfExists(device);
             UpdateDevice(device, false);
         }
@@ -302,12 +302,12 @@ namespace VRstudios.API
                 {
                     if (!removingDevice)
                     {
-                        Debug.Log("XR Device Left-Hand configued");
+                        XRInput.Log("XR Device Left-Hand configued");
                         handLeft = device;
                     }
                     else
                     {
-                        Debug.Log("XR Device Left-Hand removed");
+                        XRInput.Log("XR Device Left-Hand removed");
                         handLeft = new InputDevice();
                     }
                 }
@@ -315,12 +315,12 @@ namespace VRstudios.API
                 {
                     if (!removingDevice)
                     {
-                        Debug.Log("XR Device Right-Hand configued");
+                        XRInput.Log("XR Device Right-Hand configued");
                         handLeft = device;
                     }
                     else
                     {
-                        Debug.Log("XR Device Right-Hand removed");
+                        XRInput.Log("XR Device Right-Hand removed");
                         handLeft = new InputDevice();
                     }
                 }

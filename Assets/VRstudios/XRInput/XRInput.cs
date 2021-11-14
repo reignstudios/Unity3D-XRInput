@@ -51,6 +51,8 @@ namespace VRstudios
         private Guid[] stateGuids = new Guid[controllerStateLength];
         private Guid state_controllerMerged_ID = Guid.NewGuid();
 
+        public bool enableLogging = true;
+
         private class XRControllerStateGroup
         {
             public readonly string name;
@@ -266,6 +268,11 @@ namespace VRstudios
             }
         }
 
+        internal static void Log(string message)
+		{
+            if (singleton != null && singleton.enableLogging) Debug.Log(message);
+		}
+
         private IEnumerator Start()
         {
             // only one can exist in scene at a time
@@ -279,7 +286,7 @@ namespace VRstudios
             singleton = this;
 
             // print version
-            Debug.Log("XRInput version: 1.1.0");
+            XRInput.Log("XRInput version: 1.1.1");
 
             // wait for XR loader
             while (loader == null || !XRSettings.enabled)
@@ -317,7 +324,7 @@ namespace VRstudios
                 // get loader type
                 var loaderType = loader.GetType();
                 string loaderTypeName = loaderType.Name;
-                Debug.Log($"XR-Loader: '{loader.name}' TYPE:{loaderType}");
+                XRInput.Log($"XR-Loader: '{loader.name}' TYPE:{loaderType}");
 
                 // auto set rumble channel
                 if (autoSetRumbleChannel)

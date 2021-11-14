@@ -33,7 +33,7 @@ namespace VRstudios.API
             EVRInitError e = EVRInitError.None;
             system = OpenVR.System;
             if (system == null) system = OpenVR.Init(ref e);
-            Debug.Log("OpenVR version: " + system.GetRuntimeVersion());
+            XRInput.Log("OpenVR version: " + system.GetRuntimeVersion());
         }
 
 		public override void Dispose()
