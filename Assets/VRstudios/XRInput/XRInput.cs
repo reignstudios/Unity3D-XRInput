@@ -130,7 +130,7 @@ namespace VRstudios
             singleton.activeStateGroup.updateInput = updateInput;
         }
 
-        public static void SetUnactiveStateGroupsInputMode(bool updateInput)
+        public static void SetInactiveStateGroupsInputMode(bool updateInput)
         {
             foreach (var stateGroupKeyValue in singleton.stateGroups)
             {
