@@ -86,7 +86,13 @@ namespace VRstudios
             PrintJoystick(stateL.joystick2, "Left - Joystick2");
 
             // rumble
-            if (stateL.trigger.value != 0) XRInput.SetRumble(XRControllerRumbleSide.Left, stateL.trigger.value);
+            if (stateL.trigger.value != 0)
+			{
+                if (!XRInput.SetRumble(XRControllerRumbleSide.Left, stateL.trigger.value))
+				{
+                    Debug.LogWarning("Rumble failed!");
+				}
+            }
 
             // =====================================
             // right

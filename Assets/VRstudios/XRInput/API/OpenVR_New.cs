@@ -244,6 +244,15 @@ namespace VRstudios.API
                     default: controller.side = XRControllerSide.Unknown; break;
                 }
 
+                // grab IMU velocity
+                var compositor = OpenVR.Compositor;
+                var pose = new TrackedDevicePose_t();
+                var gamePose = new TrackedDevicePose_t();
+                controller.linearVelocityValid = controller.angularVelocityValid = compositor.GetLastPoseForTrackedDeviceIndex(i, ref pose, ref gamePose) == EVRCompositorError.None;
+                controller.linearVelocity = new Vector3(pose.vVelocity.v0, pose.vVelocity.v1, pose.vVelocity.v2);
+                controller.angularVelocity = new Vector3(pose.vAngularVelocity.v0, pose.vAngularVelocity.v1, pose.vAngularVelocity.v2);
+
+                // apply
                 state_controllers[controllerCount] = controller;
                 ++controllerCount;
 			}

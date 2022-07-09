@@ -286,7 +286,7 @@ namespace VRstudios
             singleton = this;
 
             // print version
-            XRInput.Log("XRInput version: 1.1.1");
+            XRInput.Log("XRInput version: 1.2.0");
 
             // wait for XR loader
             while (loader == null || !XRSettings.enabled)
@@ -524,6 +524,11 @@ namespace VRstudios
                     controllerState.grip.Merge(ref stateGroup.state_controllerMerged.grip);
                     controllerState.joystick.Merge(ref stateGroup.state_controllerMerged.joystick);
                     controllerState.joystick2.Merge(ref stateGroup.state_controllerMerged.joystick2);
+
+                    stateGroup.state_controllerMerged.linearVelocity += controllerState.linearVelocity;
+                    stateGroup.state_controllerMerged.angularVelocity += controllerState.angularVelocity;
+                    stateGroup.state_controllerMerged.linearVelocityValid |= controllerState.linearVelocityValid;
+                    stateGroup.state_controllerMerged.angularVelocityValid |= controllerState.angularVelocityValid;
                 }
 
                 // fire events
@@ -948,6 +953,50 @@ namespace VRstudios
             throw new NotImplementedException();
         }
 
+        public static void Velocity(XRController controller, out Vector3 linearVelocity, out Vector3 angularVelocity, out bool linearVelocityValid, out bool angularVelocityValid)
+        {
+            if (singleton == null || !singleton.apiInit)
+			{
+                linearVelocity = Vector3.zero;
+                angularVelocity = Vector3.zero;
+                linearVelocityValid = false;
+                angularVelocityValid = false;
+                return;
+			}
+
+            switch (controller)
+            {
+                case XRController.First:
+                    linearVelocity = singleton.activeStateGroup.state_controllerFirst.linearVelocity;
+                    angularVelocity = singleton.activeStateGroup.state_controllerFirst.angularVelocity;
+                    linearVelocityValid = singleton.activeStateGroup.state_controllerFirst.linearVelocityValid;
+                    angularVelocityValid = singleton.activeStateGroup.state_controllerFirst.angularVelocityValid;
+                    return;
+
+                case XRController.Left:
+                    linearVelocity = singleton.activeStateGroup.state_controllerLeft.linearVelocity;
+                    angularVelocity = singleton.activeStateGroup.state_controllerLeft.angularVelocity;
+                    linearVelocityValid = singleton.activeStateGroup.state_controllerLeft.linearVelocityValid;
+                    angularVelocityValid = singleton.activeStateGroup.state_controllerLeft.angularVelocityValid;
+                    return;
+
+                case XRController.Right:
+                    linearVelocity = singleton.activeStateGroup.state_controllerRight.linearVelocity;
+                    angularVelocity = singleton.activeStateGroup.state_controllerRight.angularVelocity;
+                    linearVelocityValid = singleton.activeStateGroup.state_controllerRight.linearVelocityValid;
+                    angularVelocityValid = singleton.activeStateGroup.state_controllerRight.angularVelocityValid;
+                    return;
+
+                case XRController.Merged:
+                    linearVelocity = singleton.activeStateGroup.state_controllerMerged.linearVelocity;
+                    angularVelocity = singleton.activeStateGroup.state_controllerMerged.angularVelocity;
+                    linearVelocityValid = singleton.activeStateGroup.state_controllerMerged.linearVelocityValid;
+                    angularVelocityValid = singleton.activeStateGroup.state_controllerMerged.angularVelocityValid;
+                    return;
+            }
+            throw new NotImplementedException();
+        }
+
         public static bool SetRumble(XRControllerRumbleSide controller, float strength, float duration = .1f)
         {
             if (singleton == null || !singleton.apiInit) return false;
@@ -1042,6 +1091,9 @@ namespace VRstudios
         public XRControllerButton button1, button2, button3, button4;
         public XRControllerAnalog trigger, grip;
         public XRControllerJoystick joystick, joystick2;
+
+        public bool linearVelocityValid, angularVelocityValid;
+        public Vector3 linearVelocity, angularVelocity;
     }
 
     public struct XRControllerButton

@@ -218,9 +218,15 @@ namespace VRstudios.API
                     controller.side = XRControllerSide.Unknown;
                 }
 
+                // grab IMU velocity
+                controller.linearVelocityValid = c.TryGetFeatureValue(CommonUsages.deviceVelocity, out controller.linearVelocity);
+                controller.angularVelocityValid = c.TryGetFeatureValue(CommonUsages.deviceAngularVelocity, out controller.angularVelocity);
+
+                // apply
                 state_controllers[controllerCount] = controller;
                 ++controllerCount;
             }
+
 
             // finish
             GatherInputFinish(state_controllers, controllerCount, ref leftSet, ref leftSetIndex, ref rightSet, ref rightSetIndex, ref sideToSet);
