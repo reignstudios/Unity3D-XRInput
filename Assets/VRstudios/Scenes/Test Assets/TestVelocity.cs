@@ -6,7 +6,10 @@ namespace VRstudios
 {
 	public class TestVelocity : MonoBehaviour
 	{
-		public Transform rightHand;
+		public Rigidbody ball;
+		public Vector3 ballGrabOffset;
+
+		public Transform rightHand, rightHandGrabPoint;
 		public float graphMulX = 1, graphMulY = 10;
 		public float graphOffsetX = -5, graphOffsetY = 1;
 		public LineRenderer lineCurrentAndLastPos, lineIMU;
@@ -78,6 +81,29 @@ namespace VRstudios
 			{
 				lineIMU.enabled = true;
 			}
+
+			// throw ball
+			if (button.on)
+            {
+				SnapBallTransform();
+				ball.velocity = Vector3.zero;
+				ball.angularVelocity = Vector3.zero;
+			}
+
+			if (button.up)
+            {
+				SnapBallTransform();
+				ball.velocity = XRInput.GetVelocityAtOffset(imuLinearVel, imuAngularVel, rightHand.position, ball.position);
+				ball.angularVelocity = imuAngularVel;
+			}
+		}
+
+		private void SnapBallTransform()
+        {
+			ball.position = rightHandGrabPoint.position;
+			ball.rotation = rightHandGrabPoint.rotation;
+			ball.transform.position = rightHandGrabPoint.position;
+			ball.transform.rotation = rightHandGrabPoint.rotation;
 		}
 
 		private Vector3 lastPos;

@@ -20,6 +20,7 @@ namespace VRstudios
     public sealed class XRInput : MonoBehaviour
     {
         public static XRInput singleton { get; private set; }
+        public static string loaderTypeName { get; private set; }
 
         public delegate void InitializedMethod(bool success);
         public static event InitializedMethod InitializedCallback;
@@ -323,7 +324,7 @@ namespace VRstudios
 
                 // get loader type
                 var loaderType = loader.GetType();
-                string loaderTypeName = loaderType.Name;
+                loaderTypeName = loaderType.Name;
                 XRInput.Log($"XR-Loader: '{loader.name}' TYPE:{loaderType}");
 
                 // auto set rumble channel
@@ -606,7 +607,7 @@ namespace VRstudios
             }
         }
 
-#region Public static interface
+        #region Public static interface
         public delegate void ButtonEvent(XRControllerSide side, string stateGroup);
         public delegate void AnalogEvent(XRControllerSide side, float value, string stateGroup);
         public delegate void JoystickEvent(XRControllerSide side, Vector2 value, string stateGroup);
@@ -1014,7 +1015,12 @@ namespace VRstudios
             }
             throw new NotImplementedException();
         }
-#endregion
+
+        public static Vector3 GetVelocityAtOffset(Vector3 handLinearVelocity, Vector3 handAngularVelocity, Vector3 handPosition, Vector3 grabPosition)
+        {
+            return Vector3.Cross(handAngularVelocity, grabPosition - handPosition) + handLinearVelocity;
+        }
+        #endregion
     }
 
 	public enum XRController
