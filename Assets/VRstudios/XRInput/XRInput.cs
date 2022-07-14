@@ -1016,9 +1016,32 @@ namespace VRstudios
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Calculates total velocity of linear + angular converted to linear
+        /// </summary>
+        /// <param name="handLinearVelocity">Linear Velocity of Hand</param>
+        /// <param name="handAngularVelocity">Angular Velocity of Hand</param>
+        /// <param name="handPosition">Hand position in World-Space</param>
+        /// <param name="grabPosition">Point of object around hand in World-Space</param>
+        /// <returns>Total velocity</returns>
         public static Vector3 GetVelocityAtOffset(Vector3 handLinearVelocity, Vector3 handAngularVelocity, Vector3 handPosition, Vector3 grabPosition)
         {
             return Vector3.Cross(handAngularVelocity, grabPosition - handPosition) + handLinearVelocity;
+        }
+
+        /// <summary>
+        /// Calculates total velocity by subtracting last calculated rotational position to its current
+        /// </summary>
+        /// <param name="handLinearVelocity">Linear Velocity of Hand</param>
+        /// <param name="handAngularVelocity">Angular Velocity of Hand</param>
+        /// <param name="handPosition">Hand position in World-Space</param>
+        /// <param name="grabPosition">Point of object around hand in World-Space</param>
+        /// <returns>Total velocity</returns>
+        public static Vector3 GetVelocityAtOffset2(Vector3 handLinearVelocity, Vector3 handAngularVelocity, Vector3 handPosition, Vector3 grabPosition)
+        {
+            var grabPosLocal = grabPosition - handPosition;
+            var grabPosLocalLast = Quaternion.AngleAxis(-handAngularVelocity.magnitude, handAngularVelocity.normalized) * grabPosLocal;
+            return ((grabPosLocal - grabPosLocalLast) * Mathf.Rad2Deg) + handLinearVelocity;
         }
         #endregion
     }
@@ -1154,7 +1177,7 @@ namespace VRstudios
         /// <summary>
         /// Adjust analog value before virtual buttons trigger
         /// </summary>
-        public static float virtualButtonThreshold = .85f;
+        public static float virtualButtonThreshold = .9f;
 
         internal void Update(float value)
         {
