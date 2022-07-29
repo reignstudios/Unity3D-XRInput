@@ -15,6 +15,12 @@ namespace VRstudios.API
 
     public abstract class XRInputAPI
     {
+        public bool hmdLinearVelocityValid { get; protected set; }
+        public Vector3 hmdLinearVelocity { get; protected set; }
+
+        public bool hmdAngularVelocityValid { get; protected set; }
+        public Vector3 hmdAngularVelocity { get; protected set; }
+
         public virtual void Init()
         {
             // do nothing...

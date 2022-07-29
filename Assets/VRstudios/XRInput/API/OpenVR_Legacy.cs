@@ -67,6 +67,18 @@ namespace VRstudios.API
             {
                 if (!system.IsTrackedDeviceConnected(i)) continue;
 
+                // if hmd just get its velocity
+                var compositor = OpenVR.Compositor;
+                var pose = new TrackedDevicePose_t();
+                var gamePose = new TrackedDevicePose_t();
+                if (system.GetTrackedDeviceClass(i) == ETrackedDeviceClass.HMD)
+                {
+                    hmdLinearVelocityValid = hmdAngularVelocityValid = compositor.GetLastPoseForTrackedDeviceIndex(i, ref pose, ref gamePose) == EVRCompositorError.None;
+                    hmdLinearVelocity = new Vector3(pose.vVelocity.v0, pose.vVelocity.v1, -pose.vVelocity.v2);
+                    hmdAngularVelocity = new Vector3(-pose.vAngularVelocity.v0, -pose.vAngularVelocity.v1, pose.vAngularVelocity.v2);
+                    continue;
+                }
+
                 // update controller state
                 if (system.GetTrackedDeviceClass(i) != ETrackedDeviceClass.Controller) continue;
                 var state = new VRControllerState_t();
@@ -248,9 +260,6 @@ namespace VRstudios.API
                     }
 
                     // grab IMU velocity
-                    var compositor = OpenVR.Compositor;
-                    var pose = new TrackedDevicePose_t();
-                    var gamePose = new TrackedDevicePose_t();
                     controller.linearVelocityValid = controller.angularVelocityValid = compositor.GetLastPoseForTrackedDeviceIndex(i, ref pose, ref gamePose) == EVRCompositorError.None;
                     controller.linearVelocity = new Vector3(pose.vVelocity.v0, pose.vVelocity.v1, -pose.vVelocity.v2);
                     controller.angularVelocity = new Vector3(-pose.vAngularVelocity.v0, -pose.vAngularVelocity.v1, pose.vAngularVelocity.v2);

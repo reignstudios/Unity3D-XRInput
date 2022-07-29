@@ -55,7 +55,22 @@ namespace VRstudios.API
             // gather input
             foreach (var c in controllers)
             {
-                if (!c.isValid || (c.characteristics & InputDeviceCharacteristics.Controller) == 0) continue;
+                if (!c.isValid) continue;
+
+                // if hmd just get its velocity
+                if ((c.characteristics & InputDeviceCharacteristics.HeadMounted) != 0)
+                {
+                    Vector3 velocity;
+                    hmdLinearVelocityValid = c.TryGetFeatureValue(CommonUsages.deviceVelocity, out velocity);
+                    hmdLinearVelocity = velocity;
+
+                    hmdLinearVelocityValid = c.TryGetFeatureValue(CommonUsages.deviceAngularVelocity, out velocity);
+                    hmdAngularVelocity = velocity;
+                    continue;
+                }
+
+                // if not controller continue
+                if ((c.characteristics & InputDeviceCharacteristics.Controller) == 0) continue;
 
                 var controller = state_controllers[controllerCount];
                 controller.connected = true;
