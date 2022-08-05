@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
@@ -43,6 +44,7 @@ namespace VRstudios
         public bool stopLoaderOnAppExit = true;
         private XRLoader loader;
         public bool enableLogging = true;
+        public static bool invertAngularVelocity;
 
         private const int controllerStateLength = 4;
         private int lastControllerCount;
@@ -69,7 +71,7 @@ namespace VRstudios
             singleton = this;
 
             // print version
-            XRInput.Log("XRInput version: 1.3.0");
+            XRInput.Log("XRInput version: 1.3.1");
 
             // wait for XR loader
             while (loader == null || !XRSettings.enabled)
@@ -114,6 +116,26 @@ namespace VRstudios
                     #else
                     apiType = XRInputAPIType.UnityEngine_XR;
                     #endif
+
+                    // Oculus is flipping angular-velocity in odd conditions
+                    if (loaderTypeName == "OculusLoader")
+                    {
+                        var ovrType = ovrp_GetSystemHeadsetType();
+                        if (ovrType == OculusSystemHeadset.Rift_S && Type.GetType("OVRPlugin") == null)
+                        {
+                            invertAngularVelocity = true;
+                        }
+                        else if
+                        (
+                            ovrType == OculusSystemHeadset.Oculus_Quest ||
+                            ovrType == OculusSystemHeadset.Oculus_Quest_2 ||
+                            ovrType == OculusSystemHeadset.Oculus_Link_Quest ||
+                            ovrType == OculusSystemHeadset.Oculus_Link_Quest_2
+                        )
+                        {
+                            invertAngularVelocity = true;
+                        }
+                    }
                 }
 
                 // init api
@@ -790,9 +812,42 @@ namespace VRstudios
             return ((grabPosLocal - grabPosLocalLast) * Mathf.Rad2Deg) + handLinearVelocity;
         }
         #endregion
+
+        #region Oculus APIs
+        public enum OculusSystemHeadset
+        {
+            None = 0,
+
+            // Standalone headsets
+            Oculus_Quest = 8,
+            Oculus_Quest_2 = 9,
+            Placeholder_10,
+            Placeholder_11,
+            Placeholder_12,
+            Placeholder_13,
+            Placeholder_14,
+
+            // PC headsets
+            Rift_DK1 = 0x1000,
+            Rift_DK2,
+            Rift_CV1,
+            Rift_CB,
+            Rift_S,
+            Oculus_Link_Quest,
+            Oculus_Link_Quest_2,
+            PC_Placeholder_4103,
+            PC_Placeholder_4104,
+            PC_Placeholder_4105,
+            PC_Placeholder_4106,
+            PC_Placeholder_4107
+        }
+
+        [DllImport("OVRPlugin", CallingConvention = CallingConvention.Cdecl)]
+        public static extern OculusSystemHeadset ovrp_GetSystemHeadsetType();
+        #endregion
     }
 
-	public enum XRController
+    public enum XRController
     {
         /// <summary>
         /// First controller connected

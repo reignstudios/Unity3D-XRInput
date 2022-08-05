@@ -236,7 +236,7 @@ namespace VRstudios.API
                 // grab IMU velocity
                 controller.linearVelocityValid = c.TryGetFeatureValue(CommonUsages.deviceVelocity, out controller.linearVelocity);
                 controller.angularVelocityValid = c.TryGetFeatureValue(CommonUsages.deviceAngularVelocity, out controller.angularVelocity);
-                if (XRInput.loaderTypeName == "OculusLoader") controller.angularVelocity = -controller.angularVelocity;// Oculus loader has this flipped
+                if (XRInput.invertAngularVelocity) controller.angularVelocity = -controller.angularVelocity;
 
                 // apply
                 state_controllers[controllerCount] = controller;
