@@ -31,6 +31,21 @@ namespace VRstudios.API
             // do nothing...
 		}
 
+        public virtual void FixedUpdate()
+        {
+            // do nothing...
+        }
+
+        public virtual void Update()
+        {
+            // do nothing...
+        }
+
+        public virtual void LateUpdate()
+        {
+            // do nothing...
+        }
+
         protected void GatherInputDefaults(out int state_controllerCount, out bool leftSet, out int leftSetIndex, out bool rightSet, out int rightSetIndex, out SideToSet sideToSet)
         {
             state_controllerCount = 0;

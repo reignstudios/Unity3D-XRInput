@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
@@ -13,6 +12,7 @@ namespace VRstudios
     {
         AutoDetect,
         UnityEngine_XR,
+        OculusXR,
         OpenVR,
         OpenVR_Legacy
     }
@@ -44,7 +44,6 @@ namespace VRstudios
         public bool stopLoaderOnAppExit = true;
         private XRLoader loader;
         public bool enableLogging = true;
-        public static bool invertAngularVelocity;
 
         private const int controllerStateLength = 4;
         private int lastControllerCount;
@@ -110,31 +109,25 @@ namespace VRstudios
                 // auto detect
                 if (apiType == XRInputAPIType.AutoDetect)
                 {
-                    #if UNITY_STANDALONE
-                    if (loaderTypeName == "OpenVRLoader") apiType = XRInputAPIType.OpenVR;
-                    else apiType = XRInputAPIType.UnityEngine_XR;
-                    #else
-                    apiType = XRInputAPIType.UnityEngine_XR;
-                    #endif
-
-                    // Oculus is flipping angular-velocity in odd conditions
-                    if (loaderTypeName == "OculusLoader")
+                    if (loaderTypeName == "OpenXRLoader")
                     {
-                        var ovrType = ovrp_GetSystemHeadsetType();
-                        if (ovrType == OculusSystemHeadset.Rift_S && Type.GetType("OVRPlugin") == null)
-                        {
-                            invertAngularVelocity = true;
-                        }
-                        else if
-                        (
-                            ovrType == OculusSystemHeadset.Oculus_Quest ||
-                            ovrType == OculusSystemHeadset.Oculus_Quest_2 ||
-                            ovrType == OculusSystemHeadset.Oculus_Link_Quest ||
-                            ovrType == OculusSystemHeadset.Oculus_Link_Quest_2
-                        )
-                        {
-                            invertAngularVelocity = true;
-                        }
+                        string platformName = UnityEngine.XR.OpenXR.OpenXRRuntime.name;
+                        Debug.Log($"OpenXR platform name '{platformName}'");
+                        if (platformName == "Oculus") apiType = XRInputAPIType.OculusXR;
+                        else apiType = XRInputAPIType.UnityEngine_XR;
+                    }
+                    else if (loaderTypeName == "OculusLoader")
+                    {
+                        apiType = XRInputAPIType.OculusXR;
+                    }
+                    else
+                    {
+                        #if UNITY_STANDALONE
+                        if (loaderTypeName == "OpenVRLoader") apiType = XRInputAPIType.OpenVR;
+                        else apiType = XRInputAPIType.UnityEngine_XR;
+                        #else
+                        apiType = XRInputAPIType.UnityEngine_XR;
+                        #endif
                     }
                 }
 
@@ -143,6 +136,7 @@ namespace VRstudios
                 switch (apiType)
                 {
                     case XRInputAPIType.UnityEngine_XR: api = new UnityEngine_XR(); break;
+                    case XRInputAPIType.OculusXR: api = new OculusXR(); break;
                     case XRInputAPIType.OpenVR: api = new OpenVR_New(); break;
                     case XRInputAPIType.OpenVR_Legacy: api = new OpenVR_Legacy(); break;
                     default: throw new NotImplementedException();
@@ -179,13 +173,14 @@ namespace VRstudios
             UnityEditor.EditorApplication.playModeStateChanged -= EditorApplication_playModeStateChanged;
             #endif
 
-            apiInit = false;
             if (disposeAPI && api != null)
             {
                 api.Dispose();
                 api = null;
                 if (DisposedCallback != null) DisposedCallback();
             }
+
+            apiInit = false;
         }
 
 		private void OnApplicationQuit()
@@ -193,10 +188,31 @@ namespace VRstudios
 			if (stopLoaderOnAppExit && loader != null) loader.Stop();
 		}
 
-		private void Update()
+        private void FixedUpdate()
         {
-            // gather controller states from current API
+            // only proccess if init
             if (!apiInit) return;
+
+            // optional fixed-update for APIs
+            api.FixedUpdate();
+        }
+
+        private void LateUpdate()
+        {
+            // only proccess if init
+            if (!apiInit) return;
+
+            // optional fixed-update for APIs
+            api.LateUpdate();
+        }
+
+        private void Update()
+        {
+            // only proccess if init
+            if (!apiInit) return;
+
+            // optional update for APIs
+            api.Update();
 
             // gather input from api
             int controllerCount;
@@ -809,41 +825,8 @@ namespace VRstudios
         {
             var grabPosLocal = grabPosition - handPosition;
             var grabPosLocalLast = Quaternion.AngleAxis(-handAngularVelocity.magnitude, handAngularVelocity.normalized) * grabPosLocal;
-            return ((grabPosLocal - grabPosLocalLast) * Mathf.Rad2Deg) + handLinearVelocity;
+            return ((grabPosLocal - grabPosLocalLast) * 100) + handLinearVelocity;
         }
-        #endregion
-
-        #region Oculus APIs
-        public enum OculusSystemHeadset
-        {
-            None = 0,
-
-            // Standalone headsets
-            Oculus_Quest = 8,
-            Oculus_Quest_2 = 9,
-            Placeholder_10,
-            Placeholder_11,
-            Placeholder_12,
-            Placeholder_13,
-            Placeholder_14,
-
-            // PC headsets
-            Rift_DK1 = 0x1000,
-            Rift_DK2,
-            Rift_CV1,
-            Rift_CB,
-            Rift_S,
-            Oculus_Link_Quest,
-            Oculus_Link_Quest_2,
-            PC_Placeholder_4103,
-            PC_Placeholder_4104,
-            PC_Placeholder_4105,
-            PC_Placeholder_4106,
-            PC_Placeholder_4107
-        }
-
-        [DllImport("OVRPlugin", CallingConvention = CallingConvention.Cdecl)]
-        public static extern OculusSystemHeadset ovrp_GetSystemHeadsetType();
         #endregion
     }
 

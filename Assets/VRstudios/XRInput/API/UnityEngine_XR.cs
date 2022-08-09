@@ -236,13 +236,11 @@ namespace VRstudios.API
                 // grab IMU velocity
                 controller.linearVelocityValid = c.TryGetFeatureValue(CommonUsages.deviceVelocity, out controller.linearVelocity);
                 controller.angularVelocityValid = c.TryGetFeatureValue(CommonUsages.deviceAngularVelocity, out controller.angularVelocity);
-                if (XRInput.invertAngularVelocity) controller.angularVelocity = -controller.angularVelocity;
 
                 // apply
                 state_controllers[controllerCount] = controller;
                 ++controllerCount;
             }
-
 
             // finish
             GatherInputFinish(state_controllers, controllerCount, ref leftSet, ref leftSetIndex, ref rightSet, ref rightSetIndex, ref sideToSet);
