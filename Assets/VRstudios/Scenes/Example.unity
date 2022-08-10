@@ -2469,14 +2469,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2392954646439022180, guid: 39a90ede87cfdcb479cab0d0c84aad0f, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2392954646439022180, guid: 39a90ede87cfdcb479cab0d0c84aad0f, type: 3}
-      propertyPath: m_PoseProviderComponent
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 2392954646846220266, guid: 39a90ede87cfdcb479cab0d0c84aad0f, type: 3}
       propertyPath: m_Name
       value: XR Rig
@@ -2528,10 +2520,6 @@ PrefabInstance:
     - target: {fileID: 2392954646846220267, guid: 39a90ede87cfdcb479cab0d0c84aad0f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2392954647419265594, guid: 39a90ede87cfdcb479cab0d0c84aad0f, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39a90ede87cfdcb479cab0d0c84aad0f, type: 3}
