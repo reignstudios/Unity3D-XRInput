@@ -47,6 +47,13 @@ namespace VRstudios.API
                 controllerCount++;
             }
 
+            // hmd velocity
+            hmdLinearVelocityValid = true;
+            hmdLinearVelocity = OVRPlugin.GetNodeVelocity(OVRPlugin.Node.Head, OVRPlugin.Step.Render).FromFlippedZVector3f();
+
+            hmdAngularVelocityValid = true;
+            hmdAngularVelocity = OVRPlugin.GetNodeAngularVelocity(OVRPlugin.Node.Head, OVRPlugin.Step.Render).FromFlippedZVector3f();
+
             // finish
             GatherInputFinish(state_controllers, controllerCount, ref leftSet, ref leftSetIndex, ref rightSet, ref rightSetIndex, ref sideToSet);
 

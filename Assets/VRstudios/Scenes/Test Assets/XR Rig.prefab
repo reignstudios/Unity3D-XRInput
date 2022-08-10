@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2392954646439022171}
   - component: {fileID: 2392954646439022170}
   - component: {fileID: 2392954646439022180}
+  - component: {fileID: 5022125114805444988}
   m_Layer: 0
   m_Name: Hand Right
   m_TagString: Untagged
@@ -91,9 +92,27 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2392954646439022182}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a2a9c34df4095f47b9ca8f975175f5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Device: 1
+  m_PoseSource: 5
+  m_PoseProviderComponent: {fileID: 0}
+  m_TrackingType: 0
+  m_UpdateType: 0
+  m_UseRelativeTransform: 0
+--- !u!114 &5022125114805444988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2392954646439022182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88db20c92ed795143966c5b4bbe57d2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Device: 1
@@ -251,6 +270,7 @@ GameObject:
   - component: {fileID: 2392954647419265593}
   - component: {fileID: 2392954647419265592}
   - component: {fileID: 2392954647419265594}
+  - component: {fileID: 8191547797706833623}
   m_Layer: 0
   m_Name: Hand Left
   m_TagString: Untagged
@@ -330,9 +350,27 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2392954647419266500}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a2a9c34df4095f47b9ca8f975175f5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Device: 1
+  m_PoseSource: 4
+  m_PoseProviderComponent: {fileID: 0}
+  m_TrackingType: 0
+  m_UpdateType: 0
+  m_UseRelativeTransform: 0
+--- !u!114 &8191547797706833623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2392954647419266500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88db20c92ed795143966c5b4bbe57d2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Device: 1
