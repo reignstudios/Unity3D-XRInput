@@ -106,7 +106,9 @@ namespace VRstudios.API
 
             state_controller.angularVelocityValid = true;
             state_controller.angularVelocity = -OVRInput.GetLocalControllerAngularVelocity(controller);
-            state_controller.angularVelocity = OVRInput.GetLocalControllerRotation(controller) * state_controller.angularVelocity;
+            #if UNITY_EDITOR || UNITY_STANDALONE
+            state_controller.angularVelocity = OVRInput.GetLocalControllerRotation(controller) * state_controller.angularVelocity;// for some reason PC platforms need this
+            #endif
 
             return true;
         }

@@ -132,6 +132,7 @@ namespace VRstudios
                 }
 
                 // init api
+                Debug.Log("XRInput selected api: " + apiType.ToString());
                 disposeAPI = true;
                 switch (apiType)
                 {
@@ -823,9 +824,11 @@ namespace VRstudios
         /// <returns>Total velocity</returns>
         public static Vector3 GetVelocityAtOffset2(Vector3 handLinearVelocity, Vector3 handAngularVelocity, Vector3 handPosition, Vector3 grabPosition)
         {
+            const float meterPerSec = 0.01f;
             var grabPosLocal = grabPosition - handPosition;
-            var grabPosLocalLast = Quaternion.AngleAxis(-handAngularVelocity.magnitude, handAngularVelocity.normalized) * grabPosLocal;
-            return ((grabPosLocal - grabPosLocalLast) * 100) + handLinearVelocity;
+            var grabPosLast = (Quaternion.AngleAxis(-(handAngularVelocity.magnitude * meterPerSec) * Mathf.Rad2Deg, handAngularVelocity.normalized) * grabPosLocal) + handPosition;
+            grabPosLast -= handLinearVelocity * meterPerSec;
+            return (grabPosition - grabPosLast) * 100;
         }
         #endregion
     }
