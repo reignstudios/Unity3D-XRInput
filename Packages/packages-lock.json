@@ -12,7 +12,7 @@
       }
     },
     "com.htc.upm.wave.xrsdk": {
-      "version": "4.5.0-r.3",
+      "version": "5.0.2-r.16",
       "depth": 0,
       "source": "registry",
       "dependencies": {
