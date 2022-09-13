@@ -1,6 +1,6 @@
 # Folders
-[Dd]ebug*/
-[Rr]elease*/
+[Dd]ebug/
+[Rr]elease/
 [Bb]in/
 obj/
 ipch/
