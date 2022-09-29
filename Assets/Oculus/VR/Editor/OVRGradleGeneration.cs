@@ -106,7 +106,7 @@ public class OVRGradleGeneration
 		{
 			if (!useOpenXR)
 			{
-				throw new BuildFailedException("OpenXR backend for Oculus Plugin is disabled, which is required to support Unity OpenXR Plugin. Please enable OpenXR backend for Oculus Plugin through the 'Oculus -> Tools -> OpenXR' menu.");
+				//throw new BuildFailedException("OpenXR backend for Oculus Plugin is disabled, which is required to support Unity OpenXR Plugin. Please enable OpenXR backend for Oculus Plugin through the 'Oculus -> Tools -> OpenXR' menu.");
 			}
 
 			string ovrRootPath = OVRPluginUpdater.GetUtilitiesRootPath();
