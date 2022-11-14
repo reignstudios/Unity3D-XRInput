@@ -111,10 +111,14 @@ namespace VRstudios
                 {
                     if (loaderTypeName == "OpenXRLoader")
                     {
+                        #if !XRINPUT_DISABLE_OPENXR
                         string platformName = UnityEngine.XR.OpenXR.OpenXRRuntime.name;
                         Debug.Log($"OpenXR platform name '{platformName}'");
                         if (platformName == "Oculus") apiType = XRInputAPIType.OculusXR;
                         else apiType = XRInputAPIType.UnityEngine_XR;
+                        #else
+                        throw new NotSupportedException("You have XRINPUT_DISABLE_OPENXR enabled");
+                        #endif
                     }
                     else if (loaderTypeName == "OculusLoader")
                     {
