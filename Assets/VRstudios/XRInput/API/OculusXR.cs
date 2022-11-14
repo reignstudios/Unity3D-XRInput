@@ -79,6 +79,13 @@ namespace VRstudios.API
 
                 // joysticks
                 state_controller.joystick.Update(OVRInput.Get(OVRInput.RawAxis2D.RThumbstick, controller));
+
+                // touch
+                state_controller.touch1.Update(OVRInput.Get(OVRInput.RawTouch.A, controller));
+                state_controller.touch2.Update(OVRInput.Get(OVRInput.RawTouch.B, controller));
+                state_controller.touchTrigger.Update(OVRInput.Get(OVRInput.RawTouch.RIndexTrigger, controller));
+                //state_controller.touchGrip.Update(OVRInput.Get(OVRInput.RawTouch.RHandTrigger, controller));// doesn't exist
+                state_controller.touchJoystick.Update(OVRInput.Get(OVRInput.RawTouch.RThumbstick, controller));
             }
             else if (controller == OVRInput.Controller.LHand)
             {
@@ -98,6 +105,13 @@ namespace VRstudios.API
 
                 // joysticks
                 state_controller.joystick.Update(OVRInput.Get(OVRInput.RawAxis2D.LThumbstick, controller));
+
+                // touch
+                state_controller.touch1.Update(OVRInput.Get(OVRInput.RawTouch.X, controller));
+                state_controller.touch2.Update(OVRInput.Get(OVRInput.RawTouch.Y, controller));
+                state_controller.touchTrigger.Update(OVRInput.Get(OVRInput.RawTouch.LIndexTrigger, controller));
+                //state_controller.touchGrip.Update(OVRInput.Get(OVRInput.RawTouch.LHandTrigger, controller));// doesn't exist
+                state_controller.touchJoystick.Update(OVRInput.Get(OVRInput.RawTouch.LThumbstick, controller));
             }
 
             // velocity
