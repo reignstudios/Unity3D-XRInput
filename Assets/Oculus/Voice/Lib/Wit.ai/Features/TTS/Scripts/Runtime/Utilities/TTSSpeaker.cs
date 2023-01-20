@@ -11,6 +11,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using Facebook.WitAi.TTS.Data;
+using UnityEngine.Serialization;
 
 namespace Facebook.WitAi.TTS.Utilities
 {
@@ -45,8 +46,8 @@ namespace Facebook.WitAi.TTS.Utilities
         [HideInInspector] [SerializeField] public string presetVoiceID;
         public TTSVoiceSettings VoiceSettings => TTSService.Instance.GetPresetVoiceSettings(presetVoiceID);
         // Audio source
-        [SerializeField] private AudioSource _source;
-        public AudioSource AudioSource => _source;
+        [SerializeField] [FormerlySerializedAs("_source")]
+        public AudioSource AudioSource;
         // Events
         [SerializeField] private TTSSpeakerEvents _events;
         public TTSSpeakerEvents Events => _events;
@@ -54,15 +55,15 @@ namespace Facebook.WitAi.TTS.Utilities
         // Automatically generate source if needed
         protected virtual void Awake()
         {
-            if (_source == null)
+            if (AudioSource == null)
             {
-                _source = gameObject.GetComponentInChildren<AudioSource>();
-                if (_source == null)
+                AudioSource = gameObject.GetComponentInChildren<AudioSource>();
+                if (AudioSource == null)
                 {
-                    _source = gameObject.AddComponent<AudioSource>();
+                    AudioSource = gameObject.AddComponent<AudioSource>();
                 }
             }
-            _source.playOnAwake = false;
+            AudioSource.playOnAwake = false;
             TTSService.Instance.Events.OnClipUnloaded.AddListener(OnClipUnload);
         }
         // Stop speaking
@@ -140,13 +141,13 @@ namespace Facebook.WitAi.TTS.Utilities
             TTSVoiceSettings voiceSettings = VoiceSettings;
             if (voiceSettings == null)
             {
-                Debug.LogError($"TTS Speaker - No voice found with preset id: {presetVoiceID}");
+                VLog.E($"No voice found with preset id: {presetVoiceID}");
                 return;
             }
             // Log if empty text
             if (string.IsNullOrEmpty(textToSpeak))
             {
-                Debug.LogError("TTS Speaker - No text to speak provided");
+                VLog.E("No text to speak provided");
                 return;
             }
             // Get clip id
@@ -191,7 +192,7 @@ namespace Facebook.WitAi.TTS.Utilities
                 // Stop source
                 if (_lastClip != null)
                 {
-                    _source.Stop();
+                    AudioSource.Stop();
                 }
 
                 // Cancel calls
@@ -227,10 +228,17 @@ namespace Facebook.WitAi.TTS.Utilities
             // Loading complete
             _loadingClip = null;
 
-            // Load failed
+            // Load error
+            if (!string.IsNullOrEmpty(error))
+            {
+                VLog.E($"Load Clip - Failed\n{error}");
+                Events?.OnClipLoadFailed?.Invoke(this, clipData.textToSpeak);
+                return;
+            }
+            // No clip failure
             if (clipData.clip == null)
             {
-                Debug.LogError($"TTS Speaker - Load Clip - Failed\n{error}");
+                VLog.E($"Load Clip - Failed\nNo clip returned");
                 Events?.OnClipLoadFailed?.Invoke(this, clipData.textToSpeak);
                 return;
             }
@@ -277,7 +285,7 @@ namespace Facebook.WitAi.TTS.Utilities
             // If clip missing
             if (_lastClip == null || _lastClip.clip == null)
             {
-                Debug.LogError("TTS Speaker - Clip destroyed prior to playback");
+                VLog.E("Clip destroyed prior to playback");
                 return;
             }
 
@@ -286,7 +294,7 @@ namespace Facebook.WitAi.TTS.Utilities
             Events?.OnStartSpeaking?.Invoke(this, _lastClip.textToSpeak);
 
             // Play clip & wait
-            _source.PlayOneShot(_lastClip.clip);
+            AudioSource.PlayOneShot(_lastClip.clip);
             _player = StartCoroutine(OnPlaybackWait());
         }
         // Wait for clip completion

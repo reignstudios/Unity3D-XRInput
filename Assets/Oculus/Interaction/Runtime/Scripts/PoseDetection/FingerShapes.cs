@@ -144,7 +144,7 @@ namespace Oculus.Interaction.PoseDetection
             float angleSum = 0;
             for (int i = 0; i < poses.Length - 2; i++)
             {
-                angleSum += PosesCurlValue(poses[i], poses[i+1], poses[i+2]);
+                angleSum += PosesCurlValue(poses[i], poses[i + 1], poses[i + 2]);
             }
             return angleSum;
         }
@@ -156,13 +156,14 @@ namespace Oculus.Interaction.PoseDetection
                 return 0.0f;
             }
 
-            Pose[] jointPoses = new Pose[joints.Length];
-            for (int i = 0; i < joints.Length; i++)
+            float angleSum = 0;
+            for (int i = 0; i < joints.Length - 2; i++)
             {
-                jointPoses[i] = poses[(int)joints[i]];
+                angleSum += PosesCurlValue(poses[(int)joints[i]],
+                                           poses[(int)joints[i + 1]],
+                                           poses[(int)joints[i + 2]]);
             }
-
-            return PosesListCurlValue(jointPoses);
+            return angleSum;
         }
 
         public float GetCurlValue(HandFinger finger, IHand hand)

@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using Facebook.WitAi.Events;
@@ -50,7 +57,21 @@ namespace Facebook.WitAi.Data
         {
             _instance = this;
             _instanceInit = true;
-            _micInput = GetComponent<IAudioInputSource>();
+            // Check this gameobject & it's children for audio input
+            _micInput = gameObject.GetComponentInChildren<IAudioInputSource>();
+            // Check all roots for Mic Input JIC
+            if (_micInput == null)
+            {
+                foreach (var root in gameObject.scene.GetRootGameObjects())
+                {
+                    _micInput = root.GetComponentInChildren<IAudioInputSource>();
+                    if (_micInput != null)
+                    {
+                        break;
+                    }
+                }
+            }
+            // Use default mic script
             if (_micInput == null)
             {
                 _micInput = gameObject.AddComponent<Mic>();

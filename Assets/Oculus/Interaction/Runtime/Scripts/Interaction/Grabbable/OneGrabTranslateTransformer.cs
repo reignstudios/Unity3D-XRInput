@@ -41,7 +41,16 @@ namespace Oculus.Interaction
         }
 
         [SerializeField]
-        private OneGrabTranslateConstraints _constraints;
+        private OneGrabTranslateConstraints _constraints =
+            new OneGrabTranslateConstraints()
+        {
+            MinX = new FloatConstraint(),
+            MaxX = new FloatConstraint(),
+            MinY = new FloatConstraint(),
+            MaxY = new FloatConstraint(),
+            MinZ = new FloatConstraint(),
+            MaxZ = new FloatConstraint()
+        };
 
         public OneGrabTranslateConstraints Constraints
         {
@@ -58,11 +67,8 @@ namespace Oculus.Interaction
         }
 
         private OneGrabTranslateConstraints _parentConstraints = null;
-
-        private Vector3 _initialPosition = new Vector3();
-        private Vector3 _positionDelta = new Vector3();
-
-        private Pose _previousGrabPose;
+        private Vector3 _initialPosition;
+        private Vector3 _grabOffsetInLocalSpace;
 
         private IGrabbable _grabbable;
 
@@ -72,6 +78,7 @@ namespace Oculus.Interaction
             _initialPosition = _grabbable.Transform.localPosition;
             GenerateParentConstraints();
         }
+
         private void GenerateParentConstraints()
         {
             if (!_constraints.ConstraintsAreRelative)
@@ -124,27 +131,18 @@ namespace Oculus.Interaction
 
         public void BeginTransform()
         {
-            // Save initial position in parent space
-            Transform targetTransform = _grabbable.Transform;
-            _initialPosition = targetTransform.localPosition;
-            _positionDelta = Vector3.zero;
             var grabPoint = _grabbable.GrabPoints[0];
-            _previousGrabPose = grabPoint;
+            Transform targetTransform = _grabbable.Transform;
+            _grabOffsetInLocalSpace = targetTransform.InverseTransformVector(
+                    grabPoint.position - targetTransform.position);
         }
 
         public void UpdateTransform()
         {
             var grabPoint = _grabbable.GrabPoints[0];
             var targetTransform = _grabbable.Transform;
-
-            var initialPositionWorldSpace = _initialPosition;
-            if (targetTransform.parent != null)
-            {
-                initialPositionWorldSpace = targetTransform.parent.TransformPoint(_initialPosition);
-            }
-
-            _positionDelta += grabPoint.position - _previousGrabPose.position;
-            var constrainedPosition = _positionDelta + initialPositionWorldSpace;
+            var constrainedPosition = grabPoint.position -
+                                      targetTransform.TransformVector(_grabOffsetInLocalSpace);
 
             // the translation constraints occur in parent space
             if (targetTransform.parent != null)
@@ -184,8 +182,6 @@ namespace Oculus.Interaction
             }
 
             targetTransform.position = constrainedPosition;
-
-            _previousGrabPose = grabPoint;
         }
 
         public void EndTransform() { }

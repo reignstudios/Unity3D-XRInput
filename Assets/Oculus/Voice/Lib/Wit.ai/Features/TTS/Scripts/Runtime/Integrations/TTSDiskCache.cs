@@ -7,13 +7,14 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Collections.Generic;
 using UnityEngine;
 using Facebook.WitAi.TTS.Data;
 using Facebook.WitAi.TTS.Events;
 using Facebook.WitAi.TTS.Interfaces;
 using Facebook.WitAi.TTS.Utilities;
+using Facebook.WitAi.Utilities;
 
 namespace Facebook.WitAi.TTS.Integrations
 {
@@ -59,8 +60,9 @@ namespace Facebook.WitAi.TTS.Integrations
             }
 
             // Get directory path
+            TTSDiskCacheLocation location = clipData.diskCacheSettings.DiskCacheLocation;
             string directory = string.Empty;
-            switch (clipData.diskCacheSettings.DiskCacheLocation)
+            switch (location)
             {
                 case TTSDiskCacheLocation.Persistent:
                     directory = Application.persistentDataPath;
@@ -77,44 +79,21 @@ namespace Facebook.WitAi.TTS.Integrations
                 return string.Empty;
             }
 
-            // Generate root directory if needed
-            if (!Directory.Exists(directory))
-            {
-                try
-                {
-                    Directory.CreateDirectory(directory);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError($"TTS Cache - Failed to create root directory\nPath: {directory}\n{e}");
-                    return string.Empty;
-                }
-            }
-
             // Add tts cache path & clean
-            directory += "/" + DiskPath;
-            directory = directory.Replace("\\", "/");
-            if (!directory.EndsWith("/"))
-            {
-                directory += "/";
-            }
+            directory = Path.Combine(directory, DiskPath);
 
             // Generate tts directory if possible
-            if (!Directory.Exists(directory))
+            if (location != TTSDiskCacheLocation.Preload || !Application.isPlaying)
             {
-                try
+                if (!IOUtility.CreateDirectory(directory, true))
                 {
-                    Directory.CreateDirectory(directory);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError($"TTS Cache - Failed to create tts directory\nPath: {directory}\n{e}");
+                    VLog.E($"Failed to create tts directory\nPath: {directory}\nLocation: {location}");
                     return string.Empty;
                 }
             }
 
             // Return clip path
-            return $"{directory}{clipData.clipID}.{clipData.audioType.ToString().ToLower()}";
+            return Path.Combine(directory, clipData.clipID + "." + clipData.audioType.ToString().ToLower());
         }
 
         /// <summary>
@@ -132,16 +111,34 @@ namespace Facebook.WitAi.TTS.Integrations
         /// </summary>
         /// <param name="clipData">Request data</param>
         /// <returns>True if file is on disk</returns>
-        public bool IsCachedToDisk(TTSClipData clipData)
+        public void CheckCachedToDisk(TTSClipData clipData, Action<TTSClipData, bool> onCheckComplete)
         {
             // Get path
             string cachePath = GetDiskCachePath(clipData);
             if (string.IsNullOrEmpty(cachePath))
             {
-                return false;
+                onCheckComplete?.Invoke(clipData, false);
+                return;
             }
+
             // Check if file exists
-            return File.Exists(cachePath);
+            VoiceUnityRequest request =
+                VoiceUnityRequest.CheckFileExists(cachePath, (path, success) =>
+                {
+                    // Remove
+                    if (_streamRequests.ContainsKey(clipData.clipID))
+                    {
+                        _streamRequests.Remove(clipData.clipID);
+                    }
+                    // Complete
+                    onCheckComplete(clipData, success);
+                });
+
+            // Return request
+            if (request != null)
+            {
+                _streamRequests[clipData.clipID] = request;
+            }
         }
 
         /// <summary>
@@ -154,12 +151,6 @@ namespace Facebook.WitAi.TTS.Integrations
 
             // Get file path
             string filePath = GetDiskCachePath(clipData);
-            if (!File.Exists(filePath))
-            {
-                string e = $"Clip not found\nPath: {filePath}";
-                OnStreamComplete(clipData, e);
-                return;
-            }
 
             // Load clip async
             _streamRequests[clipData.clipID] = VoiceUnityRequest.RequestAudioClip(filePath, (path, progress) => clipData.loadProgress = progress, (path, clip, error) =>

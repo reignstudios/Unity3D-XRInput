@@ -472,13 +472,12 @@ namespace Oculus.Interaction.Input
 
         public void InjectAllSyntheticHandModifier(UpdateModeFlags updateMode, IDataSource updateAfter,
             DataModifier<HandDataAsset> modifyDataFromSource, bool applyModifier,
-            Component[] aspects,
             ProgressCurve wristPositionLockCurve, ProgressCurve wristPositionUnlockCurve,
             ProgressCurve wristRotationLockCurve, ProgressCurve wristRotationUnlockCurve,
             ProgressCurve jointLockCurve, ProgressCurve jointUnlockCurve,
             float spreadAllowance)
         {
-            base.InjectAllHand(updateMode, updateAfter, modifyDataFromSource, applyModifier, aspects);
+            base.InjectAllHand(updateMode, updateAfter, modifyDataFromSource, applyModifier);
 
             InjectWristPositionLockCurve(wristPositionLockCurve);
             InjectWristPositionUnlockCurve(wristPositionUnlockCurve);

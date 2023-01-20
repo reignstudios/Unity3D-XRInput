@@ -23,15 +23,16 @@ using UnityEngine;
 
 namespace Oculus.Interaction.Input
 {
-    public interface IController
+    public interface IController : IAspectProvider
     {
         Handedness Handedness { get; }
         bool IsConnected { get; }
         bool IsPoseValid { get; }
         bool TryGetPose(out Pose pose);
         bool TryGetPointerPose(out Pose pose);
+        float Scale { get; }
         bool IsButtonUsageAnyActive(ControllerButtonUsage buttonUsage);
         bool IsButtonUsageAllActive(ControllerButtonUsage buttonUsage);
-        event Action ControllerUpdated;
+        event Action WhenUpdated;
     }
 }

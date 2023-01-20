@@ -46,8 +46,20 @@ namespace Oculus.Interaction
         private Transform _grabTarget;
 
         private IMovement _movement;
+        private Vector3 _hitPoint;
 
-        public ConicalFrustum PointerFrustum => _selectionFrustum;
+        public Pose Origin
+        {
+            get
+            {
+                return new Pose(_selectionFrustum.StartPoint,
+                    Quaternion.LookRotation(_selectionFrustum.Direction));
+            }
+        }
+
+        public Vector3 HitPoint => _hitPoint;
+
+        public IDistanceInteractable DistanceInteractable => this.Interactable;
 
         public float BestInteractableWeight { get; private set; } = float.MaxValue;
 
@@ -96,7 +108,7 @@ namespace Oculus.Interaction
             DistanceGrabInteractable closestInteractable = null;
             float bestScore = float.NegativeInfinity;
 
-            IEnumerable<DistanceGrabInteractable> interactables = DistanceGrabInteractable.Registry.List(this);
+            var interactables = DistanceGrabInteractable.Registry.List(this);
             foreach (DistanceGrabInteractable interactable in interactables)
             {
                 Collider[] colliders = interactable.Colliders;
@@ -107,6 +119,7 @@ namespace Oculus.Interaction
                     {
                         bestScore = score;
                         closestInteractable = interactable;
+                        _hitPoint = hitPoint;
                     }
                 }
             }
@@ -149,7 +162,7 @@ namespace Oculus.Interaction
                 {
                     _movement = SelectedInteractable.GenerateMovement(toPose);
                     SelectedInteractable.PointableElement.ProcessPointerEvent(
-                        new PointerEvent(Identifier, PointerEventType.Move, _movement.Pose));
+                        new PointerEvent(Identifier, PointerEventType.Move, _movement.Pose, Data));
                 }
             }
 
@@ -181,7 +194,7 @@ namespace Oculus.Interaction
         }
 
         #region Inject
-        public void InjectAllGrabInteractor(ISelector selector, ConicalFrustum selectionFrustum)
+        public void InjectAllDistanceGrabInteractor(ISelector selector, ConicalFrustum selectionFrustum)
         {
             InjectSelector(selector);
             InjectSelectionFrustum(selectionFrustum);

@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.pico.Integration" android:versionName="1.0.0" android:versionCode="1">
+  <!--Payment-->
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <!--Falcon VIBRATE-->
+  <uses-permission android:name="android.permission.VIBRATE" />
+  <!--Miracast -->
+  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+  <!--Read config-->
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" />
+  <!--Set bright -->
+  <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+  <!--AvrAPI -->
+  <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+  <!--Change language -->
+  <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+  <!--Bluetooth -->
+  <uses-permission android:name="android.permission.BLUETOOTH" />
+  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+  <uses-permission android:name="android.permission.INJECT_EVENTS" />
+  <!--Device Power -->
+  <uses-permission android:name="android.permission.DEVICE_POWER" />
+  <supports-screens android:smallScreens="true" android:normalScreens="true" android:largeScreens="true" android:xlargeScreens="true" android:anyDensity="true" />
+  <!--<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="26" />-->
+  <!--<application android:icon="@drawable/app_icon" android:label="@string/app_name" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" android:debuggable="false" android:allowBackup="true" android:supportsRtl="true">-->
+  <application android:debuggable="false" android:allowBackup="true" android:supportsRtl="true">
+    <meta-data android:name="pvr.sdk.version" android:value="Unity_2.8.5.6" />
+    <meta-data android:name="pvr.app.type" android:value="vr" />
+    <meta-data android:name="pvr.display.orientation" android:value="180" />
+    <!--<activity android:name="com.unity3d.player.UnityPlayerNativeActivityPico" android:label="@string/app_name" android:screenOrientation="landscape" android:launchMode="singleTask" android:configChanges="screenSize|orientation|keyboardHidden|keyboard">-->
+    <activity android:name="com.unity3d.player.UnityPlayerNativeActivityPico" android:screenOrientation="landscape" android:launchMode="singleTask" android:configChanges="screenSize|orientation|keyboardHidden|keyboard">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+      <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
+      <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="false" />
+    </activity>
+    <activity android:name="com.pico.loginpaysdk.UnityAuthInterface" android:screenOrientation="landscape" android:configChanges="screenSize|orientation|keyboardHidden|keyboard">
+    </activity>
+    <activity android:name="com.pico.loginpaysdk.component.PicoSDKBrowser" android:configChanges="keyboardHidden|orientation" android:windowSoftInputMode="adjustResize" android:exported="false">
+    </activity>
+    <service android:name="com.picovr.picovrlib.PeriodicService">
+    </service>
+    <service android:name="com.psmart.link.spp.LarkConnectService" />
+    <service android:name="com.psmart.link.ble.BluetoothLeService" />
+    <service android:name="com.picovr.hummingbirdsvc.AutoConnectService">
+      <intent-filter>
+        <action android:name="com.picovr.hummingbirdsvc.AutoConnectService" />
+      </intent-filter>
+    </service>
+    <service android:name="com.picovr.picovrlib.hummingbird.HummingBirdControllerService" android:process=":remote">
+      <intent-filter>
+        <action android:name="com.picovr.picovrlib.humingbird.HumingBirdAIDLService" />
+      </intent-filter>
+    </service>
+    <service android:name="com.psmart.vrlib.VrListener" android:permission="android.permission.BIND_VR_LISTENER_SERVICE" android:exported="true">
+      <intent-filter>
+        <action android:name="android.service.vr.VrListenerService" />
+      </intent-filter>
+    </service>
+    <meta-data android:name="pico_merchant_id" android:value="81" />
+    <meta-data android:name="pico_app_id" android:value="5a189befeb3b33f7df101fbecffe4f98" />
+    <meta-data android:name="pico_app_key" android:value="25ba00fb73343ff1ec32e1c152fff291" />
+    <meta-data android:name="pico_pay_key" android:value="d828c5d3a1cc11e6b7fe008cfaf3d930" />
+    <meta-data android:name="pico_redirectUrl" android:value="http://www.picovr.com" />
+    <!--Scope of authorization-->
+    <meta-data android:name="pico_scope" android:value="get_user_info" />
+    <meta-data android:name="com.pvr.instructionset" android:value="32" />
+    <!--Whether the platform animation is displayed.-->
+    <meta-data android:name="platform_logo" android:value="0" />
+    <!--<meta-data android:name="LoadingContent" android:value="@string/loading" />-->
+    <!--<meta-data android:name="LoadingContent" android:resource="@string/loading" />
+    <meta-data android:name="loadingcolor" android:resource="@color/custom" />-->
+    <meta-data android:name="loadingtextsize" android:value="16" />
+    <meta-data android:name="loadingwidth" android:value="500" />
+    <!--loadingtext width-->
+    <meta-data android:name="loadingheight" android:value="100" />
+    <!--loadingtext height-->
+    <meta-data android:name="loadingmarquee" android:value="1" />
+    <!--0 no marquee 1 marquee-->
+    <meta-data android:name="bottommargin" android:value="100" />
+    <meta-data android:name="marqueecount" android:value="10" />
+    <meta-data android:name="loadingalign" android:value="left" />
+    <meta-data android:name="platform_high" android:value="1" />
+    <meta-data android:name="platform_sbf" android:value="-1" />
+    <!--Set the Viewer platform msaa.-->
+    <meta-data android:name="MSAA" android:value="0" />
+    <meta-data android:name="com.pvr.hmd.trackingmode" android:value="6dof" />
+    <meta-data android:name="isPUI" android:value="0" />
+    <meta-data android:name="enable_eyetracking" android:value="0" />
+    <meta-data android:name="enable_cpt" android:value="0" />
+  </application>
+</manifest>

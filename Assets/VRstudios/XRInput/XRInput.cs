@@ -8,19 +8,38 @@ using VRstudios.API;
 
 namespace VRstudios
 {
+    public enum XRInputLoaderType
+    {
+        Unknown,
+        OpenXR,
+        OculusXR,
+        OpenVR,
+        PicoXR
+    }
+
     public enum XRInputAPIType
     {
         AutoDetect,
         UnityEngine_XR,
         OculusXR,
         OpenVR,
-        OpenVR_Legacy
+        OpenVR_Legacy,
+        Pico2VR
+    }
+
+    [Serializable]
+    public struct XRInputRigSet
+    {
+        public XRInputLoaderType loaderType;
+        public XRInputAPIType apiType;
+        public GameObject[] enableObjects, disableObjects;
     }
 
     [DefaultExecutionOrder(-32000)]
     public sealed class XRInput : MonoBehaviour
     {
         public static XRInput singleton { get; private set; }
+        public static XRInputLoaderType loaderType { get; private set; }
         public static string loaderTypeName { get; private set; }
 
         public delegate void InitializedMethod(bool success);
@@ -47,10 +66,12 @@ namespace VRstudios
 
         private const int controllerStateLength = 4;
         private int lastControllerCount;
-        public XRControllerState[] state_controllers = new XRControllerState[controllerStateLength], state_controllers_last = new XRControllerState[controllerStateLength];
-        public XRControllerState state_controllerLeft, state_controllerRight;
-        public XRControllerState state_controllerFirst, state_controllerMerged;
+        private XRControllerState[] state_controllers = new XRControllerState[controllerStateLength], state_controllers_last = new XRControllerState[controllerStateLength];
+        private XRControllerState state_controllerLeft, state_controllerRight;
+        private XRControllerState state_controllerFirst, state_controllerMerged;
         private Guid state_controllerMerged_ID = Guid.NewGuid();
+
+        public XRInputRigSet[] rigSets;
 
         internal static void Log(string message)
 		{
@@ -70,18 +91,25 @@ namespace VRstudios
             singleton = this;
 
             // print version
-            XRInput.Log("XRInput version: 1.3.2");
+            XRInput.Log("XRInput version: 1.4.0");
+
+            // check if loaders are used
+            bool useLoader = apiType != XRInputAPIType.Pico2VR;
+            Log("XRInput Using Loader: " + useLoader.ToString());
 
             // wait for XR loader
-            while (loader == null || !XRSettings.enabled)
+            if (useLoader)
             {
-                try
+                while (loader == null || !XRSettings.enabled)
                 {
-                    if (loaderOverride != null) loader = loaderOverride;
-                    else loader = XRGeneralSettings.Instance.Manager.activeLoader;
+                    try
+                    {
+                        if (loaderOverride != null) loader = loaderOverride;
+                        else loader = XRGeneralSettings.Instance.Manager.activeLoader;
+                    }
+                    catch { }
+                    yield return new WaitForSeconds(1);
                 }
-                catch { }
-                yield return new WaitForSeconds(1);
             }
 
             // give XR some time to start
@@ -95,44 +123,62 @@ namespace VRstudios
 
             try
             {
-                // get loader type
-                var loaderType = loader.GetType();
-                loaderTypeName = loaderType.Name;
-                XRInput.Log($"XR-Loader: '{loader.name}' TYPE:{loaderType}");
-
-                // auto set rumble channel
-                if (autoSetRumbleChannel)
+                if (useLoader)
                 {
-                    rumbleChannel = 0;
+                    // get loader type
+                    var loaderRuntimeType = loader.GetType();
+                    loaderTypeName = loaderRuntimeType.Name;
+                    XRInput.Log($"XR-Loader: '{loader.name}' TYPE:{loaderRuntimeType}");
+
+                    // auto set rumble channel
+                    if (autoSetRumbleChannel)
+                    {
+                        rumbleChannel = 0;
+                    }
+
+                    // loader type
+                    switch (loaderTypeName)
+                    {
+                        case "OpenXRLoader": loaderType = XRInputLoaderType.OpenXR; break;
+                        case "OculusLoader": loaderType = XRInputLoaderType.OculusXR; break;
+                        case "OpenVRLoader": loaderType = XRInputLoaderType.OpenVR; break;
+                        case "PXR Loader": loaderType = XRInputLoaderType.PicoXR; break;
+                        default: loaderType = XRInputLoaderType.Unknown; break;
+                    }
+
+                    // auto detect
+                    if (apiType == XRInputAPIType.AutoDetect)
+                    {
+                        if (loaderType == XRInputLoaderType.OpenXR)
+                        {
+                            #if !XRINPUT_DISABLE_OPENXR
+                            string platformName = UnityEngine.XR.OpenXR.OpenXRRuntime.name;
+                            Debug.Log($"OpenXR platform name '{platformName}'");
+                            if (platformName == "Oculus") apiType = XRInputAPIType.OculusXR;
+                            else apiType = XRInputAPIType.UnityEngine_XR;
+                            #else
+                            throw new NotSupportedException("You have XRINPUT_DISABLE_OPENXR enabled");
+                            #endif
+                        }
+                        else if (loaderType == XRInputLoaderType.OculusXR)
+                        {
+                            apiType = XRInputAPIType.OculusXR;
+                        }
+                        else
+                        {
+                            #if UNITY_STANDALONE
+                            if (loaderType == XRInputLoaderType.OpenVR) apiType = XRInputAPIType.OpenVR;
+                            else apiType = XRInputAPIType.UnityEngine_XR;
+                            #else
+                            apiType = XRInputAPIType.UnityEngine_XR;
+                            #endif
+                        }
+                    }
                 }
-
-                // auto detect
-                if (apiType == XRInputAPIType.AutoDetect)
+                else
                 {
-                    if (loaderTypeName == "OpenXRLoader")
-                    {
-                        #if !XRINPUT_DISABLE_OPENXR
-                        string platformName = UnityEngine.XR.OpenXR.OpenXRRuntime.name;
-                        Debug.Log($"OpenXR platform name '{platformName}'");
-                        if (platformName == "Oculus") apiType = XRInputAPIType.OculusXR;
-                        else apiType = XRInputAPIType.UnityEngine_XR;
-                        #else
-                        throw new NotSupportedException("You have XRINPUT_DISABLE_OPENXR enabled");
-                        #endif
-                    }
-                    else if (loaderTypeName == "OculusLoader")
-                    {
-                        apiType = XRInputAPIType.OculusXR;
-                    }
-                    else
-                    {
-                        #if UNITY_STANDALONE
-                        if (loaderTypeName == "OpenVRLoader") apiType = XRInputAPIType.OpenVR;
-                        else apiType = XRInputAPIType.UnityEngine_XR;
-                        #else
-                        apiType = XRInputAPIType.UnityEngine_XR;
-                        #endif
-                    }
+                    loaderType = XRInputLoaderType.Unknown;
+                    loaderTypeName = "None";
                 }
 
                 // init api
@@ -144,6 +190,7 @@ namespace VRstudios
                     case XRInputAPIType.OculusXR: api = new OculusXR(); break;
                     case XRInputAPIType.OpenVR: api = new OpenVR_New(); break;
                     case XRInputAPIType.OpenVR_Legacy: api = new OpenVR_Legacy(); break;
+                    case XRInputAPIType.Pico2VR: api = new Pico2VR(); break;
                     default: throw new NotImplementedException();
                 }
 
@@ -162,6 +209,34 @@ namespace VRstudios
                 throw e;
 			}
 
+            // enable rig
+            if (rigSets != null)
+            {
+                foreach (var rig in rigSets)
+                {
+                    if (rig.loaderType == loaderType && rig.apiType == apiType)
+                    {
+                        if (rig.enableObjects != null)
+                        {
+                            foreach (var obj in rig.enableObjects)
+                            {
+                                if (obj != null) obj.SetActive(true);
+                            }
+                        }
+
+                        if (rig.disableObjects != null)
+                        {
+                            foreach (var obj in rig.disableObjects)
+                            {
+                                if (obj != null) obj.SetActive(false);
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // finish
             if (InitializedCallback != null) InitializedCallback(true);
         }
 
@@ -885,6 +960,7 @@ namespace VRstudios
     {
         Unknown,
         Oculus,
+        PICO,
         HTCVive,
         HTCViveCosmos,
         HTCViveWave,

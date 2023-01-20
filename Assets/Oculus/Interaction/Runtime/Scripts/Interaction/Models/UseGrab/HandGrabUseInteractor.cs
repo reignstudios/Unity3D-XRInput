@@ -59,30 +59,14 @@ namespace Oculus.Interaction.HandGrab
         public Action<IHandGrabState> WhenHandGrabStarted { get; set; } = delegate { };
         public Action<IHandGrabState> WhenHandGrabEnded { get; set; } = delegate { };
 
-        public override bool ShouldSelect
+        protected override bool ComputeShouldSelect()
         {
-            get
-            {
-                if (State != InteractorState.Hover)
-                {
-                    return false;
-                }
-
-                return _candidate == _interactable && _handUseShouldSelect;
-            }
+            return _handUseShouldSelect;
         }
 
-        public override bool ShouldUnselect
+        protected override bool ComputeShouldUnselect()
         {
-            get
-            {
-                if (State != InteractorState.Select)
-                {
-                    return false;
-                }
-
-                return _handUseShouldUnselect || SelectedInteractable == null;
-            }
+            return _handUseShouldUnselect || SelectedInteractable == null;
         }
 
         protected override void Awake()
@@ -108,7 +92,9 @@ namespace Oculus.Interaction.HandGrab
         protected override void InteractableUnselected(HandGrabUseInteractable interactable)
         {
             base.InteractableUnselected(interactable);
-            StopUsing();
+
+            _currentTarget.Clear();
+            _fingersInUse = HandFingerFlags.None;
         }
 
         private void StartUsing()
@@ -121,12 +107,6 @@ namespace Oculus.Interaction.HandGrab
 
             _currentTarget.Set(SelectedInteractable.transform,
                 HandAlignType.AlignOnGrab, HandGrabTarget.GrabAnchor.Wrist, result);
-        }
-
-        private void StopUsing()
-        {
-            _currentTarget.Clear();
-            _fingersInUse = HandFingerFlags.None;
         }
 
         protected override void DoHoverUpdate()
@@ -263,7 +243,7 @@ namespace Oculus.Interaction.HandGrab
             HandGrabUseInteractable bestCandidate = null;
 
             _usesHandPose = false;
-            IEnumerable<HandGrabUseInteractable> candidates = HandGrabUseInteractable.Registry.List(this);
+            var candidates = HandGrabUseInteractable.Registry.List(this);
             foreach (HandGrabUseInteractable candidate in candidates)
             {
                 candidate.FindBestHandPoses(Hand != null ? Hand.Scale : 1f,

@@ -31,7 +31,7 @@ namespace Oculus.Interaction
     {
 
         private IGrabbable _grabbable;
-        private Pose _previousGrabPose;
+        private Pose _grabDeltaInLocalSpace;
 
         public void Initialize(IGrabbable grabbable)
         {
@@ -41,22 +41,17 @@ namespace Oculus.Interaction
         public void BeginTransform()
         {
             Pose grabPoint = _grabbable.GrabPoints[0];
-            _previousGrabPose = grabPoint;
+            var targetTransform = _grabbable.Transform;
+            _grabDeltaInLocalSpace = new Pose(targetTransform.InverseTransformVector(grabPoint.position - targetTransform.position),
+                                            Quaternion.Inverse(grabPoint.rotation) * targetTransform.rotation);
         }
 
         public void UpdateTransform()
         {
             Pose grabPoint = _grabbable.GrabPoints[0];
             var targetTransform = _grabbable.Transform;
-
-            Vector3 worldOffsetFromGrab = targetTransform.position - _previousGrabPose.position;
-            Vector3 offsetInGrabSpace = Quaternion.Inverse(_previousGrabPose.rotation) * worldOffsetFromGrab;
-            Quaternion rotationInGrabSpace = Quaternion.Inverse(_previousGrabPose.rotation) * targetTransform.rotation;
-
-            targetTransform.position = (grabPoint.rotation * offsetInGrabSpace) + grabPoint.position;
-            targetTransform.rotation = grabPoint.rotation * rotationInGrabSpace;
-
-            _previousGrabPose = grabPoint;
+            targetTransform.rotation = grabPoint.rotation * _grabDeltaInLocalSpace.rotation;
+            targetTransform.position = grabPoint.position - targetTransform.TransformVector(_grabDeltaInLocalSpace.position);
         }
 
         public void EndTransform() { }

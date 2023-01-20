@@ -7,10 +7,11 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using Meta.Conduit.Editor;
 using Facebook.WitAi.Configuration;
 using Facebook.WitAi.Data.Configuration;
+using Facebook.WitAi.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,13 +20,18 @@ namespace Facebook.WitAi.Windows
     public class WitConfigurationEditor : Editor
     {
         public WitConfiguration configuration { get; private set; }
-        private string serverToken;
-        private string appName;
-        private string appID;
-        private bool initialized = false;
+        private string _serverToken;
+        private string _appName;
+        private string _appID;
+        private bool _initialized = false;
         public bool drawHeader = true;
-        private bool foldout = true;
-        private int requestTab = -1;
+        private bool _foldout = true;
+        private int _requestTab = 0;
+        private bool manifestAvailable = false;
+
+        private static ConduitStatistics _statistics;
+        private static readonly AssemblyMiner AssemblyMiner = new AssemblyMiner(new WitParameterValidator());
+        private static readonly ManifestGenerator ManifestGenerator = new ManifestGenerator(new AssemblyWalker(), AssemblyMiner);
 
         // Tab IDs
         protected const string TAB_APPLICATION_ID = "application";
@@ -33,6 +39,19 @@ namespace Facebook.WitAi.Windows
         protected const string TAB_ENTITIES_ID = "entities";
         protected const string TAB_TRAITS_ID = "traits";
         private string[] _tabIds = new string[] { TAB_APPLICATION_ID, TAB_INTENTS_ID, TAB_ENTITIES_ID, TAB_TRAITS_ID };
+
+        // Generate
+        private static ConduitStatistics Statistics
+        {
+            get
+            {
+                if (_statistics == null)
+                {
+                    _statistics = new ConduitStatistics(new PersistenceLayer());
+                }
+                return _statistics;
+            }
+        }
 
         public virtual Texture2D HeaderIcon => WitTexts.HeaderIcon;
         public virtual string HeaderUrl => WitTexts.GetAppURL(WitConfigurationUtility.GetAppID(configuration), WitTexts.WitAppEndpointType.Settings);
@@ -42,15 +61,16 @@ namespace Facebook.WitAi.Windows
         {
             // Refresh configuration & auth tokens
             configuration = target as WitConfiguration;
+
             // Get app server token
-            serverToken = WitAuthUtility.GetAppServerToken(configuration);
-            if (CanConfigurationRefresh(configuration) && WitConfigurationUtility.IsServerTokenValid(serverToken))
+            _serverToken = WitAuthUtility.GetAppServerToken(configuration);
+            if (CanConfigurationRefresh(configuration) && WitConfigurationUtility.IsServerTokenValid(_serverToken))
             {
                 // Get client token if needed
-                appID = WitConfigurationUtility.GetAppID(configuration);
-                if (string.IsNullOrEmpty(appID))
+                _appID = WitConfigurationUtility.GetAppID(configuration);
+                if (string.IsNullOrEmpty(_appID))
                 {
-                    configuration.SetServerToken(serverToken);
+                    configuration.SetServerToken(_serverToken);
                 }
                 // Refresh additional data
                 else
@@ -60,13 +80,18 @@ namespace Facebook.WitAi.Windows
             }
         }
 
+        public void OnDisable()
+        {
+            Statistics.Persist();
+        }
+
         public override void OnInspectorGUI()
         {
             // Init if needed
-            if (!initialized || configuration != target)
+            if (!_initialized || configuration != target)
             {
                 Initialize();
-                initialized = true;
+                _initialized = true;
             }
 
             // Draw header
@@ -87,6 +112,49 @@ namespace Facebook.WitAi.Windows
             }
         }
 
+        private void LayoutConduitContent()
+        {
+            // Get full manifest path & ensure it exists
+            string manifestPath = configuration.ManifestEditorPath;
+            manifestAvailable = File.Exists(manifestPath);
+
+            // Set conduit
+            var useConduit = (GUILayout.Toggle(configuration.useConduit, "Use Conduit (Beta)"));
+            if (configuration.useConduit != useConduit)
+            {
+                configuration.useConduit = useConduit;
+                EditorUtility.SetDirty(configuration);
+            }
+
+            // Auto-generate manifest
+            if (configuration.useConduit && !manifestAvailable)
+            {
+                GenerateManifest(configuration, configuration.openManifestOnGeneration);
+            }
+
+            {
+                EditorGUI.indentLevel++;
+                GUILayout.Space(EditorGUI.indentLevel * WitStyles.ButtonMargin);
+                {
+                    GUI.enabled = configuration.useConduit;
+                    GUILayout.BeginHorizontal();
+                    if (WitEditorUI.LayoutTextButton(manifestAvailable ? "Update Manifest" : "Generate Manifest"))
+                    {
+                        GenerateManifest(configuration, configuration.openManifestOnGeneration);
+                    }
+                    GUI.enabled = configuration.useConduit && manifestAvailable;
+                    if (WitEditorUI.LayoutTextButton("Select Manifest") && manifestAvailable)
+                    {
+                        Selection.activeObject = AssetDatabase.LoadAssetAtPath<TextAsset>(configuration.ManifestEditorPath);
+                    }
+                    GUI.enabled = true;
+                    GUILayout.EndHorizontal();
+                }
+                EditorGUI.indentLevel--;
+            }
+            EditorGUI.EndDisabledGroup();
+        }
+
         protected virtual void LayoutContent()
         {
             // Begin vertical box
@@ -98,21 +166,23 @@ namespace Facebook.WitAi.Windows
             // Title Foldout
             GUILayout.BeginHorizontal();
             string foldoutText = WitTexts.Texts.ConfigurationHeaderLabel;
-            if (!string.IsNullOrEmpty(appName))
+            if (!string.IsNullOrEmpty(_appName))
             {
-                foldoutText = foldoutText + " - " + appName;
+                foldoutText = foldoutText + " - " + _appName;
             }
-            foldout = WitEditorUI.LayoutFoldout(new GUIContent(foldoutText), foldout);
+
+            _foldout = WitEditorUI.LayoutFoldout(new GUIContent(foldoutText), _foldout);
             // Refresh button
             if (CanConfigurationRefresh(configuration))
             {
-                if (string.IsNullOrEmpty(appName))
+                if (string.IsNullOrEmpty(_appName))
                 {
-                    bool isValid =  WitConfigurationUtility.IsServerTokenValid(serverToken);
+                    bool isValid =  WitConfigurationUtility.IsServerTokenValid(_serverToken);
                     GUI.enabled = isValid;
                     if (WitEditorUI.LayoutTextButton(WitTexts.Texts.ConfigurationRefreshButtonLabel))
                     {
-                        ApplyServerToken(serverToken);
+                        configuration.ResetData();
+                        ApplyServerToken(_serverToken);
                     }
                 }
                 else
@@ -121,7 +191,7 @@ namespace Facebook.WitAi.Windows
                     GUI.enabled = !isRefreshing;
                     if (WitEditorUI.LayoutTextButton(isRefreshing ? WitTexts.Texts.ConfigurationRefreshingButtonLabel : WitTexts.Texts.ConfigurationRefreshButtonLabel))
                     {
-                        SafeRefresh();
+                        SafeRefresh(true);
                     }
                 }
             }
@@ -130,17 +200,18 @@ namespace Facebook.WitAi.Windows
             GUILayout.Space(WitStyles.ButtonMargin);
 
             // Show configuration app data
-            if (foldout)
+            if (_foldout)
             {
                 // Indent
                 EditorGUI.indentLevel++;
 
                 // Server access token
                 bool updated = false;
-                WitEditorUI.LayoutPasswordField(WitTexts.ConfigurationServerTokenContent, ref serverToken, ref updated);
-                if (updated)
+                WitEditorUI.LayoutPasswordField(WitTexts.ConfigurationServerTokenContent, ref _serverToken, ref updated);
+                if (updated && WitConfigurationUtility.IsServerTokenValid(_serverToken))
                 {
-                    ApplyServerToken(serverToken);
+                    configuration.ResetData();
+                    ApplyServerToken(_serverToken);
                 }
 
                 // Additional data
@@ -154,6 +225,10 @@ namespace Facebook.WitAi.Windows
             }
 
             // End vertical box layout
+            GUILayout.EndVertical();
+
+            GUILayout.BeginVertical(EditorStyles.helpBox);
+            LayoutConduitContent();
             GUILayout.EndVertical();
 
             // Layout configuration request tabs
@@ -178,18 +253,23 @@ namespace Facebook.WitAi.Windows
                 checkID = configuration.application.id;
             }
             // Reset
-            if (!string.Equals(appName, checkName) || !string.Equals(appID, checkID))
+            if (!string.Equals(_appName, checkName) || !string.Equals(_appID, checkID))
             {
-                appName = checkName;
-                appID = checkID;
-                serverToken = WitAuthUtility.GetAppServerToken(configuration);
+                _appName = checkName;
+                _appID = checkID;
+                _serverToken = WitAuthUtility.GetAppServerToken(configuration);
             }
         }
         // Apply server token
         public void ApplyServerToken(string newToken)
         {
-            serverToken = newToken;
-            configuration.SetServerToken(serverToken);
+            if (newToken != _serverToken)
+            {
+                _serverToken = newToken;
+                configuration.ResetData();
+            }
+
+            configuration.SetServerToken(_serverToken);
         }
         // Whether or not to allow a configuration to refresh
         protected virtual bool CanConfigurationRefresh(WitConfiguration configuration)
@@ -247,20 +327,20 @@ namespace Facebook.WitAi.Windows
                 for (int i = 0; i < _tabIds.Length; i++)
                 {
                     // Enable if not selected
-                    GUI.enabled = requestTab != i;
+                    GUI.enabled = _requestTab != i;
                     // If valid and clicked, begin selecting
                     string tabPropertyID = _tabIds[i];
                     if (ShouldTabShow(configuration, tabPropertyID))
                     {
                         if (WitEditorUI.LayoutTabButton(GetTabText(configuration, tabPropertyID, true)))
                         {
-                            requestTab = i;
+                            _requestTab = i;
                         }
                     }
                     // If invalid, stop selecting
-                    else if (requestTab == i)
+                    else if (_requestTab == i)
                     {
-                        requestTab = -1;
+                        _requestTab = -1;
                     }
                 }
                 GUI.enabled = true;
@@ -268,7 +348,7 @@ namespace Facebook.WitAi.Windows
             }
 
             // Layout selected tab using property id
-            string propertyID = requestTab >= 0 && requestTab < _tabIds.Length ? _tabIds[requestTab] : string.Empty;
+            string propertyID = _requestTab >= 0 && _requestTab < _tabIds.Length ? _tabIds[_requestTab] : string.Empty;
             if (!string.IsNullOrEmpty(propertyID) && configuration != null)
             {
                 SerializedObject serializedObj = new SerializedObject(configuration);
@@ -302,6 +382,22 @@ namespace Facebook.WitAi.Windows
         // Determine if tab should show
         protected virtual bool ShouldTabShow(WitConfiguration configuration, string tabID)
         {
+            if(null == configuration.application ||
+                   string.IsNullOrEmpty(configuration.application.id))
+            {
+                return false;
+            }
+
+            switch (tabID)
+            {
+                case TAB_INTENTS_ID:
+                    return null != configuration.intents;
+                case TAB_ENTITIES_ID:
+                    return null != configuration.entities;
+                case TAB_TRAITS_ID:
+                    return null != configuration.traits;
+            }
+
             return true;
         }
         // Get tab text
@@ -320,16 +416,99 @@ namespace Facebook.WitAi.Windows
             }
             return string.Empty;
         }
-        // Safe refresh
+
         protected virtual void SafeRefresh()
         {
-            if (WitConfigurationUtility.IsServerTokenValid(serverToken))
+            SafeRefresh(false);
+        }
+
+        // Safe refresh
+        private void SafeRefresh(bool resetData)
+        {
+            if (EditorApplication.isPlayingOrWillChangePlaymode) return;
+
+            if (resetData)
             {
-                configuration.SetServerToken(serverToken);
+                configuration.ResetData();
+            }
+
+            if (WitConfigurationUtility.IsServerTokenValid(_serverToken))
+            {
+                configuration.SetServerToken(_serverToken);
             }
             else if (WitConfigurationUtility.IsClientTokenValid(configuration.clientAccessToken))
             {
                 configuration.RefreshData();
+            }
+        }
+
+        [UnityEditor.Callbacks.DidReloadScripts]
+        private static void OnScriptsReloaded() {
+            foreach (var witConfig in WitConfigurationUtility.WitConfigs)
+            {
+                if (witConfig.useConduit)
+                {
+                    GenerateManifest(witConfig, false);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Generates a manifest and optionally opens it in the editor.
+        /// </summary>
+        /// <param name="configuration">The configuration that we are generating the manifest for.</param>
+        /// <param name="openManifest">If true, will open the manifest file in the code editor.</param>
+        private static void GenerateManifest(WitConfiguration configuration, bool openManifest)
+        {
+            // Generate
+            var startGenerationTime = DateTime.UtcNow;
+            var manifest = ManifestGenerator.GenerateManifest(configuration.application.name,
+                configuration.application.id);
+            var endGenerationTime = DateTime.UtcNow;
+
+            // Get file path
+            string fullPath = configuration.ManifestEditorPath;
+            if (string.IsNullOrEmpty(fullPath) || !File.Exists(fullPath))
+            {
+                string directory = Application.dataPath + "/Oculus/Voice/Resources";
+                IOUtility.CreateDirectory(directory, true);
+                fullPath = directory + "/" + configuration.manifestLocalPath;
+            }
+
+            // Write to file
+            try
+            {
+                var writer = new StreamWriter(fullPath);
+                writer.WriteLine(manifest);
+                writer.Close();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Wit Configuration Editor - Conduit manifest generation Failed\nPath: {fullPath}\n{e}");
+                return;
+            }
+
+            Statistics.SuccessfulGenerations++;
+            Statistics.AddFrequencies(AssemblyMiner.SignatureFrequency);
+            Statistics.AddIncompatibleFrequencies(AssemblyMiner.IncompatibleSignatureFrequency);
+
+            string unityPath = fullPath.Replace(Application.dataPath, "Assets");
+            AssetDatabase.ImportAsset(unityPath);
+
+            string configName = configuration.name;
+            string manifestName = Path.GetFileNameWithoutExtension(unityPath);
+#if UNITY_2021_2_OR_NEWER
+            string configPath = AssetDatabase.GetAssetPath(configuration);
+            configName = $"<a href=\"{configPath}\">{configName}</a>";
+            manifestName = $"<a href=\"{unityPath}\">{manifestName}</a>";
+#endif
+            Debug.Log($"Ref: {unityPath}");
+            var generationTime = endGenerationTime - startGenerationTime;
+            Debug.Log($"Wit Configuration Editor - Conduit manifest generated\nConfiguration: {configName}\nManifest: {manifestName}\nGeneration Time: {generationTime.TotalMilliseconds} ms");
+
+            if (openManifest)
+            {
+                UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(fullPath, 1);
             }
         }
     }

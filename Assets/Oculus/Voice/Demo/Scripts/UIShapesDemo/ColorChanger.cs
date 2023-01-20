@@ -57,11 +57,9 @@ namespace Oculus.Voice.Demo.UIShapesDemo
         {
             if (shapes.Length != 0 && colorNames.Length != shapes.Length)
             {
-                Debug.LogWarning("Mismatched entity pairings.");
                 return;
             }
             if (shapes.Length == 0 || shapes[0] == "color"){
-                Debug.LogWarning("updating all.");
                 UpdateColorAllShapes(colorNames);
                 return;
             }

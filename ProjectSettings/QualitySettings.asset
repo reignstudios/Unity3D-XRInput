@@ -87,6 +87,7 @@ QualitySettings:
     Nintendo Switch: 1
     PS4: 1
     PSP2: 0
+    Server: 0
     Stadia: 1
     Standalone: 1
     WebGL: 0

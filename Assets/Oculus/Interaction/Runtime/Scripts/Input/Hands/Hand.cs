@@ -19,7 +19,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Oculus.Interaction.Input
@@ -30,14 +29,12 @@ namespace Oculus.Interaction.Input
     // from other sources.
     public class Hand : DataModifier<HandDataAsset>, IHand
     {
-        [SerializeField]
+        [SerializeField, Optional]
         [Tooltip(
             "Provides access to additional functionality on top of what the IHand interface provides." +
             "For example, this list can be used to provide access to the SkinnedMeshRenderer through " +
             "the IHand.GetHandAspect method.")]
         private Component[] _aspects;
-
-        public IReadOnlyList<Component> Aspects => _aspects;
 
         public Handedness Handedness => GetData().Config.Handedness;
 
@@ -263,32 +260,36 @@ namespace Oculus.Interaction.Input
             return poseOrigin == PoseOrigin.None;
         }
 
-        public bool GetHandAspect<TComponent>(out TComponent foundComponent) where TComponent : class
+        public bool TryGetAspect<TAspect>(out TAspect foundAspect) where TAspect : class
         {
             foreach (Component aspect in _aspects)
             {
-                foundComponent = aspect as TComponent;
-                if (foundComponent != null)
+                foundAspect = aspect as TAspect;
+                if (foundAspect != null)
                 {
                     return true;
                 }
             }
 
-            foundComponent = null;
+            if (ModifyDataFromSource is IAspectProvider)
+            {
+                IAspectProvider prevDevice = ModifyDataFromSource as IAspectProvider;
+                return prevDevice.TryGetAspect(out foundAspect);
+            }
+
+            foundAspect = null;
             return false;
         }
 
         #region Inject
 
         public void InjectAllHand(UpdateModeFlags updateMode, IDataSource updateAfter,
-            DataModifier<HandDataAsset> modifyDataFromSource, bool applyModifier,
-            Component[] aspects)
+            DataModifier<HandDataAsset> modifyDataFromSource, bool applyModifier)
         {
             base.InjectAllDataModifier(updateMode, updateAfter, modifyDataFromSource, applyModifier);
-            InjectAspects(aspects);
         }
 
-        public void InjectAspects(Component[] aspects)
+        public void InjectOptionalAspects(Component[] aspects)
         {
             _aspects = aspects;
         }

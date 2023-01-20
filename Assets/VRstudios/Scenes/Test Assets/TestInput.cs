@@ -11,6 +11,8 @@ namespace VRstudios
 
 		private void Start()
 		{
+            Debug.Log($"XRInput environment: OS:'{SystemInfo.operatingSystem}' GPU:'{SystemInfo.graphicsDeviceName}' API:{SystemInfo.graphicsDeviceType} Rez:({Screen.width}, {Screen.height})");
+
 			XRInput.InitializedCallback += XRInput_InitializedCallback;
 			XRInput.DisposedCallback += XRInput_DisposedCallback;
 			XRInput.ControllerConnectedCallback += XRInput_ControllerConnectedCallback;

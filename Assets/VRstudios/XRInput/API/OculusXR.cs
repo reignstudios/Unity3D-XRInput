@@ -75,7 +75,8 @@ namespace VRstudios.API
 
                 // analogs
                 state_controller.trigger.Update(OVRInput.Get(OVRInput.RawAxis1D.RIndexTrigger, controller));
-                state_controller.grip.Update(OVRInput.Get(OVRInput.RawAxis1D.RHandTrigger, controller));
+                float gripValue = OVRInput.Get(OVRInput.RawAxis1D.RHandTrigger, controller);
+                state_controller.grip.Update(gripValue);
 
                 // joysticks
                 state_controller.joystick.Update(OVRInput.Get(OVRInput.RawAxis2D.RThumbstick, controller));
@@ -85,6 +86,7 @@ namespace VRstudios.API
                 state_controller.touch2.Update(OVRInput.Get(OVRInput.RawTouch.B, controller));
                 state_controller.touchTrigger.Update(OVRInput.Get(OVRInput.RawTouch.RIndexTrigger, controller));
                 //state_controller.touchGrip.Update(OVRInput.Get(OVRInput.RawTouch.RHandTrigger, controller));// doesn't exist
+                state_controller.touchGrip.Update(gripValue >= XRControllerAnalog.tolerance);
                 state_controller.touchJoystick.Update(OVRInput.Get(OVRInput.RawTouch.RThumbstick, controller));
             }
             else if (controller == OVRInput.Controller.LHand)
@@ -101,7 +103,8 @@ namespace VRstudios.API
 
                 // analogs
                 state_controller.trigger.Update(OVRInput.Get(OVRInput.RawAxis1D.LIndexTrigger, controller));
-                state_controller.grip.Update(OVRInput.Get(OVRInput.RawAxis1D.LHandTrigger, controller));
+                float gripValue = OVRInput.Get(OVRInput.RawAxis1D.LHandTrigger, controller);
+                state_controller.grip.Update(gripValue);
 
                 // joysticks
                 state_controller.joystick.Update(OVRInput.Get(OVRInput.RawAxis2D.LThumbstick, controller));
@@ -111,6 +114,7 @@ namespace VRstudios.API
                 state_controller.touch2.Update(OVRInput.Get(OVRInput.RawTouch.Y, controller));
                 state_controller.touchTrigger.Update(OVRInput.Get(OVRInput.RawTouch.LIndexTrigger, controller));
                 //state_controller.touchGrip.Update(OVRInput.Get(OVRInput.RawTouch.LHandTrigger, controller));// doesn't exist
+                state_controller.touchGrip.Update(gripValue >= XRControllerAnalog.tolerance);
                 state_controller.touchJoystick.Update(OVRInput.Get(OVRInput.RawTouch.LThumbstick, controller));
             }
 

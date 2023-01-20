@@ -203,6 +203,20 @@ namespace Oculus.Interaction.HandGrab
             return _grabPoseFinder.UsesHandPose();
         }
 
+        public bool SupportsHandedness(Handedness handedness)
+        {
+            return _grabPoseFinder.SupportsHandedness(handedness);
+        }
+
+        public void ApplyVelocities(Vector3 linearVelocity, Vector3 angularVelocity)
+        {
+            if (_physicsGrabbable == null)
+            {
+                return;
+            }
+            _physicsGrabbable.ApplyVelocities(linearVelocity, angularVelocity);
+        }
+
         #endregion
 
         #region generation
@@ -280,15 +294,6 @@ namespace Oculus.Interaction.HandGrab
             return point;
         }
         #endregion
-
-        public void ApplyVelocities(Vector3 linearVelocity, Vector3 angularVelocity)
-        {
-            if (_physicsGrabbable == null)
-            {
-                return;
-            }
-            _physicsGrabbable.ApplyVelocities(linearVelocity, angularVelocity);
-        }
 
         #region Inject
 

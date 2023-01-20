@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: PXR Settings
   m_EditorClassIdentifier: 
   stereoRenderingModeAndroid: 0
-  useDefaultRenderTexture: 1
-  eyeRenderTextureResolution: {x: 2048, y: 2048}
+  systemDisplayFrequency: 0

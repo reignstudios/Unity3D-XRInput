@@ -44,7 +44,7 @@ using Device = UnityEngine.XR.XRDevice;
 /// <summary>
 /// Miscellaneous extension methods that any script can use.
 /// </summary>
-public static class OVRExtensions
+public static partial class OVRExtensions
 {
 	/// <summary>
 	/// Converts the given world-space transform to an OVRPose in tracking space.
@@ -84,11 +84,17 @@ public static class OVRExtensions
 		OVRPose poseInHeadSpace = trackingSpacePose.ToHeadSpacePose();
 
 		// Transform from head space to world space
-		OVRPose ret = mainCamera.transform.ToOVRPose() * poseInHeadSpace;
-
-		return ret;
+		var cameraTransform = mainCamera.transform.localToWorldMatrix;
+		var headSpaceTransform = Matrix4x4.TRS(
+			poseInHeadSpace.position, poseInHeadSpace.orientation, Vector3.one);
+		var worldSpaceTransform = cameraTransform * headSpaceTransform;
+		return new OVRPose
+		{
+			position = worldSpaceTransform.GetColumn(3),
+			orientation = worldSpaceTransform.rotation
+		};
 	}
-	
+
 	/// <summary>
 	/// Converts the given pose from tracking-space to head-space.
 	/// </summary>

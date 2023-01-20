@@ -1,0 +1,11 @@
+<<< OculusXR >>>
+* In OculusXRFeatureEnabler disable "EditorApplication.update += EnableOculusXRFeature;"
+
+<<< Legacy PicoVR >>>
+* In Pvr_SDKSetting disable "EditorApplication.update += Update;"
+* To disable:
+	* Change Plugins/Android/AndroidManifest to PICO2_AndroidManifest
+	* Disable Plugins/Android/Pico_PaymentSDK_Android_V1.0.24
+	* Disable Plugins/Android/libs/pvrSDK-release
+
+<<< PicoVR >>>

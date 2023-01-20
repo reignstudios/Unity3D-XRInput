@@ -20,7 +20,6 @@
 
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Oculus.Interaction
 {
@@ -41,8 +40,12 @@ namespace Oculus.Interaction
         [SerializeField, Optional]
         private Transform _pivotTransform = null;
 
+        public Transform Pivot => _pivotTransform != null ? _pivotTransform : transform;
+
         [SerializeField]
         private Axis _rotationAxis = Axis.Up;
+
+        public Axis RotationAxis => _rotationAxis;
 
         [Serializable]
         public class OneGrabRotateConstraints
@@ -52,7 +55,12 @@ namespace Oculus.Interaction
         }
 
         [SerializeField]
-        private OneGrabRotateConstraints _constraints;
+        private OneGrabRotateConstraints _constraints =
+            new OneGrabRotateConstraints()
+        {
+            MinAngle = new FloatConstraint(),
+            MaxAngle = new FloatConstraint()
+        };
 
         public OneGrabRotateConstraints Constraints
         {
@@ -71,19 +79,82 @@ namespace Oculus.Interaction
         private float _constrainedRelativeAngle = 0.0f;
 
         private IGrabbable _grabbable;
+        private Vector3 _grabPositionInPivotSpace;
+        private Pose _transformPoseInPivotSpace;
 
-        private Pose _previousGrabPose;
+        private Pose _worldPivotPose;
+        private Vector3 _previousVectorInPivotSpace;
+
+        private Quaternion _localRotation;
+        private float _startAngle = 0;
 
         public void Initialize(IGrabbable grabbable)
         {
             _grabbable = grabbable;
         }
 
+        public Pose ComputeWorldPivotPose()
+        {
+            if (_pivotTransform != null)
+            {
+                return _pivotTransform.GetPose();
+            }
+
+            var targetTransform = _grabbable.Transform;
+
+            Vector3 worldPosition = targetTransform.position;
+            Quaternion worldRotation = targetTransform.parent != null
+                ? targetTransform.parent.rotation * _localRotation
+                : _localRotation;
+
+            return new Pose(worldPosition, worldRotation);
+        }
+
         public void BeginTransform()
         {
-            _relativeAngle = _constrainedRelativeAngle;
             var grabPoint = _grabbable.GrabPoints[0];
-            _previousGrabPose = grabPoint;
+            var targetTransform = _grabbable.Transform;
+
+            if (_pivotTransform == null)
+            {
+                _localRotation = targetTransform.localRotation;
+            }
+
+            Vector3 localAxis = Vector3.zero;
+            localAxis[(int)_rotationAxis] = 1f;
+
+            _worldPivotPose = ComputeWorldPivotPose();
+            Vector3 rotationAxis = _worldPivotPose.rotation * localAxis;
+
+            Quaternion inverseRotation = Quaternion.Inverse(_worldPivotPose.rotation);
+
+            Vector3 grabDelta = grabPoint.position - _worldPivotPose.position;
+            // The initial delta must be non-zero between the pivot and grab location for rotation
+            if (Mathf.Abs(grabDelta.magnitude) < 0.001f)
+            {
+                Vector3 localAxisNext = Vector3.zero;
+                localAxisNext[((int)_rotationAxis + 1) % 3] = 0.001f;
+                grabDelta = _worldPivotPose.rotation * localAxisNext;
+            }
+
+            _grabPositionInPivotSpace =
+                inverseRotation * grabDelta;
+
+            Vector3 worldPositionDelta =
+                inverseRotation * (targetTransform.position - _worldPivotPose.position);
+
+            Quaternion worldRotationDelta = inverseRotation * targetTransform.rotation;
+            _transformPoseInPivotSpace = new Pose(worldPositionDelta, worldRotationDelta);
+
+            Vector3 initialOffset = _worldPivotPose.rotation * _grabPositionInPivotSpace;
+            Vector3 initialVector = Vector3.ProjectOnPlane(initialOffset, rotationAxis);
+            _previousVectorInPivotSpace = Quaternion.Inverse(_worldPivotPose.rotation) * initialVector;
+
+            _startAngle = _constrainedRelativeAngle;
+            _relativeAngle = _startAngle;
+
+            float parentScale = targetTransform.parent != null ? targetTransform.parent.lossyScale.x : 1f;
+            _transformPoseInPivotSpace.position /= parentScale;
         }
 
         public void UpdateTransform()
@@ -91,43 +162,50 @@ namespace Oculus.Interaction
             var grabPoint = _grabbable.GrabPoints[0];
             var targetTransform = _grabbable.Transform;
 
-            Transform pivot = _pivotTransform != null ? _pivotTransform : targetTransform;
-            Vector3 worldAxis = Vector3.zero;
-            worldAxis[(int)_rotationAxis] = 1f;
-            Vector3 rotationAxis = pivot.TransformDirection(worldAxis);
+            Vector3 localAxis = Vector3.zero;
+            localAxis[(int)_rotationAxis] = 1f;
+            _worldPivotPose = ComputeWorldPivotPose();
+            Vector3 rotationAxis = _worldPivotPose.rotation * localAxis;
 
             // Project our positional offsets onto a plane with normal equal to the rotation axis
-            Vector3 initialOffset = _previousGrabPose.position - pivot.position;
-            Vector3 initialVector = Vector3.ProjectOnPlane(initialOffset, rotationAxis);
-
-            Vector3 targetOffset = grabPoint.position - pivot.position;
+            Vector3 targetOffset = grabPoint.position - _worldPivotPose.position;
             Vector3 targetVector = Vector3.ProjectOnPlane(targetOffset, rotationAxis);
 
-            // Shortest angle between two planar vectors is the angle about the axis
-            // Because we know the vectors are planar, we derive the sign ourselves
-            float angleDelta = Vector3.Angle(initialVector, targetVector);
-            angleDelta *= Vector3.Dot(Vector3.Cross(initialVector, targetVector), rotationAxis) > 0.0f ? 1.0f : -1.0f;
+            Vector3 previousVectorInWorldSpace =
+                _worldPivotPose.rotation * _previousVectorInPivotSpace;
 
-            float previousAngle = _constrainedRelativeAngle;
+            // update previous
+            _previousVectorInPivotSpace = Quaternion.Inverse(_worldPivotPose.rotation) * targetVector;
 
-            _relativeAngle += angleDelta;
+            float signedAngle =
+                Vector3.SignedAngle(previousVectorInWorldSpace, targetVector, rotationAxis);
+
+            _relativeAngle += signedAngle;
+
             _constrainedRelativeAngle = _relativeAngle;
-            if (_constraints.MinAngle.Constrain)
+            if (Constraints.MinAngle.Constrain)
             {
-                _constrainedRelativeAngle = Mathf.Max(_constrainedRelativeAngle, _constraints.MinAngle.Value);
+                _constrainedRelativeAngle = Mathf.Max(_constrainedRelativeAngle, Constraints.MinAngle.Value);
+            }
+            if (Constraints.MaxAngle.Constrain)
+            {
+                _constrainedRelativeAngle = Mathf.Min(_constrainedRelativeAngle, Constraints.MaxAngle.Value);
             }
 
-            if (_constraints.MaxAngle.Constrain)
-            {
-                _constrainedRelativeAngle = Mathf.Min(_constrainedRelativeAngle, _constraints.MaxAngle.Value);
-            }
+            Quaternion deltaRotation = Quaternion.AngleAxis(_constrainedRelativeAngle - _startAngle, rotationAxis);
 
-            angleDelta = _constrainedRelativeAngle - previousAngle;
+            float parentScale = targetTransform.parent != null ? targetTransform.parent.lossyScale.x : 1f;
+            Pose transformDeltaInWorldSpace =
+                new Pose(
+                    _worldPivotPose.rotation * (parentScale * _transformPoseInPivotSpace.position),
+                    _worldPivotPose.rotation * _transformPoseInPivotSpace.rotation);
 
-            // Apply this angle rotation about the axis to our transform
-            targetTransform.RotateAround(pivot.position, rotationAxis, angleDelta);
+            Pose transformDeltaRotated = new Pose(
+                deltaRotation * transformDeltaInWorldSpace.position,
+                deltaRotation * transformDeltaInWorldSpace.rotation);
 
-            _previousGrabPose = grabPoint;
+            targetTransform.position = _worldPivotPose.position + transformDeltaRotated.position;
+            targetTransform.rotation = transformDeltaRotated.rotation;
         }
 
         public void EndTransform() { }

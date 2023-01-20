@@ -27,23 +27,28 @@ namespace Oculus.Interaction.Input.Filter
 {
     // Temporary structure used to pass data to and from native components
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct HandData
-    {
+
+    public struct HandData
+   {
         private const int NumHandJoints = 24;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = NumHandJoints * 4, ArraySubType = UnmanagedType.R4)]
-        private readonly float[] jointValues;
-        private readonly float _rootRotX;
-        private readonly float _rootRotY;
-        private readonly float _rootRotZ;
-        private readonly float _rootRotW;
-        private readonly float _rootPosX;
-        private readonly float _rootPosY;
-        private readonly float _rootPosZ;
+        private float[] jointValues;
+        private float _rootRotX;
+        private float _rootRotY;
+        private float _rootRotZ;
+        private float _rootRotW;
+        private float _rootPosX;
+        private float _rootPosY;
+        private float _rootPosZ;
 
-        public HandData(IReadOnlyList<Quaternion> joints, Pose root)
+        public void Init()
         {
-            Assert.AreEqual(NumHandJoints, joints.Count);
             jointValues = new float[NumHandJoints * 4];
+        }
+
+        public void SetData(Quaternion[] joints, Pose root)
+        {
+            Assert.AreEqual(NumHandJoints, joints.Length);
             for (int jointIndex = 0; jointIndex < NumHandJoints; jointIndex++)
             {
                 Quaternion joint = joints[jointIndex];
@@ -128,9 +133,11 @@ namespace Oculus.Interaction.Input.Filter
         private int _handModifierHandle = -1;
         private const string _logPrefix = "[Oculus.Interaction]";
         private bool _hasFlaggedError = false;
+        private HandData _handData = new HandData();
 
         protected virtual void Awake()
         {
+            _handData.Init();
             _dataSourceHandle = isdk_DataSource_Create(_isdkExternalHandSourceId);
             Assert.IsTrue(_dataSourceHandle >= 0, $"{_logPrefix} Unable to allocate external hand data source!");
 
@@ -271,13 +278,11 @@ namespace Oculus.Interaction.Input.Filter
             if (_filterParameters == null)
                 return true;
 
-            int result = -1;
-
             // pipe data asset into temp struct
-            HandData handData = new HandData(handDataAsset.Joints, handDataAsset.Root);
+            _handData.SetData(handDataAsset.Joints,handDataAsset.Root);
 
             // Send it
-            result = isdk_ExternalHandSource_SetData(_dataSourceHandle, handData);
+            int result = isdk_ExternalHandSource_SetData(_dataSourceHandle, _handData);
             if (result != _isdkSuccess)
             {
                 return false;
@@ -291,14 +296,14 @@ namespace Oculus.Interaction.Input.Filter
             }
 
             // Get result
-            result = isdk_DataSource_GetData(_handModifierHandle, ref handData);
+            result = isdk_DataSource_GetData(_handModifierHandle, ref _handData);
             if (result != _isdkSuccess)
             {
                 return false;
             }
 
             // Copy results into our hand data asset
-            handData.GetData(ref handDataAsset.Joints, out handDataAsset.Root);
+            _handData.GetData(ref handDataAsset.Joints, out handDataAsset.Root);
 
             return true;
         }

@@ -25,10 +25,14 @@ namespace Oculus.Interaction.Input
 {
     public class Hmd : DataModifier<HmdDataAsset>, IHmd
     {
+        [SerializeField, Optional]
+        [Tooltip("Provides access to additional functionality on top of what the IHmd interface provides.")]
+        private Component[] _aspects;
+
         public ITrackingToWorldTransformer TrackingToWorldTransformer =>
           GetData().Config.TrackingToWorldTransformer;
 
-        public event Action HmdUpdated = delegate { };
+        public event Action WhenUpdated = delegate { };
 
         protected override void Apply(HmdDataAsset data)
         {
@@ -41,7 +45,7 @@ namespace Oculus.Interaction.Input
 
             if (Started)
             {
-                HmdUpdated();
+                WhenUpdated();
             }
         }
 
@@ -57,5 +61,36 @@ namespace Oculus.Interaction.Input
             pose = TrackingToWorldTransformer.ToWorldPose(currentData.Root);
             return true;
         }
+
+        public bool TryGetAspect<TAspect>(out TAspect foundAspect) where TAspect : class
+        {
+            foreach (Component aspect in _aspects)
+            {
+                foundAspect = aspect as TAspect;
+                if (foundAspect != null)
+                {
+                    return true;
+                }
+            }
+
+            if (ModifyDataFromSource is IAspectProvider)
+            {
+                IAspectProvider prevDevice = ModifyDataFromSource as IAspectProvider;
+                return prevDevice.TryGetAspect(out foundAspect);
+            }
+
+
+            foundAspect = null;
+            return false;
+        }
+
+        #region Inject
+
+        public void InjectOptionalAspects(Component[] aspects)
+        {
+            _aspects = aspects;
+        }
+
+        #endregion
     }
 }

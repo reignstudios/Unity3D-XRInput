@@ -36,7 +36,7 @@ namespace Oculus.Voice.Demo.BuiltInDemo
         [Tooltip("The UI text element to show app messages.")]
         public Text logText;
 
-        [Tooltip("The timer ring sound.")] public AudioClip buzzSound;
+        [Tooltip("The timer ring sound.")] public AudioClip[] timesUpSounds;
 
         // Update is called once per frame
         void Update()
@@ -66,8 +66,9 @@ namespace Oculus.Voice.Demo.BuiltInDemo
             _time = 0;
             _timerRunning = false;
             _timerExist = false;
-            Log("Buzz!");
-            AudioSource.PlayClipAtPoint(buzzSound, Vector3.zero);
+            Log("Your timer is complete.");
+            AudioClip timesUpSfx = timesUpSounds[UnityEngine.Random.Range(0, timesUpSounds.Length)];
+            AudioSource.PlayClipAtPoint(timesUpSfx, Vector3.zero);
         }
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace Oculus.Voice.Demo.BuiltInDemo
         {
             if (_timerExist)
             {
-                Log("A timer already exist.");
+                Debug.LogWarning("A timer already exist.");
                 return;
             }
 
@@ -104,10 +105,6 @@ namespace Oculus.Voice.Demo.BuiltInDemo
                 _timerExist = true;
                 _timerRunning = true;
                 Log($"Countdown Timer is set for {entityValues[0]} {entityValues[1]}(s).");
-            }
-            else
-            {
-                Log("Error in CreateTimer(): Could not parse wit reply.");
             }
         }
 
@@ -118,7 +115,7 @@ namespace Oculus.Voice.Demo.BuiltInDemo
         {
             // Show the remaining time of the countdown timer.
             var msg = GetFormattedTimeFromSeconds();
-            Log(msg);
+            //Log(msg);
         }
 
         /// <summary>

@@ -176,6 +176,11 @@ namespace Oculus.Interaction.HandGrab
             return _grabPoseFinder.UsesHandPose();
         }
 
+        public bool SupportsHandedness(Handedness handedness)
+        {
+            return _grabPoseFinder.SupportsHandedness(handedness);
+        }
+
         public void ApplyVelocities(Vector3 linearVelocity, Vector3 angularVelocity)
         {
             if (_physicsGrabbable == null)

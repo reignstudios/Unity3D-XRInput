@@ -6,9 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-using System;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace Facebook.WitAi
@@ -51,6 +48,7 @@ namespace Facebook.WitAi
             public string UnderstandingViewerAbortButtonLabel;
             public string UnderstandingViewerListeningLabel;
             public string UnderstandingViewerLoadingLabel;
+            public string UnderstandingViewerSelectLabel;
             [Header("Settings Texts")]
             public string SettingsTitleLabel;
             public string SettingsServerTokenLabel;

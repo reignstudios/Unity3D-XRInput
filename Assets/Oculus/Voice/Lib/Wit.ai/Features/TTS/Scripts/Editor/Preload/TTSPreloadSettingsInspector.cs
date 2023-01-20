@@ -8,11 +8,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Facebook.WitAi.Configuration;
 using Facebook.WitAi.Data.Configuration;
 using Facebook.WitAi.TTS.Data;
 using Facebook.WitAi.TTS.Editor.Preload;
+using Facebook.WitAi.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -60,22 +59,31 @@ namespace Facebook.WitAi.TTS.Editor
 
             // Indent
             EditorGUI.indentLevel++;
-
-            // Get TTS Service if needed
             EditorGUILayout.Space();
-            TtsService = EditorGUILayout.ObjectField("TTS Service", TtsService, typeof(TTSService), true) as TTSService;
-            if (TtsService == null)
+
+            // Hide when playing
+            if (Application.isPlaying)
             {
-                if (!Application.isPlaying)
-                {
-                    EditorUtility.ClearProgressBar();
-                    TtsService = GameObject.FindObjectOfType<TTSService>();
-                }
-                WitEditorUI.LayoutErrorLabel("You must add a TTS Service to the loaded scene in order perform TTS actions.");
+                EditorUtility.ClearProgressBar();
+                WitEditorUI.LayoutErrorLabel("TTS preload actions cannot be performed at runtime.");
                 EditorGUI.indentLevel--;
                 return;
             }
-            if (TtsService != null && _ttsVoiceIDs == null)
+
+            // Get TTS Service if needed
+            TtsService = EditorGUILayout.ObjectField("TTS Service", TtsService, typeof(TTSService), true) as TTSService;
+            if (TtsService == null)
+            {
+                TtsService = GameObjectSearchUtility.FindSceneObject<TTSService>(true);
+                if (TtsService == null)
+                {
+                    EditorUtility.ClearProgressBar();
+                    WitEditorUI.LayoutErrorLabel("You must add a TTS Service to the loaded scene in order perform TTS actions.");
+                    EditorGUI.indentLevel--;
+                    return;
+                }
+            }
+            if (_ttsVoiceIDs == null)
             {
                 _ttsVoiceIDs = GetVoiceIDs(TtsService);
             }

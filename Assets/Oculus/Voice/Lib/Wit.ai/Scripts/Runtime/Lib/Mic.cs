@@ -19,7 +19,8 @@
 // THE SOFTWARE.
 // Source: https://github.com/adrenak/unimic/blob/master/Assets/UniMic/Runtime/Mic.cs
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR && UNITY_ANDROID
+// Simulates Android Permission Popup
 #define EDITOR_PERMISSION_POPUP
 #endif
 
@@ -29,7 +30,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Facebook.WitAi.Data;
 using Facebook.WitAi.Interfaces;
-using Facebook.WitAi.Utilities;
 
 namespace Facebook.WitAi.Lib
 {
@@ -174,6 +174,25 @@ namespace Facebook.WitAi.Lib
             }
         }
 
+        /// <summary>
+        /// Enable to show mic log
+        /// </summary>
+        [SerializeField] private bool _showLog = false;
+
+        // Log comments or errors
+        public void Log(string comment, bool warning = false)
+        {
+            string final = $"[Mic] {comment}";
+            if (warning)
+            {
+                Debug.LogWarning(final);
+            }
+            else if (_showLog)
+            {
+                Debug.Log(final);
+            }
+        }
+
         private void OnEnable()
         {
             SafeStartMicrophone();
@@ -227,7 +246,7 @@ namespace Facebook.WitAi.Lib
 
             // Ignore if already setup & recording
             string micID = CurrentDeviceName;
-            if (!string.IsNullOrEmpty(micID) && AudioClip != null && string.Equals(micID, AudioClip.name) && Microphone.IsRecording(micID))
+            if (!string.IsNullOrEmpty(micID) && AudioClip != null && string.Equals(micID, AudioClip.name) && MicrophoneIsRecording(micID))
             {
                 return;
             }
@@ -244,15 +263,26 @@ namespace Facebook.WitAi.Lib
             string oldDevice = CurrentDeviceName;
             _devices = new List<string>();
             UnityEngine.Profiling.Profiler.BeginSample("Microphone Devices");
-            string[] micIDs = Microphone.devices;
-            Debug.Log("Checking for Mic Devices");
+            string[] micIDs = MicrophoneGetDevices();
             if (micIDs != null)
             {
-                #if EDITOR_PERMISSION_POPUP
-                if (Time.frameCount > 5)
-                #endif
+                _devices.AddRange(micIDs);
+            }
+#if EDITOR_PERMISSION_POPUP
+            if (Time.frameCount < 5)
+            {
+                _devices.Clear();
+            }
+            else
+#endif
+            {
+                if (_devices.Count == 0)
                 {
-                    _devices.AddRange(micIDs);
+                    Log("No mics found", true);
+                }
+                else
+                {
+                    Log($"Found {_devices.Count} Mics");
                 }
             }
             UnityEngine.Profiling.Profiler.EndSample();
@@ -272,17 +302,21 @@ namespace Facebook.WitAi.Lib
 
         private void StartMicrophone()
         {
-            Debug.Log("[Mic] Reserved mic " + CurrentDeviceName);
+#if !UNITY_WEBGL
+            Log("Reserved mic " + CurrentDeviceName);
             AudioClip = Microphone.Start(CurrentDeviceName, true, 1, AudioEncoding.samplerate);
             AudioClip.name = CurrentDeviceName;
+#endif
         }
 
         private void StopMicrophone()
         {
-            if (Microphone.IsRecording(CurrentDeviceName))
+            if (MicrophoneIsRecording(CurrentDeviceName))
             {
-                Debug.Log("[Mic] Released mic " + CurrentDeviceName);
+#if !UNITY_WEBGL
+                Log("Released mic " + CurrentDeviceName);
                 Microphone.End(CurrentDeviceName);
+#endif
             }
             if (AudioClip != null)
             {
@@ -325,10 +359,12 @@ namespace Facebook.WitAi.Lib
             {
                 StartCoroutine(ReadRawAudio());
 
+#if !UNITY_WEBGL
                 // Make sure we seek before we start reading data
-                Microphone.GetPosition(CurrentDeviceName);
+                MicrophoneGetPosition(CurrentDeviceName);
 
-                Debug.Log("[Mic] Started recording with " + CurrentDeviceName);
+                Log("Started recording with " + CurrentDeviceName);
+#endif
                 if (OnStartRecording != null)
                     OnStartRecording.Invoke();
             }
@@ -349,7 +385,7 @@ namespace Facebook.WitAi.Lib
 
             StopCoroutine(ReadRawAudio());
 
-            Debug.Log("[Mic] Stopped recording with " + CurrentDeviceName);
+            Log("Stopped recording with " + CurrentDeviceName);
             if (OnStopRecording != null)
                 OnStopRecording.Invoke();
         }
@@ -357,17 +393,17 @@ namespace Facebook.WitAi.Lib
         IEnumerator ReadRawAudio()
         {
             int loops = 0;
-            int readAbsPos = Microphone.GetPosition(CurrentDeviceName);
+            int readAbsPos = MicrophoneGetPosition(CurrentDeviceName);
             int prevPos = readAbsPos;
             float[] temp = new float[Sample.Length];
 
-            while (AudioClip != null && Microphone.IsRecording(CurrentDeviceName) && IsRecording)
+            while (AudioClip != null && MicrophoneIsRecording(CurrentDeviceName) && IsRecording)
             {
                 bool isNewDataAvailable = true;
 
                 while (isNewDataAvailable && AudioClip)
                 {
-                    int currPos = Microphone.GetPosition(CurrentDeviceName);
+                    int currPos = MicrophoneGetPosition(CurrentDeviceName);
                     if (currPos < prevPos)
                         loops++;
                     prevPos = currPos;
@@ -404,6 +440,38 @@ namespace Facebook.WitAi.Lib
             }
         }
 
+        #endregion
+
+        #region NO_MIC_WRAPPERS
+        // Wrapper methods to handle platforms where the UnityEngine.Microphone class is non-existent
+        private bool MicrophoneIsRecording(string device)
+        {
+#if UNITY_WEBGL
+            return false;
+#else
+            return Microphone.IsRecording(device);
+#endif
+        }
+
+        private string[] MicrophoneGetDevices()
+        {
+#if UNITY_WEBGL
+            return new string[] {};
+#else
+            return Microphone.devices;
+#endif
+        }
+
+        private int MicrophoneGetPosition(string device)
+        {
+#if UNITY_WEBGL
+            // This should (probably) never happen, since the Start/Stop Recording methods will
+            // silently fail under webGL.
+            return 0;
+#else
+            return Microphone.GetPosition(device);
+#endif
+        }
         #endregion
     }
 }

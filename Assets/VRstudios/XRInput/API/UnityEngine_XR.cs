@@ -76,7 +76,9 @@ namespace VRstudios.API
                 controller.connected = true;
                 
                 // set type
+                //Debug.Log($"NAME: '{c.name}'");
                 if (c.name.StartsWith("Oculus")) controller.type = XRInputControllerType.Oculus;
+                else if (c.name.StartsWith("PICO")) controller.type = XRInputControllerType.PICO;
                 else if (c.name.StartsWith("Spatial Controller")) controller.type = XRInputControllerType.WMR;
                 else if (c.name.StartsWith("HP Reverb G2 Controller")) controller.type = XRInputControllerType.WMR_G2;
                 else if (c.name.StartsWith("HTC Vive Cosmos")) controller.type = XRInputControllerType.HTCViveCosmos;
@@ -236,6 +238,14 @@ namespace VRstudios.API
                 // grab IMU velocity
                 controller.linearVelocityValid = c.TryGetFeatureValue(CommonUsages.deviceVelocity, out controller.linearVelocity);
                 controller.angularVelocityValid = c.TryGetFeatureValue(CommonUsages.deviceAngularVelocity, out controller.angularVelocity);
+                if (controller.type == XRInputControllerType.PICO)
+                {
+                    controller.angularVelocity = -controller.angularVelocity;
+                    if (c.TryGetFeatureValue(CommonUsages.deviceRotation, out var rotation))
+                    {
+                        controller.angularVelocity = rotation * controller.angularVelocity;
+                    }
+                }
 
                 // apply
                 state_controllers[controllerCount] = controller;
@@ -358,7 +368,15 @@ namespace VRstudios.API
                 HapticCapabilities capabilities;
                 if (handLeft.TryGetHapticCapabilities(out capabilities))
                 {
-                    if (capabilities.supportsImpulse) return handLeft.SendHapticImpulse(XRInput.singleton.rumbleChannel, strength, duration);
+                    if (capabilities.supportsImpulse) 
+                    {
+                        float multiplyValue = 1;
+                        if (XRInput.loaderType != XRInputLoaderType.OpenXR && handLeft.name.StartsWith("PICO"))
+                        {
+                            multiplyValue = 1000;
+                        }
+                        return handLeft.SendHapticImpulse(XRInput.singleton.rumbleChannel, strength, duration * multiplyValue);
+                    }
                 }
             }
 
@@ -367,7 +385,15 @@ namespace VRstudios.API
                 HapticCapabilities capabilities;
                 if (handRight.TryGetHapticCapabilities(out capabilities))
                 {
-                    if (capabilities.supportsImpulse) return handRight.SendHapticImpulse(XRInput.singleton.rumbleChannel, strength, duration);
+                    if (capabilities.supportsImpulse)
+                    {
+                        float multiplyValue = 1;
+                        if (XRInput.loaderType != XRInputLoaderType.OpenXR && handRight.name.StartsWith("PICO"))
+                        {
+                            multiplyValue = 1000;
+                        }
+                        return handRight.SendHapticImpulse(XRInput.singleton.rumbleChannel, strength, duration * multiplyValue);
+                    }
                 }
             }
 

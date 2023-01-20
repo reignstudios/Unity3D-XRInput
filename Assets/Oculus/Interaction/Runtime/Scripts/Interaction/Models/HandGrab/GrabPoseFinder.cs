@@ -18,6 +18,7 @@
  * limitations under the License.
  */
 
+using Oculus.Interaction.Grab;
 using Oculus.Interaction.Input;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,6 +66,16 @@ namespace Oculus.Interaction.HandGrab
             return _handGrabPoses.Count > 0 && _handGrabPoses[0].HandPose != null;
         }
 
+        public bool SupportsHandedness(Handedness handedness)
+        {
+            if (!UsesHandPose())
+            {
+                return true;
+            }
+
+            return _handGrabPoses[0].HandPose.Handedness == handedness;
+        }
+
         /// <summary>
         /// Finds the best valid hand-pose at this HandGrabInteractable.
         /// Remember that a HandGrabPoses can actually have a whole surface the user can snap to.
@@ -91,7 +102,7 @@ namespace Oculus.Interaction.HandGrab
             {
                 result.HasHandPose = false;
                 result.SnapPose = new Pose(_cachedFallbackPose.position, Quaternion.Inverse(_relativeTo.rotation) * userPose.rotation);
-                result.Score = PoseUtils.Similarity(userPose, _fallbackTransform.GetPose(), scoringModifier);
+                result.Score = GrabPoseHelper.Similarity(userPose, _fallbackTransform.GetPose(), scoringModifier);
                 return true;
             }
         }

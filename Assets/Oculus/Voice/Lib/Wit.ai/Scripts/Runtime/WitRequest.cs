@@ -19,7 +19,6 @@ using Facebook.WitAi.Data;
 using Facebook.WitAi.Data.Configuration;
 using Facebook.WitAi.Lib;
 using UnityEngine;
-using SystemInfo = UnityEngine.SystemInfo;
 using Facebook.WitAi.Utilities;
 
 #if UNITY_EDITOR
@@ -77,16 +76,18 @@ namespace Facebook.WitAi
         public const string URI_AUTHORITY = "api.wit.ai";
         public const int URI_DEFAULT_PORT = 0;
 
-        public const string WIT_API_VERSION = "20220222";
-        public const string WIT_SDK_VERSION = "0.0.38";
+        public const string WIT_API_VERSION = "20220728";
+        public const string WIT_SDK_VERSION = "0.0.47";
 
         public const string WIT_ENDPOINT_SPEECH = "speech";
         public const string WIT_ENDPOINT_MESSAGE = "message";
+        public const string WIT_ENDPOINT_DICTATION = "dictation";
         public const string WIT_ENDPOINT_ENTITIES = "entities";
         public const string WIT_ENDPOINT_INTENTS = "intents";
         public const string WIT_ENDPOINT_TRAITS = "traits";
         public const string WIT_ENDPOINT_APPS = "apps";
         public const string WIT_ENDPOINT_UTTERANCES = "utterances";
+        public const string WIT_CLIENT_NAME = "wit-unity";
 
         private WitConfiguration configuration;
 
@@ -95,9 +96,8 @@ namespace Facebook.WitAi
 
         public QueryParam[] queryParams;
 
-        //private HttpWebRequest request;
-        private IRequest _request;
-        private HttpWebResponse response;
+        private HttpWebRequest _request;
+        private Stream _writeStream;
 
         private WitResponseNode responseData;
 
@@ -106,6 +106,7 @@ namespace Facebook.WitAi
 
         public byte[] postData;
         public string postContentType;
+        public string requestId = Guid.NewGuid().ToString();
 
         private object streamLock = new object();
 
@@ -113,9 +114,14 @@ namespace Facebook.WitAi
         private bool requestRequiresBody;
 
         /// <summary>
+        /// Callback called when a response is received from the server off a partial transcription
+        /// </summary>
+        public event Action<WitRequest> onPartialResponse;
+
+        /// <summary>
         /// Callback called when a response is received from the server
         /// </summary>
-        public Action<WitRequest> onResponse;
+        public event Action<WitRequest> onResponse;
 
         /// <summary>
         /// Callback called when the server is ready to receive data from the WitRequest's input
@@ -200,8 +206,6 @@ namespace Facebook.WitAi
         public string StatusDescription => statusDescription;
 
         public int Timeout => configuration ? configuration.timeoutMS : 10000;
-
-        public IRequest RequestProvider { get; internal set; }
 
         private bool configurationRequired;
         private string serverToken;
@@ -327,10 +331,13 @@ namespace Facebook.WitAi
                 onPreSendRequest(ref uri, out customHeaders);
             }
 
-            WrapHttpWebRequest wr = new WrapHttpWebRequest((HttpWebRequest)WebRequest.Create(uri.AbsoluteUri));
+            // Create http web request
+            _request = WebRequest.Create(uri.AbsoluteUri) as HttpWebRequest;
+            if (Application.isBatchMode)
+            {
+                _request.KeepAlive = false;
+            }
 
-            //request = (IRequest)(HttpWebRequest) WebRequest.Create(uri);
-            _request = wr;
             if (isServerAuthRequired)
             {
                 _request.Headers["Authorization"] =
@@ -350,12 +357,15 @@ namespace Facebook.WitAi
             }
 
             // Configure additional headers
-            if (WitEndpointConfig.GetEndpointConfig(configuration).Speech == command)
+            if (WitEndpointConfig.GetEndpointConfig(configuration).Speech == command ||
+                WitEndpointConfig.GetEndpointConfig(configuration).Dictation == command)
             {
                 _request.ContentType = audioEncoding.ToString();
                 _request.Method = "POST";
                 _request.SendChunked = true;
             }
+
+            _request.Headers["X-Wit-Client-Request-Id"] = requestId;
 
             requestRequiresBody = RequestRequiresBody(command);
 
@@ -420,8 +430,8 @@ namespace Facebook.WitAi
         public static string GetUserAgent(WitConfiguration configuration)
         {
             // Setup if needed
-            if (_operatingSystem == null) _operatingSystem = SystemInfo.operatingSystem;
-            if (_deviceModel == null) _deviceModel = SystemInfo.deviceModel;
+            if (_operatingSystem == null) _operatingSystem = UnityEngine.SystemInfo.operatingSystem;
+            if (_deviceModel == null) _deviceModel = UnityEngine.SystemInfo.deviceModel;
             if (_appIdentifier == null) _appIdentifier = Application.identifier;
             if (_unityVersion == null) _unityVersion = Application.unityVersion;
 
@@ -462,32 +472,30 @@ namespace Facebook.WitAi
             }
 
             // Return full string
-            return $"voice-sdk-42.0.0.127.285,wit-unity-{WIT_SDK_VERSION},{_operatingSystem},{_deviceModel},{configId},{_appIdentifier},{userEditor},{_unityVersion}{customUserAgents}";
+            return $"voice-sdk-47.0.0.188.341,wit-unity-{WIT_SDK_VERSION},{_operatingSystem},{_deviceModel},{configId},{_appIdentifier},{userEditor},{_unityVersion}{customUserAgents}";
         }
 
         private bool RequestRequiresBody(string command)
         {
-            return command == WitEndpointConfig.GetEndpointConfig(configuration).Speech;
+            return command == WitEndpointConfig.GetEndpointConfig(configuration).Speech ||
+                   command == WitEndpointConfig.GetEndpointConfig(configuration).Dictation;
         }
 
         private void StartResponse()
         {
-            var result = _request.BeginGetResponse(HandleResponse, _request);
-            ThreadPool.RegisterWaitForSingleObject(result.AsyncWaitHandle, HandleTimeoutTimer,
-                _request, Timeout, true);
+            var asyncResult = _request.BeginGetResponse(HandleResponse, _request);
+            ThreadPool.RegisterWaitForSingleObject(asyncResult.AsyncWaitHandle, HandleTimeoutTimer, _request, Timeout, true);
         }
 
-        private void HandleTimeoutTimer(object state, bool timedout)
+        private void HandleTimeoutTimer(object state, bool timeout)
         {
-            if (!timedout) return;
+            if (!timeout) return;
 
             // Clean up the current request if it is still going
-            //var request = (HttpWebRequest) state;
-            var request = (IRequest)state;
             if (null != _request)
             {
                 Debug.Log("Request timed out after " + (DateTime.UtcNow - requestStartTime));
-                request.Abort();
+                _request.Abort();
             }
 
             isActive = false;
@@ -502,74 +510,76 @@ namespace Facebook.WitAi
             SafeInvoke(onResponse);
         }
 
-        private void HandleResponse(IAsyncResult ar)
+        private void HandleResponse(IAsyncResult asyncResult)
         {
+            bool sentResponse = false;
             string stringResponse = "";
             responseStarted = true;
             try
             {
-                response = (HttpWebResponse) _request.EndGetResponse(ar);
-
-                statusCode = (int) response.StatusCode;
-                statusDescription = response.StatusDescription;
+                WebResponse response = _request.EndGetResponse(asyncResult);
 
                 try
                 {
-                    var responseStream = response.GetResponseStream();
-                    if (response.Headers["Transfer-Encoding"] == "chunked")
+                    HttpWebResponse httpResponse = response as HttpWebResponse;
+                    statusCode = (int) httpResponse.StatusCode;
+                    statusDescription = httpResponse.StatusDescription;
+                    using (var responseStream = httpResponse.GetResponseStream())
                     {
-                        byte[] buffer = new byte[10240];
-                        int bytes = 0;
-                        int offset = 0;
-                        int totalRead = 0;
-                        while ((bytes = responseStream.Read(buffer, offset, buffer.Length - offset)) > 0)
+                        if (response.Headers["Transfer-Encoding"] == "chunked")
                         {
-                            totalRead += bytes;
-                            stringResponse = Encoding.UTF8.GetString(buffer, 0, totalRead);
-                            if (stringResponse.EndsWith("\r\n"))
+                            byte[] buffer = new byte[10240];
+                            int bytes = 0;
+                            int offset = 0;
+                            int totalRead = 0;
+                            while ((bytes = responseStream.Read(buffer, offset, buffer.Length - offset)) > 0)
                             {
-                                try
+                                totalRead += bytes;
+                                stringResponse = Encoding.UTF8.GetString(buffer, 0, totalRead);
+                                if (stringResponse.EndsWith("\r\n"))
                                 {
-                                    offset = 0;
-                                    totalRead = 0;
-                                    ProcessStringResponse(stringResponse);
+                                    try
+                                    {
+                                        offset = 0;
+                                        totalRead = 0;
+                                        sentResponse |= ProcessStringResponse(stringResponse);
+                                    }
+                                    catch (JSONParseException e)
+                                    {
+                                        offset = bytes;
+                                        Debug.LogWarning(
+                                            "Received what appears to be a partial response or invalid json. Attempting to continue reading. Parsing error: " +
+                                            e.Message + "\n" + stringResponse);
+                                    }
                                 }
-                                catch (JSONParseException e)
+                                else
                                 {
-                                    offset = bytes;
-                                    Debug.LogWarning("Received what appears to be a partial response or invalid json. Attempting to continue reading. Parsing error: " + e.Message + "\n" + stringResponse);
+                                    offset = totalRead;
                                 }
                             }
-                            else
+
+                            // If the final transmission didn't end with \r\n process it as the final
+                            // result
+                            if (!stringResponse.EndsWith("\r\n") && !string.IsNullOrEmpty(stringResponse))
                             {
-                                offset = totalRead;
+                                sentResponse |= ProcessStringResponse(stringResponse);
+                            }
+
+                            if (stringResponse.Length > 0 && null != responseData)
+                            {
+                                MainThreadCallback(() => onRawResponse?.Invoke(stringResponse));
                             }
                         }
-
-                        // If the final transmission didn't end with \r\n process it as the final
-                        // result
-                        if (!stringResponse.EndsWith("\r\n") && !string.IsNullOrEmpty(stringResponse))
+                        else
                         {
-                            ProcessStringResponse(stringResponse);
-                        }
-
-                        if (stringResponse.Length > 0 && null != responseData)
-                        {
-                            MainThreadCallback(() => onFullTranscription?.Invoke(responseData["text"]));
-                            MainThreadCallback(() => onRawResponse?.Invoke(stringResponse));
+                            using (StreamReader reader = new StreamReader(responseStream))
+                            {
+                                stringResponse = reader.ReadToEnd();
+                                MainThreadCallback(() => onRawResponse?.Invoke(stringResponse));
+                                responseData = WitResponseJson.Parse(stringResponse);
+                            }
                         }
                     }
-                    else
-                    {
-                        using (StreamReader reader = new StreamReader(responseStream))
-                        {
-                            stringResponse = reader.ReadToEnd();
-                            MainThreadCallback(() => onRawResponse?.Invoke(stringResponse));
-                            responseData = WitResponseJson.Parse(stringResponse);
-                        }
-                    }
-
-                    responseStream.Close();
                 }
                 catch (JSONParseException e)
                 {
@@ -578,6 +588,17 @@ namespace Facebook.WitAi
                     statusCode = ERROR_CODE_INVALID_DATA_FROM_SERVER;
                     statusDescription = "Server returned invalid data.";
                 }
+                catch (WebException e)
+                {
+                    // Ensure was not cancelled
+                    if (e.Status != WebExceptionStatus.RequestCanceled)
+                    {
+                        Debug.LogError(
+                            $"{e.Message}\nRequest Stack Trace:\n{callingStackTrace}\nResponse Stack Trace:\n{e.StackTrace}");
+                        statusCode = (int) e.Status;
+                        statusDescription = e.Message;
+                    }
+                }
                 catch (Exception e)
                 {
                     Debug.LogError(
@@ -585,8 +606,10 @@ namespace Facebook.WitAi
                     statusCode = ERROR_CODE_GENERAL;
                     statusDescription = e.Message;
                 }
-
-                response.Close();
+                finally
+                {
+                    response.Close();
+                }
             }
             catch (WebException e)
             {
@@ -594,17 +617,18 @@ namespace Facebook.WitAi
                 if (e.Response is HttpWebResponse errorResponse)
                 {
                     statusCode = (int) errorResponse.StatusCode;
-
                     try
                     {
-                        var stream = errorResponse.GetResponseStream();
-                        if (null != stream)
+                        using (var errorStream = errorResponse.GetResponseStream())
                         {
-                            using (StreamReader reader = new StreamReader(stream))
+                            if (errorStream != null)
                             {
-                                stringResponse = reader.ReadToEnd();
-                                MainThreadCallback(() => onRawResponse?.Invoke(stringResponse));
-                                responseData = WitResponseJson.Parse(stringResponse);
+                                using (StreamReader errorReader = new StreamReader(errorStream))
+                                {
+                                    stringResponse = errorReader.ReadToEnd();
+                                    MainThreadCallback(() => onRawResponse?.Invoke(stringResponse));
+                                    responseData = WitResponseJson.Parse(stringResponse);
+                                }
                             }
                         }
                     }
@@ -652,22 +676,66 @@ namespace Facebook.WitAi
                     stringResponse);
             }
 
-            SafeInvoke(onResponse);
-        }
-
-        private void ProcessStringResponse(string stringResponse)
-        {
-            responseData = WitResponseJson.Parse(stringResponse);
-            if (null != responseData)
+            // Send final response if have not yet
+            if (!sentResponse)
             {
-                var transcription = responseData["text"];
+                // Final transcription
+                string transcription = responseData.GetTranscription();
                 if (!string.IsNullOrEmpty(transcription))
+                {
+                    MainThreadCallback(() => onFullTranscription?.Invoke(transcription));
+                }
+                // Final response
+                SafeInvoke(onResponse);
+            }
+
+            // Complete
+            responseStarted = false;
+        }
+        // Safely handles
+        private bool ProcessStringResponse(string stringResponse)
+        {
+            // Decode full response
+            responseData = WitResponseJson.Parse(stringResponse);
+
+            // Handle responses
+            bool hasResponse = responseData.HasResponse();
+            bool final = hasResponse && responseData.GetIsFinal();
+
+            // Return transcription
+            string transcription = responseData.GetTranscription();
+            if (!string.IsNullOrEmpty(transcription) && (!hasResponse || final))
+            {
+                // Call partial transcription
+                if (!final)
                 {
                     MainThreadCallback(() => onPartialTranscription?.Invoke(transcription));
                 }
+                // Call full transcription
+                else
+                {
+                    MainThreadCallback(() => onFullTranscription?.Invoke(transcription));
+                }
             }
-        }
 
+            // No response
+            if (!hasResponse)
+            {
+                return false;
+            }
+
+            // Call partial response
+            SafeInvoke(onPartialResponse);
+
+            // Call final response
+            if (final)
+            {
+                SafeInvoke(onResponse);
+            }
+
+            // Return final
+            return final;
+        }
         private void HandleRequestStream(IAsyncResult ar)
         {
             try
@@ -695,7 +763,7 @@ namespace Facebook.WitAi
                     }
                 }
 
-                writeStream = stream;
+                _writeStream = stream;
             }
             catch (WebException e)
             {
@@ -710,12 +778,16 @@ namespace Facebook.WitAi
 
         private void SafeInvoke(Action<WitRequest> action)
         {
+            if (action == null)
+            {
+                return;
+            }
             MainThreadCallback(() =>
             {
                 // We want to allow each invocation to run even if there is an exception thrown by one
                 // of the callbacks in the invocation list. This protects shared invocations from
                 // clients blocking things like UI updates from other parts of the sdk being invoked.
-                foreach (var responseDelegate in action.GetInvocationList())
+                foreach (Action<WitRequest> responseDelegate in action.GetInvocationList())
                 {
                     try
                     {
@@ -732,7 +804,11 @@ namespace Facebook.WitAi
         public void AbortRequest()
         {
             CloseActiveStream();
-            _request.Abort();
+            if (null != _request)
+            {
+                _request.Abort();
+                _request = null;
+            }
             if (statusCode == 0)
             {
                 statusCode = ERROR_CODE_ABORTED;
@@ -763,10 +839,17 @@ namespace Facebook.WitAi
             lock (streamLock)
             {
                 isRequestStreamActive = false;
-                if (null != writeStream)
+                if (null != _writeStream)
                 {
-                    writeStream.Close();
-                    writeStream = null;
+                    try
+                    {
+                        _writeStream.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogWarning($"Write Stream - Close Failed\n{e}");
+                    }
+                    _writeStream = null;
                 }
             }
         }
@@ -784,7 +867,7 @@ namespace Facebook.WitAi
         {
             try
             {
-                writeStream.Write(data, offset, length);
+                _writeStream.Write(data, offset, length);
                 bytesWritten += length;
             }
             catch (ObjectDisposedException)
@@ -814,10 +897,9 @@ namespace Facebook.WitAi
 
         #region CALLBACKS
         // Check performing
-        private bool _performing = false;
+        private CoroutineUtility.CoroutinePerformer _performer = null;
         // All actions
         private ConcurrentQueue<Action> _mainThreadCallbacks = new ConcurrentQueue<Action>();
-        private Stream writeStream;
 
         // Called from background thread
         private void MainThreadCallback(Action action)
@@ -828,25 +910,30 @@ namespace Facebook.WitAi
         private void WatchMainThreadCallbacks()
         {
             // Ifnore if already performing
-            if (_performing)
+            if (_performer != null)
             {
                 return;
             }
 
             // Check callbacks every frame (editor or runtime)
-            CoroutineUtility.StartCoroutine(PerformMainThreadCallbacks());
+            _performer = CoroutineUtility.StartCoroutine(PerformMainThreadCallbacks());
         }
         // Every frame check for callbacks & perform any found
         private System.Collections.IEnumerator PerformMainThreadCallbacks()
         {
-            // Begin performing
-            _performing = true;
-
             // While checking, continue
             while (HasMainThreadCallbacks())
             {
                 // Wait for frame
-                yield return new WaitForEndOfFrame();
+                if (Application.isPlaying && !Application.isBatchMode)
+                {
+                    yield return new WaitForEndOfFrame();
+                }
+                // Wait for a tick
+                else
+                {
+                    yield return null;
+                }
 
                 // Perform if possible
                 while (_mainThreadCallbacks.Count > 0 && _mainThreadCallbacks.TryDequeue(out var result))
@@ -856,12 +943,12 @@ namespace Facebook.WitAi
             }
 
             // Done performing
-            _performing = false;
+            _performer = null;
         }
         // Check actions
         private bool HasMainThreadCallbacks()
         {
-            return IsActive || isRequestStreamActive || _mainThreadCallbacks.Count > 0;
+            return IsActive || isRequestStreamActive || HasResponseStarted || _mainThreadCallbacks.Count > 0;
         }
         #endregion
     }

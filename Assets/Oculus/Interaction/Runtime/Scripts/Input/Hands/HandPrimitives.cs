@@ -68,6 +68,8 @@ namespace Oculus.Interaction.Input
     public enum HandFingerJointFlags
     {
         None = 0,
+        Wrist = 1 << HandJointId.HandWristRoot,
+        ForearmStub = 1 << HandJointId.HandForearmStub,
         Thumb0 = 1 << HandJointId.HandThumb0,
         Thumb1 = 1 << HandJointId.HandThumb1,
         Thumb2 = 1 << HandJointId.HandThumb2,
@@ -85,6 +87,12 @@ namespace Oculus.Interaction.Input
         Pinky1 = 1 << HandJointId.HandPinky1,
         Pinky2 = 1 << HandJointId.HandPinky2,
         Pinky3 = 1 << HandJointId.HandPinky3,
+        ThumbTip = 1 << HandJointId.HandThumbTip,
+        IndexTip = 1 << HandJointId.HandIndexTip,
+        MiddleTip = 1 << HandJointId.HandMiddleTip,
+        RingTip = 1 << HandJointId.HandRingTip,
+        PinkyTip = 1 << HandJointId.HandPinkyTip,
+        All = (1 << HandJointId.HandEnd)-1
     }
 
     public static class HandFingerUtils
@@ -264,6 +272,11 @@ namespace Oculus.Interaction.Input
         /// Stores the pose of the joint, in local space.
         /// </summary>
         public Pose pose;
+
+        /// <summary>
+        /// Radius of the bones starting at this joint
+        /// </summary>
+        public float radius;
     }
 
     public interface IReadOnlyHandSkeletonJointList

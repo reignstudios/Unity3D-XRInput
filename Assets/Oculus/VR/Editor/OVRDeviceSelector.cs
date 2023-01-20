@@ -32,7 +32,7 @@ public class OVRDeviceSelector
 	{
 		get
 		{
-			return isTargetDeviceQuest || isTargetDeviceQuest2;
+			return isTargetDeviceQuest || isTargetDeviceQuest2 || isTargetDeviceQuestPro;
 		}
 	}
 	public static bool isTargetDeviceQuest
@@ -47,7 +47,6 @@ public class OVRDeviceSelector
 			OVRProjectConfig projectConfig = OVRProjectConfig.GetProjectConfig();
 			return projectConfig.targetDeviceTypes.Contains(OVRProjectConfig.DeviceType.Quest);
 #endif
-
 		}
 	}
 
@@ -62,6 +61,25 @@ public class OVRDeviceSelector
 #else
 			OVRProjectConfig projectConfig = OVRProjectConfig.GetProjectConfig();
 			return projectConfig.targetDeviceTypes.Contains(OVRProjectConfig.DeviceType.Quest2);
+#endif
+		}
+	}
+
+	public static bool isTargetDeviceQuestPro
+	{
+		get
+		{
+#if PRIORITIZE_OCULUS_XR_SETTINGS
+#if USING_QUEST_PRO_COMPATIBLE_OCULUS_XR_PLUGIN_VERSION
+			OculusSettings settings;
+			UnityEditor.EditorBuildSettings.TryGetConfigObject<OculusSettings>("Unity.XR.Oculus.Settings", out settings);
+			return settings.TargetQuestPro;
+#else
+			return false;
+#endif
+#else
+			OVRProjectConfig projectConfig = OVRProjectConfig.GetProjectConfig();
+			return projectConfig.targetDeviceTypes.Contains(OVRProjectConfig.DeviceType.QuestPro);
 #endif
 		}
 	}

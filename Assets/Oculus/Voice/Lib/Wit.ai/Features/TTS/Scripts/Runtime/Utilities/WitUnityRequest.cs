@@ -99,9 +99,16 @@ namespace Facebook.WitAi.TTS.Utilities
         {
             // Download to temp path
             string tempDownloadPath = downloadPath + ".tmp";
-            if (File.Exists(tempDownloadPath))
+            try
             {
-                File.Delete(tempDownloadPath);
+                if (File.Exists(tempDownloadPath))
+                {
+                    File.Delete(tempDownloadPath);
+                }
+            }
+            catch (Exception e)
+            {
+                VLog.E($"Deleting Temp File Failed\nPath: {tempDownloadPath}\n{e}");
             }
 
             // Request file
@@ -115,24 +122,23 @@ namespace Facebook.WitAi.TTS.Utilities
                 // If file found
                 try
                 {
-                    if (System.IO.File.Exists(tempDownloadPath))
+                    if (File.Exists(tempDownloadPath))
                     {
                         // For error, remove
                         if (!string.IsNullOrEmpty(error))
                         {
-                            System.IO.File.Delete(tempDownloadPath);
+                            File.Delete(tempDownloadPath);
                         }
                         // For success, move to final path
                         else
                         {
-                            System.IO.File.Move(tempDownloadPath, downloadPath);
+                            File.Move(tempDownloadPath, downloadPath);
                         }
                     }
                 }
-                catch (Exception exception)
+                catch (Exception e)
                 {
-                    error = exception.ToString();
-                    Debug.LogError($"Moving File Failed\nFrom: {tempDownloadPath}\nTo: {downloadPath}\nError: {error}");
+                    VLog.E($"Moving File Failed\nFrom: {tempDownloadPath}\nTo: {downloadPath}\n{e}");
                 }
                 onDownloadComplete?.Invoke(error);
             });

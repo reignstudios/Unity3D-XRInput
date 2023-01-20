@@ -37,7 +37,7 @@ namespace Oculus.XR
 	{
 		static OculusXRFeatureEnabler()
 		{
-			EditorApplication.update += EnableOculusXRFeature;
+			//EditorApplication.update += EnableOculusXRFeature;
 		}
 
 		private static void EnableOculusXRFeature()

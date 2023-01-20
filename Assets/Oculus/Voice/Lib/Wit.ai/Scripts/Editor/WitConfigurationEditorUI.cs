@@ -6,15 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-using System;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Facebook.WitAi.Configuration;
-using Facebook.WitAi.Data.Entities;
-using Facebook.WitAi.Data.Intents;
-using Facebook.WitAi.Data.Traits;
-using Facebook.WitAi.Utilities;
 using Facebook.WitAi.Data.Configuration;
 
 namespace Facebook.WitAi
@@ -26,9 +19,23 @@ namespace Facebook.WitAi
         {
             // Refresh configurations if needed
             WitConfiguration[] witConfigs = WitConfigurationUtility.WitConfigs;
+
             if (witConfigs == null || witConfigs.Length == 0)
             {
-                WitEditorUI.LayoutErrorLabel(WitTexts.Texts.ConfigurationSelectMissingLabel);
+                // If no configuration exists, provide a means for the user to create a new one.
+                GUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
+                    
+                if (WitEditorUI.LayoutTextButton("New Config"))
+                {
+                    WitConfigurationUtility.CreateConfiguration("");
+
+                    EditorUtility.FocusProjectWindow();
+                }
+                    
+                GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
+                
                 return;
             }
 
@@ -40,8 +47,18 @@ namespace Facebook.WitAi
                 configIndex = Mathf.Clamp(configIndex, 0, witConfigs.Length);
             }
 
+            GUILayout.BeginHorizontal();
+            
             // Layout popup
             WitEditorUI.LayoutPopup(WitTexts.Texts.ConfigurationSelectLabel, WitConfigurationUtility.WitConfigNames, ref configIndex, ref configUpdated);
+
+            if (GUILayout.Button("", GUI.skin.GetStyle("IN ObjectField"), GUILayout.Width(15)))
+            {
+                EditorUtility.FocusProjectWindow();
+                EditorGUIUtility.PingObject(witConfigs[configIndex]);
+            }
+            
+            GUILayout.EndHorizontal();
         }
     }
 }

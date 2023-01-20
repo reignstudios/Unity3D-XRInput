@@ -23,7 +23,7 @@ using System;
 
 namespace Oculus.Interaction.Input
 {
-    public interface IHand
+    public interface IHand : IAspectProvider
     {
         Handedness Handedness { get; }
 
@@ -148,17 +148,6 @@ namespace Oculus.Interaction.Input
         /// Incremented every time the source tracking or state data changes.
         /// </summary>
         int CurrentDataVersion { get; }
-
-        /// <summary>
-        /// An Aspect provides additional functionality on top of what the HandState provides.
-        /// The underlying hand is responsible for finding the most appropriate component.
-        /// It is usually, but not necessarily, located within the same GameObject as the
-        /// underlying hand.
-        /// For example, this method can be used to source the SkinnedMeshRenderer representing the
-        /// hand, if one exists.
-        /// <returns>true if an aspect of the requested type was found, false otherwise</returns>
-        /// </summary>
-        bool GetHandAspect<TComponent>(out TComponent foundComponent) where TComponent : class;
 
         event Action WhenHandUpdated;
     }
