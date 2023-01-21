@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)https://sdk.picovr.com/docs/sdk/en/chapter_three.html -->
+<html class="writer-html4" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3 Development notes — PicoVR Unity SDK 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="./3 Development notes — PicoVR Unity SDK 0.1 documentation_files/theme.css" type="text/css">
+  <link rel="stylesheet" href="./3 Development notes — PicoVR Unity SDK 0.1 documentation_files/pygments.css" type="text/css">
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="./3 Development notes — PicoVR Unity SDK 0.1 documentation_files/documentation_options.js.download"></script>
+        <script type="text/javascript" src="./3 Development notes — PicoVR Unity SDK 0.1 documentation_files/jquery.js.download"></script>
+        <script type="text/javascript" src="./3 Development notes — PicoVR Unity SDK 0.1 documentation_files/underscore.js.download"></script>
+        <script type="text/javascript" src="./3 Development notes — PicoVR Unity SDK 0.1 documentation_files/doctools.js.download"></script>
+        <script type="text/javascript" src="./3 Development notes — PicoVR Unity SDK 0.1 documentation_files/language_data.js.download"></script>
+    
+    <script type="text/javascript" src="./3 Development notes — PicoVR Unity SDK 0.1 documentation_files/theme.js.download"></script>
+
+    
+    <link rel="index" title="Index" href="https://sdk.picovr.com/docs/sdk/en/genindex.html">
+    <link rel="search" title="Search" href="https://sdk.picovr.com/docs/sdk/en/search.html">
+    <link rel="next" title="4 Quick start of SDK access" href="https://sdk.picovr.com/docs/sdk/en/chapter_four.html">
+    <link rel="prev" title="2 Instructions for SDK configuration" href="https://sdk.picovr.com/docs/sdk/en/chapter_two.html"> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="https://sdk.picovr.com/docs/sdk/en/index.html" class="icon icon-home"> PicoVR Unity SDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v_2.8.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="https://sdk.picovr.com/docs/sdk/en/search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs">
+    <input type="hidden" name="check_keywords" value="yes">
+    <input type="hidden" name="area" value="default">
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_one.html">1       Introduction to SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_two.html">2       Instructions for SDK configuration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html#">3       Development notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html#enable-device-usb-debugging-on-device">3.1     Enable device USB Debugging on device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html#android-manifest-document">3.2     Android Manifest Document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html#recommended-sdk-configuration">3.3     Recommended SDK Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_four.html">4       Quick start of SDK access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html">5       Hardware product development guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_six.html">6       Performance optimization guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html">7       API Interface Function List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html">8       Advanced features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html">9       Payment system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_ten.html">10      VR Input Keyboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eleven.html">11      Frequently Asked Questions</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="https://sdk.picovr.com/docs/sdk/en/index.html">PicoVR Unity SDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="https://sdk.picovr.com/docs/sdk/en/index.html" class="icon icon-home"></a> »</li>
+        
+      <li>3       Development notes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="https://sdk.picovr.com/docs/sdk/en/_sources/chapter_three.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="development-notes">
+<span id="id1"></span><h1>3       Development notes<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html#development-notes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="enable-device-usb-debugging-on-device">
+<h2>3.1     Enable device USB Debugging on device<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html#enable-device-usb-debugging-on-device" title="Permalink to this headline">¶</a></h2>
+<p>Please check details from this FAQ link on how to enable developer <a class="reference external" href="https://sdk.picovr.com/docs/FAQ/chapter_one.html">https://sdk.picovr.com/docs/FAQ/chapter_one.html</a></p>
+</div>
+<div class="section" id="android-manifest-document">
+<h2>3.2     Android Manifest Document<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html#android-manifest-document" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Special meta-data needs to be added; otherwise, an exception will be displayed:：</li>
+</ul>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;meta-data</span> <span class="na">android:name=</span><span class="s">" pvr.app.type "</span> <span class="na">android:value=</span><span class="s">"vr"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;meta-data</span> <span class="na">android:name=</span><span class="s">" pvr.display.orientation "</span> <span class="na">android:value=</span><span class="s">"180"</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>All activity that needs to be displayed needs to inherited from</li>
+</ul>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">com</span><span class="p">.</span><span class="na">unity3d</span><span class="p">.</span><span class="na">player</span><span class="p">.</span><span class="na">UnityPlayerNativeActivityPico</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Add the necessary permissions</li>
+</ul>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="c">&lt;!--The following permissions are required--&gt;</span>
+<span class="c">&lt;!--For SDK basic APIs--&gt;</span>
+<span class="nt">&lt;uses-permission</span>&nbsp;<span class="na">android:name=</span><span class="s">"android.permission.READ_EXTERNAL_STORAGE"</span> <span class="nt">/&gt;</span>
+
+<span class="c">&lt;!--The following permissions are optional--&gt;</span>
+<span class="c">&lt;!--Required by Globin series controller APIs, optional if the app targeting Neo 2 and Neo 3 series--&gt;</span>
+<span class="nt">&lt;uses-permission</span>&nbsp;<span class="na">android:name=</span><span class="s">"android.permission.BLUETOOTH"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;uses-permission</span>&nbsp;<span class="na">android:name=</span><span class="s">"android.permission.BLUETOOTH_ADMIN"</span>&nbsp;<span class="nt">/&gt;</span>
+<span class="nt">&lt;uses-permission</span>&nbsp;<span class="na">android:name=</span><span class="s">"android.permission.INJECT_EVENTS"</span>&nbsp;<span class="nt">/&gt;</span>
+
+<span class="c">&lt;!--Payment--&gt;</span>
+<span class="nt">&lt;uses-permission</span>&nbsp;<span class="na">android:name=</span><span class="s">"android.permission.INTERNET"</span>&nbsp;<span class="nt">/&gt;</span>
+<span class="nt">&lt;uses-permission</span>&nbsp;<span class="na">android:name=</span><span class="s">"android.permission.ACCESS_NETWORK_STATE"</span>&nbsp;<span class="nt">/&gt;</span>
+
+<span class="c">&lt;!--Vibrate--&gt;</span>
+<span class="nt">&lt;uses-permission</span>&nbsp;<span class="na">android:name=</span><span class="s">"android.permission.VIBRATE"</span><span class="nt">/&gt;</span>
+
+<span class="c">&lt;!--Set screen brightness&nbsp;--&gt;</span>
+<span class="nt">&lt;uses-permission</span>&nbsp;<span class="na">android:name=</span><span class="s">"android.permission.WRITE_SETTINGS"</span>&nbsp;<span class="nt">/&gt;</span>
+
+<span class="c">&lt;!--Change language--&gt;</span>
+<span class="nt">&lt;uses-permission</span>&nbsp;<span class="na">android:name=</span><span class="s">"android.permission.CHANGE_CONFIGURATION"</span>&nbsp;<span class="nt">/&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="recommended-sdk-configuration">
+<h2>3.3     Recommended SDK Configuration<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html#recommended-sdk-configuration" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>For Color Space, Gamma and Linear are both supported.</li>
+</ul>
+<p>If Linear is selected, then Blit Type needs to be set as “Never”, otherwise Unity will create a buffer unrelated to the display, which will cause some display errors when the build is run.</p>
+<p>If Gamma is selected , you can select Never or Always in Blit Type.</p>
+<img alt="_images/3.1.PNG" src="./3 Development notes — PicoVR Unity SDK 0.1 documentation_files/3.1.PNG">
+<p>Figure 3.1 Setting of Blit Type</p>
+<ul class="simple">
+<li>Graphics APIs do not support Vulkan for the time being. For OpenGLES2 and OpenGLES3, the developers need to choose according to their needs.</li>
+<li>Multi-thread rendering is supported, Refer to the Unity official document for details: (<a class="reference external" href="https://docs.unity3d.com/ScriptReference/SystemInfo-graphicsMultiThreaded.html">https://docs.unity3d.com/ScriptReference/SystemInfo-graphicsMultiThreaded.html</a>)</li>
+</ul>
+<img alt="_images/3.2.PNG" src="./3 Development notes — PicoVR Unity SDK 0.1 documentation_files/3.2.PNG">
+<p>Figure 3.2 Setting of rendering</p>
+<ul class="simple">
+<li>In Default Orientation under Unity Player Setting, select Landscape Left (Required)</li>
+</ul>
+<img alt="_images/3.3.PNG" src="./3 Development notes — PicoVR Unity SDK 0.1 documentation_files/3.3.PNG">
+<p>Figure 3.3 Setting of Default Orientation</p>
+<ul class="simple">
+<li>Check the setting of V Sync Count, and the specific steps are as follows: Enter Edit&gt;Project Settings&gt;Quality,Medium and apply settings pictured below under Levels, and ensure that V Sync Count under Other is Don’t Sync (Required):</li>
+</ul>
+<img alt="_images/3.4.PNG" src="./3 Development notes — PicoVR Unity SDK 0.1 documentation_files/3.4.PNG">
+<p>Figure 3.4 Set V Sync Count to Don’t Sync</p>
+<ul>
+<li><p class="first">Requirements for setting API level:</p>
+<p>Minimum API Level： 23 - 27</p>
+<p>Target API Level: 27 is recommended. See chapter 2.2 for details.</p>
+</li>
+</ul>
+<img alt="_images/3.4.1.PNG" src="./3 Development notes — PicoVR Unity SDK 0.1 documentation_files/3.4.1.PNG">
+<p>Figure 3.5 Setting API Level</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="https://sdk.picovr.com/docs/sdk/en/chapter_four.html" class="btn btn-neutral float-right" title="4 Quick start of SDK access" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="https://sdk.picovr.com/docs/sdk/en/chapter_two.html" class="btn btn-neutral float-left" title="2 Instructions for SDK configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <p>
+        © Copyright 2015-2021 Pico Interactive, Inc. All Rights Reserved..
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org/">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+
+</body></html>

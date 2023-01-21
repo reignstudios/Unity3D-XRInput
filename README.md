@@ -6,6 +6,10 @@ This API universalizes different vendor XR input oddities into a single easy-to-
 * Drop 'Unity3D-XRInput/Assets/VRstudios/XRInput' prefab into scene & thats it.
 * Select Input type and ready to go!
 
+## 'Oculus' setup
+* Import integration <a href="https://developer.oculus.com/downloads/package/unity-integration/">'Oculus Integration'</a>
+* In OculusXRFeatureEnabler class disable "EditorApplication.update += EnableOculusXRFeature;" (this can be annoying)
+
 ## 'SteamVR' setup
 * Ensure <a href="https://github.com/ValveSoftware/unity-xr-plugin/releases">'com.valvesoftware.unity.openvr'</a> .tgz file is installed via Unity package manager for OpenVR input mode
 * NOTE: In 'Packages/manifest.json' you can set packages to be relitive paths like so: "file:../com.some-package.tgz"'
@@ -48,15 +52,16 @@ This API universalizes different vendor XR input oddities into a single easy-to-
     * Search for 'VIVE Wave XR Plugin' & install
 * Rename "WAVE_AndroidManifest" to "AndroidManifest" if using this repo for testing
 
-## 'PicoVR' setup
-* Use 'Unity XR Platform SDK' plugin NOT legacy 'PicoVR Unity SDK' plugin
-* 'Unity XR Platform SDK' doesn't ship correctly as a '.tar.tgz' package so follow these steps (NOTE: z7ip ideal here)
-    * Extract <a href="https://developer.pico-interactive.com/sdk/index?id=8">'PicoXR_Platform_SDK-x.x.x_XXX.zip'</a> in a folder named 'package'
-    * Compress 'package' folder into '.tar' file
-    * Compress '.tar' into '.tgz' file. (NOTE: If file extension is '.gz' just change it to '.tgz')
-    * In Unity3D go to package manager and install from tarball option
-    * NOTE: In 'Packages/manifest.json' you can set packages to be relitive paths like so: "file:../com.some-package.tgz"'
-    * You should now see 'PicoXR' in Unity's standard XR managment area
+## 'Pico 2' setup
+* Use legacy 'PicoVR Unity SDK' plugin NOT 'Unity Integration SDK' plugin
+* Extract <a href="https://www.picoxr.com/us/sdk.html">'PicoVR_Unity_SDK.zip'</a> in a folder
+* Import "64bit" version of the unitypackage
+
+## 'Pico 3 & 4' setup
+* Use 'Unity Integration SDK' plugin NOT legacy 'PicoVR Unity SDK' plugin
+* Extract <a href="https://developer.pico-interactive.com/sdk/index?id=8">'PICO Unity Integration SDK.zip'</a> in a folder
+* Move extracted folder to "\<Your-Proj\>/Packages"
+* You should now see 'PicoXR' in Unity's standard XR managment area
 
 # How to get Input
 * Take a look at 'Unity3D-XRInput/Assets/VRstudios/TestInput.cs' for basic working example

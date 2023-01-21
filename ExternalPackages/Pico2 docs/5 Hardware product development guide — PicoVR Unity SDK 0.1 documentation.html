@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://sdk.picovr.com/docs/sdk/en/chapter_five.html -->
+<html class="writer-html4" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/theme.css" type="text/css">
+  <link rel="stylesheet" href="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/pygments.css" type="text/css">
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/documentation_options.js.download"></script>
+        <script type="text/javascript" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/jquery.js.download"></script>
+        <script type="text/javascript" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/underscore.js.download"></script>
+        <script type="text/javascript" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/doctools.js.download"></script>
+        <script type="text/javascript" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/language_data.js.download"></script>
+    
+    <script type="text/javascript" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/theme.js.download"></script>
+
+    
+    <link rel="index" title="Index" href="https://sdk.picovr.com/docs/sdk/en/genindex.html">
+    <link rel="search" title="Search" href="https://sdk.picovr.com/docs/sdk/en/search.html">
+    <link rel="next" title="6 Performance optimization guide" href="https://sdk.picovr.com/docs/sdk/en/chapter_six.html">
+    <link rel="prev" title="4 Quick start of SDK access" href="https://sdk.picovr.com/docs/sdk/en/chapter_four.html"> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="https://sdk.picovr.com/docs/sdk/en/index.html" class="icon icon-home"> PicoVR Unity SDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v_2.8.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="https://sdk.picovr.com/docs/sdk/en/search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs">
+    <input type="hidden" name="check_keywords" value="yes">
+    <input type="hidden" name="area" value="default">
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_one.html">1       Introduction to SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_two.html">2       Instructions for SDK configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html">3       Development notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_four.html">4       Quick start of SDK access</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#">5       Hardware product development guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#instruction-of-pico-hardware">5.1     Instruction of Pico hardware</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#realize-head-tracking-and-stereo-rendering">5.1.1   Realize head tracking and stereo rendering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#instructions-for-use-with-controllers">5.1.2   Instructions for Use With Controllers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#pico-g2-g2-4k-input-instructions">5.2     Pico G2/G2 4K Input instructions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#the-schematic-diagram-of-the-touchpad-is-as-follows">The schematic diagram of the touchpad is as follows:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#pico-neo-2-input-instructions">5.3     Pico Neo 2 Input instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#pico-neo3-input-instructions">5.4     Pico Neo3 Input instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#pico-hmd-key">5.5     Pico HMD key</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_six.html">6       Performance optimization guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html">7       API Interface Function List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html">8       Advanced features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html">9       Payment system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_ten.html">10      VR Input Keyboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eleven.html">11      Frequently Asked Questions</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="https://sdk.picovr.com/docs/sdk/en/index.html">PicoVR Unity SDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="https://sdk.picovr.com/docs/sdk/en/index.html" class="icon icon-home"></a> »</li>
+        
+      <li>5       Hardware product development guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="https://sdk.picovr.com/docs/sdk/en/_sources/chapter_five.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hardware-product-development-guide">
+<span id="id1"></span><h1>5       Hardware product development guide<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#hardware-product-development-guide" title="Permalink to this headline">¶</a></h1>
+<p>This chapter will introduce the use methods of using the SDK on various Pico hardware products. developers should only follow steps relevant to the intended product.</p>
+<div class="section" id="instruction-of-pico-hardware">
+<h2>5.1     Instruction of Pico hardware<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#instruction-of-pico-hardware" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="realize-head-tracking-and-stereo-rendering">
+<h3>5.1.1   Realize head tracking and stereo rendering<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#realize-head-tracking-and-stereo-rendering" title="Permalink to this headline">¶</a></h3>
+<p>To Rrealize the consistency of head tracking, just add the Prefabs file in the Pvr_UnitySDK folder to the scene as mentioned in Quick Start of SDK.</p>
+<img alt="_images/5.1.png" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.1.png">
+<p>Figure 5.1 Switch tracking options</p>
+<p>Functions provided by Pvr_UnitySDK:</p>
+<ul>
+<li><p class="first">Use Default Render Texture: Whether to use default render texture. For more details, please refer to Chapter 8.4.</p>
+</li>
+<li><p class="first">Tracking Origin: Set up current tracking method. For more details, please refer to Chapter 8.11.</p>
+</li>
+<li><p class="first">Reset Tracker Onload: Whether apply re-centering when entering scene.</p>
+</li>
+<li><p class="first">Only HMD/Controller Rotation Tracking:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>”Only HMD Rotation Tracking”: when unchecked means that the head tracking is 6 degrees of freedom, with posture and position; when checked means that the head tracking is 3 degrees of freedom tracking, only posture, no position;</li>
+<li>“Only Controller Rotation Tracking”: when unchecked indicates that the tracking of the hand is 6 degrees of freedom, with posture and position; when checked means that the tracking of the hand is 3 degrees of freedom, only the posture, no position.</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Show Fps：Whether to show current Fps.</p>
+</li>
+<li><p class="first">Use Default Fps：Whether to use default Fps.</p>
+</li>
+<li><p class="first">Use Monoscopic：Enable Monoscopic.</p>
+</li>
+<li><p class="first">Use Singlepass：Enable Singlepass.</p>
+</li>
+<li><p class="first">Use Content Protect: Application copyright protection option. Screenshots, Screenrecords and Screencasting are prohibited when selecting this option.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="instructions-for-use-with-controllers">
+<h3>5.1.2   Instructions for Use With Controllers<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#instructions-for-use-with-controllers" title="Permalink to this headline">¶</a></h3>
+<p>1.From Assets&gt; PicoMobileSDK&gt; Pvr_Controller&gt; Prefabs，drag ControllerManager into your scene as a child of Pvr_UnitySDK. Set position（0,0,0）for ControllerManager.</p>
+<img alt="_images/5.2.png" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.2.png">
+<p>Figure 5.2 Set ControllerManager</p>
+<p>The use of controller keys needs to be in the form of calling interface API. For specific API, please refer to Chapter 7 API Interface Function List.</p>
+<p>Note: If  SDK versions previous to v.2.8.0 was once used, delete the PvrController0 and PvrController1 prefabs, and only use the ControllerManager prefab.</p>
+<p>2.Use customized controller model</p>
+<p>To use customized controller model (e.g. pistol, slingshot, wand, sword etc.), please check this option.</p>
+<img alt="_images/5.1028.png" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.1028.png">
+<p>Figure 5.3  Custom controller model option</p>
+<p>3.Adjusting controller model angle</p>
+<p>Pico Neo 3 uses a different design from Neo 2 that Neo 3 controller bends 34 degree comparing to horizontal plane when user holds it. See figure below for details.</p>
+<img alt="_images/5.1029.png" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.1029.png">
+<p>Figure 5.4  Pico controller angle diagram</p>
+<p>Latest Pico SDK adds adjustment to the angle of controller model to allow application designed for Neo 3 can work well on Neo 2. To use latest SDK on Neo 2, it’s suggested to adjust the controller angle and raise the “controller” prefabs of PvrController0 and PvrController1 34 degrees on x-axis.</p>
+</div>
+</div>
+<div class="section" id="pico-g2-g2-4k-input-instructions">
+<h2>5.2     Pico G2/G2 4K Input instructions<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#pico-g2-g2-4k-input-instructions" title="Permalink to this headline">¶</a></h2>
+<p>When using the key and touchpad of the single handle, you need to call the interfaces related to the handle. Please refer to Chapter7.3 for specific interfaces. Here, the corresponding relationship between the parameters of the following interfaces and the physical handle keys is introduced.</p>
+<p>Correspondence between physical keys of G2 /G2 4K controllers and parameters in API interface functions is as follows.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="51%">
+<col width="49%">
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">G2 controller key</th>
+<th class="head">Input binding</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><img alt="_images/5.105.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.105.png">
+</td>
+<td>Pvr_KeyCode.APP</td>
+</tr>
+<tr class="row-odd"><td><img alt="_images/5.106.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.106.png">
+</td>
+<td>Pvr_KeyCode.Home</td>
+</tr>
+<tr class="row-even"><td><img alt="_images/5.101.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.101.png">
+</td>
+<td>Pvr_KeyCode.TOUCHPAD</td>
+</tr>
+<tr class="row-odd"><td><img alt="_images/5.102.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.102.png">
+</td>
+<td>Pvr_KeyCode.TRIGGER</td>
+</tr>
+<tr class="row-even"><td><img alt="_images/5.103.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.103.png">
+</td>
+<td>Pvr_KeyCode.VOLUMEUP</td>
+</tr>
+<tr class="row-odd"><td><img alt="_images/5.104.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.104.png">
+</td>
+<td>Pvr_KeyCode.VOLUMEDOWN</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="the-schematic-diagram-of-the-touchpad-is-as-follows">
+<h3>The schematic diagram of the touchpad is as follows:<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#the-schematic-diagram-of-the-touchpad-is-as-follows" title="Permalink to this headline">¶</a></h3>
+<img alt="_images/5.6.png" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.6.png">
+<p>Figure 5.5 Schematic diagram of touchpad</p>
+<p>Notes: The above diagram is for the new touchpad with sdk versions later than v.2.8.6. For versions before v.2.8.6, the direction and range of X and Y are different.</p>
+</div>
+</div>
+<div class="section" id="pico-neo-2-input-instructions">
+<h2>5.3     Pico Neo 2 Input instructions<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#pico-neo-2-input-instructions" title="Permalink to this headline">¶</a></h2>
+<p>When using the keys and joysticks of two controllers, you need to call the interface API. See Chapter 7.3 for details. Here, only the corresponding relationship between the parameters of the interface API and the physical controller keys is introduced:</p>
+<p>Pico Neo 2:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="35%">
+<col width="65%">
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Keys</th>
+<th class="head">Input event</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><img alt="_images/5.107.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.107.png">
+</td>
+<td>Pvr_KeyCode.HOME</td>
+</tr>
+<tr class="row-odd"><td><img alt="_images/5.108.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.108.png">
+</td>
+<td>Pvr_KeyCode.APP</td>
+</tr>
+<tr class="row-even"><td><img alt="_images/5.109.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.109.png">
+</td>
+<td>Pvr_KeyCode.TRIGGER</td>
+</tr>
+<tr class="row-odd"><td><img alt="_images/5.1010.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.1010.png">
+</td>
+<td><table border="1" class="first last docutils">
+<colgroup>
+<col width="54%">
+<col width="46%">
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td colspan="2">Pvr_KeyCode.Right (Controller 1 is the right controller)</td>
+</tr>
+<tr class="row-even"><td colspan="2">Pvr_KeyCode.Left (Controller 0 is the left controller)</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr class="row-odd"><td><img alt="_images/5.1011.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.1011.png">
+</td>
+<td>Pvr_KeyCode.X (Controller 0)</td>
+</tr>
+<tr class="row-even"><td><img alt="_images/5.1012.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.1012.png">
+</td>
+<td>Pvr_KeyCode.Y (Controller 0)</td>
+</tr>
+<tr class="row-odd"><td><img alt="_images/5.1013.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.1013.png">
+</td>
+<td>Pvr_KeyCode.A (Controller 1)</td>
+</tr>
+<tr class="row-even"><td><img alt="_images/5.1014.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.1014.png">
+</td>
+<td>Pvr_KeyCode.B (Controller 1)</td>
+</tr>
+<tr class="row-odd"><td><img alt="_images/5.1015.png" class="first last" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.1015.png">
+</td>
+<td>Pvr_KeyCode.TOUCHPAD</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pico-neo3-input-instructions">
+<h2>5.4     Pico Neo3 Input instructions<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#pico-neo3-input-instructions" title="Permalink to this headline">¶</a></h2>
+<p>When using the keys and joysticks of two controllers, you need to call the interface API. See Chapter 7.3 for details. Here, only the corresponding relationship between the parameters of the interface API and the physical controller keys is introduced:</p>
+<p>Pico Neo 3:</p>
+<img alt="_images/5.1026.png" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.1026.png">
+<p>Figure 5.6 Key mapping diagram (front view)</p>
+<img alt="_images/5.1027.png" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.1027.png">
+<p>Figure 5.7 Key mapping diagram (side view)</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%">
+<col width="70%">
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Keys</th>
+<th class="head">Input event</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Home</td>
+<td>Pvr_KeyCode.HOME</td>
+</tr>
+<tr class="row-odd"><td>Menu</td>
+<td>Pvr_KeyCode.APP</td>
+</tr>
+<tr class="row-even"><td>Trigger</td>
+<td>Pvr_KeyCode.TRIGGER</td>
+</tr>
+<tr class="row-odd"><td>Grip</td>
+<td>Pvr_KeyCode.Right （Controller 1 is the right controller）
+Pvr_KeyCode.Left  （Controller 0 is the left controller）</td>
+</tr>
+<tr class="row-even"><td>Joystick</td>
+<td>Pvr_KeyCode.TOUCHPAD</td>
+</tr>
+<tr class="row-odd"><td>X</td>
+<td>Pvr_KeyCode.X（Controller 0）</td>
+</tr>
+<tr class="row-even"><td>Y</td>
+<td>Pvr_KeyCode.Y（Controller 0）</td>
+</tr>
+<tr class="row-odd"><td>A</td>
+<td>Pvr_KeyCode.A（Controller 1）</td>
+</tr>
+<tr class="row-even"><td>B</td>
+<td>Pvr_KeyCode.B（Controller 1）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pico-hmd-key">
+<h2>5.5     Pico HMD key<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html#pico-hmd-key" title="Permalink to this headline">¶</a></h2>
+<p>The following table refers to the correspondence between the keys on the head mounted display and the key values in Unity.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%">
+<col width="71%">
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HMD Key</th>
+<th class="head">Input Key of Unity</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Return Key</td>
+<td>KeyCode.Escape</td>
+</tr>
+<tr class="row-odd"><td>OK Key</td>
+<td>KeyCode.JoystickButton0</td>
+</tr>
+<tr class="row-even"><td>HOME Key</td>
+<td>KeyCode.Home (system occupied, not open by default)</td>
+</tr>
+<tr class="row-odd"><td>Volume Up Key</td>
+<td>Android standard VOLUME_UP (system occupied, not open by default)</td>
+</tr>
+<tr class="row-even"><td>Volume Down Key</td>
+<td>Android standard VOLUME_DOWN (system occupied, not open by default)</td>
+</tr>
+</tbody>
+</table>
+<p>Note:Using Keycode. JoystickButton0 is not applicable when using the new Input system. If you still want to use the old input manager to get the headset confirm key value, You will need to check “Both” or “Input Manager(Old)” in Player Settings-&gt; Player-&gt; Other Settings-&gt;Active Input Handling* option.</p>
+<img alt="_images/5.1030.png" src="./5 Hardware product development guide — PicoVR Unity SDK 0.1 documentation_files/5.1030.png">
+<p>Figure 5.8 Switch between old and new input systems</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="https://sdk.picovr.com/docs/sdk/en/chapter_six.html" class="btn btn-neutral float-right" title="6 Performance optimization guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="https://sdk.picovr.com/docs/sdk/en/chapter_four.html" class="btn btn-neutral float-left" title="4 Quick start of SDK access" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <p>
+        © Copyright 2015-2021 Pico Interactive, Inc. All Rights Reserved..
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org/">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+
+</body></html>

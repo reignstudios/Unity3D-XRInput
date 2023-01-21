@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://sdk.picovr.com/docs/sdk/en/chapter_two.html -->
+<html class="writer-html4" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2 Instructions for SDK configuration — PicoVR Unity SDK 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="./2 Instructions for SDK configuration — PicoVR Unity SDK 0.1 documentation_files/theme.css" type="text/css">
+  <link rel="stylesheet" href="./2 Instructions for SDK configuration — PicoVR Unity SDK 0.1 documentation_files/pygments.css" type="text/css">
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="./2 Instructions for SDK configuration — PicoVR Unity SDK 0.1 documentation_files/documentation_options.js.download"></script>
+        <script type="text/javascript" src="./2 Instructions for SDK configuration — PicoVR Unity SDK 0.1 documentation_files/jquery.js.download"></script>
+        <script type="text/javascript" src="./2 Instructions for SDK configuration — PicoVR Unity SDK 0.1 documentation_files/underscore.js.download"></script>
+        <script type="text/javascript" src="./2 Instructions for SDK configuration — PicoVR Unity SDK 0.1 documentation_files/doctools.js.download"></script>
+        <script type="text/javascript" src="./2 Instructions for SDK configuration — PicoVR Unity SDK 0.1 documentation_files/language_data.js.download"></script>
+    
+    <script type="text/javascript" src="./2 Instructions for SDK configuration — PicoVR Unity SDK 0.1 documentation_files/theme.js.download"></script>
+
+    
+    <link rel="index" title="Index" href="https://sdk.picovr.com/docs/sdk/en/genindex.html">
+    <link rel="search" title="Search" href="https://sdk.picovr.com/docs/sdk/en/search.html">
+    <link rel="next" title="3 Development notes" href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html">
+    <link rel="prev" title="1 Introduction to SDK" href="https://sdk.picovr.com/docs/sdk/en/chapter_one.html"> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="https://sdk.picovr.com/docs/sdk/en/index.html" class="icon icon-home"> PicoVR Unity SDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v_2.8.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="https://sdk.picovr.com/docs/sdk/en/search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs">
+    <input type="hidden" name="check_keywords" value="yes">
+    <input type="hidden" name="area" value="default">
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_one.html">1       Introduction to SDK</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_two.html#">2       Instructions for SDK configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_two.html#supported-devices">2.1     Supported devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_two.html#development-environment-requirements">2.2     Development environment requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html">3       Development notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_four.html">4       Quick start of SDK access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html">5       Hardware product development guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_six.html">6       Performance optimization guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html">7       API Interface Function List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html">8       Advanced features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html">9       Payment system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_ten.html">10      VR Input Keyboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eleven.html">11      Frequently Asked Questions</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="https://sdk.picovr.com/docs/sdk/en/index.html">PicoVR Unity SDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="https://sdk.picovr.com/docs/sdk/en/index.html" class="icon icon-home"></a> »</li>
+        
+      <li>2       Instructions for SDK configuration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="https://sdk.picovr.com/docs/sdk/en/_sources/chapter_two.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="instructions-for-sdk-configuration">
+<span id="id1"></span><h1>2       Instructions for SDK configuration<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_two.html#instructions-for-sdk-configuration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="supported-devices">
+<h2>2.1     Supported devices<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_two.html#supported-devices" title="Permalink to this headline">¶</a></h2>
+<p>Pico G2 4K series, Pico Neo 2 series, Pico Neo 3 series</p>
+</div>
+<div class="section" id="development-environment-requirements">
+<h2>2.2     Development environment requirements<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_two.html#development-environment-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Supported Unity versions: 2018.4.x, 2019.4.1x, 2020.3.x, 2021.1.x .</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%">
+<col width="69%">
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>JDK</td>
+<td>jdk1.8.0 and above</td>
+</tr>
+<tr class="row-even"><td>Android SDK</td>
+<td>API Level 29 and above</td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<p>If you come across Unity packaging error “Execution failed for task ‘:processReleaseResources’”  ,please check if the Android SDK API Level 29 (or above) is properly installed.</p>
+<p>Unity settings: Minimum API Level: 23 to 27</p>
+<p>Unity Target API Level: Level 27 are recommended. Setting target API level to 28 or above and using network related functionalities causes error “{“isSuccess”: “false”, “msg”: “Network exception”}</p>
+<p>If the Unity Target API Level uses low version Android SDK API, the following tag of the Android Manifest file can be deleted:</p>
+<p>android:requestLegacyExternalStorage=“true”.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html" class="btn btn-neutral float-right" title="3 Development notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="https://sdk.picovr.com/docs/sdk/en/chapter_one.html" class="btn btn-neutral float-left" title="1 Introduction to SDK" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <p>
+        © Copyright 2015-2021 Pico Interactive, Inc. All Rights Reserved..
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org/">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+
+</body></html>

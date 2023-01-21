@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://sdk.picovr.com/docs/sdk/en/chapter_nine.html -->
+<html class="writer-html4" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>9 Payment system — PicoVR Unity SDK 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="./9 Payment system — PicoVR Unity SDK 0.1 documentation_files/theme.css" type="text/css">
+  <link rel="stylesheet" href="./9 Payment system — PicoVR Unity SDK 0.1 documentation_files/pygments.css" type="text/css">
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="./9 Payment system — PicoVR Unity SDK 0.1 documentation_files/documentation_options.js.download"></script>
+        <script type="text/javascript" src="./9 Payment system — PicoVR Unity SDK 0.1 documentation_files/jquery.js.download"></script>
+        <script type="text/javascript" src="./9 Payment system — PicoVR Unity SDK 0.1 documentation_files/underscore.js.download"></script>
+        <script type="text/javascript" src="./9 Payment system — PicoVR Unity SDK 0.1 documentation_files/doctools.js.download"></script>
+        <script type="text/javascript" src="./9 Payment system — PicoVR Unity SDK 0.1 documentation_files/language_data.js.download"></script>
+    
+    <script type="text/javascript" src="./9 Payment system — PicoVR Unity SDK 0.1 documentation_files/theme.js.download"></script>
+
+    
+    <link rel="index" title="Index" href="https://sdk.picovr.com/docs/sdk/en/genindex.html">
+    <link rel="search" title="Search" href="https://sdk.picovr.com/docs/sdk/en/search.html">
+    <link rel="next" title="10 VR Input Keyboard" href="https://sdk.picovr.com/docs/sdk/en/chapter_ten.html">
+    <link rel="prev" title="8 Advanced features" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html"> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="https://sdk.picovr.com/docs/sdk/en/index.html" class="icon icon-home"> PicoVR Unity SDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v_2.8.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="https://sdk.picovr.com/docs/sdk/en/search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs">
+    <input type="hidden" name="check_keywords" value="yes">
+    <input type="hidden" name="area" value="default">
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_one.html">1       Introduction to SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_two.html">2       Instructions for SDK configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html">3       Development notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_four.html">4       Quick start of SDK access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html">5       Hardware product development guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_six.html">6       Performance optimization guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html">7       API Interface Function List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html">8       Advanced features</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#">9       Payment system</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#preparations">9.1     Preparations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#get-the-string-used-for-payment">9.1.1   Get the string used for payment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#use-the-string-for-payment">9.1.2   Use the string for payment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#use-of-payment-system">9.2     Use of payment system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#function-interface-explanatio">9.3     Function interface explanatio</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#login">9.3.1   Login</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#payment">9.3.2   Payment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#order-query">9.3.3   Order query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#get-user-information">9.3.4   Get user information</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#developer-server-interaction">9.4      Developer server interaction</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_ten.html">10      VR Input Keyboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eleven.html">11      Frequently Asked Questions</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="https://sdk.picovr.com/docs/sdk/en/index.html">PicoVR Unity SDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="https://sdk.picovr.com/docs/sdk/en/index.html" class="icon icon-home"></a> »</li>
+        
+      <li>9       Payment system</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="https://sdk.picovr.com/docs/sdk/en/_sources/chapter_nine.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="payment-system">
+<span id="id1"></span><h1>9       Payment system<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#payment-system" title="Permalink to this headline">¶</a></h1>
+<p>Pico payment is a game currency payment system based on the Pico account system, and the settlement method is based on the current game currency unit under Pico (P currency). If the project requires internal purchasing function, please read the contents of this chapter carefully. If the project does not require internal purchasing function, please ignore this chapter.</p>
+<div class="section" id="preparations">
+<h2>9.1     Preparations<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#preparations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="get-the-string-used-for-payment">
+<h3>9.1.1   Get the string used for payment<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#get-the-string-used-for-payment" title="Permalink to this headline">¶</a></h3>
+<p>When developer accesses the payment SDK, an application needs to be created on the developer platform and the corresponding string should be gotten. The application process is as follows:</p>
+<ul class="simple">
+<li><ol class="first arabic">
+<li>Log in to the developer platform and register a Pico member (<a class="reference external" href="http://developer.pico-interactive.com/">http://developer.pico-interactive.com/</a>)</li>
+</ol>
+</li>
+<li><ol class="first arabic" start="2">
+<li>Apply to become a developer</li>
+</ol>
+</li>
+</ul>
+<p>The developers are divided into individual developers and enterprise developers, please apply according to the actual situations. After the review is submitted, we will provide feedback within 3 working days, please view the status of the developer platform in time.</p>
+<ul class="simple">
+<li><ol class="first arabic" start="3">
+<li>View merchant ID</li>
+</ol>
+</li>
+</ul>
+<p>After applying to become a developer, click the nickname in the upper right corner to view the developer ID, which will serve as the unique symbol of the merchant in the payment system:</p>
+<img alt="_images/9.1.png" src="./9 Payment system — PicoVR Unity SDK 0.1 documentation_files/9.1.png">
+<p>Figure 9.1 Merchant ID</p>
+<ul class="simple">
+<li><ol class="first arabic" start="4">
+<li>Get the corresponding string</li>
+</ol>
+</li>
+</ul>
+<p>Developers can enter the application creation phase from the management center. After clicking Create Application, first select the platform to publish:</p>
+<p>Then enter the corresponding platform to perfect the relevant information of application:</p>
+<img alt="_images/9.2.png" src="./9 Payment system — PicoVR Unity SDK 0.1 documentation_files/9.2.png">
+<p>Figure 9.2 Information about application improvement</p>
+<p>Please pay key attention to the red position of the above figure, please fill out the application type carefully, and it can’t be modified once you fill it out! If there is a case of external payment of props for game applications, we require the developers to use the way of adding product code in the background of developers for unified management.</p>
+<p>Description of payment methods:</p>
+<p>Currently, there are two payment methods: one is P currency payment (application type) and the other is product code payment (game type). Only one payment method can be used for the same application.</p>
+<p>After the application is successfully created, the developer platform will assign a string to it, including APP ID, APP KEY and APP Secret. The developers will also be assigned a developer ID:</p>
+<img alt="_images/9.3.png" src="./9 Payment system — PicoVR Unity SDK 0.1 documentation_files/9.3.png">
+<p>Figure 9.3 APP ID, APP KEY, APP Secret</p>
+<p>And then select “In-game payment configuration” and configure the game’s internal purchase information:</p>
+<p>Attention should be paid that the rule of the product code is defined as follows: ‘the first letter is a letter, only the entry of letters and numbers is allowed, and it should not be more than 20 characters’. The product code between different props cannot be repeated. The prop types are divided into consumable prop and non-consumable prop. Consumable prop are reusable commodities, such as gold currency, blood bottle, etc. Non-consumable props are disposable purchased products, such as weapons and unlocking levels.</p>
+</div>
+<div class="section" id="use-the-string-for-payment">
+<h3>9.1.2   Use the string for payment<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#use-the-string-for-payment" title="Permalink to this headline">¶</a></h3>
+<p>Please be noted: if features including user login, payment or retrieving user info from Pico platform are required, please use configurations as described below. If the features above are not required, this chapter can be skipped. The values need to be content with the ones acquired in step 4, chapter 9.1.1.</p>
+<p>This SDK has integrated AndroidManifes.xml. Your project does not contain the file of AndroidManifes.xml. You can directly use the file of AndroidManifes.xml in this SDK. If the development project already has the file of AndroidManifes.xml, be sure to merge the AndroidManifes.xml related items in this SDK into the existing AndroidManifes.xml. Items to be merged include the following:</p>
+<p>&gt; Necessary authority:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;uses-permission</span> <span class="na">android:name=</span><span class="s">"android.permission.INTERNET"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;uses-permission</span> <span class="na">android:name=</span><span class="s">"android.permission.ACCESS_WIFI_STATE"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;uses-permission</span> <span class="na">android:name=</span><span class="s">"android.permission.ACCESS_NETWORK_STATE"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;uses-permission</span> <span class="na">android:name=</span><span class="s">"android.permission.WRITE_EXTERNAL_STORAGE"</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<p>When selecting “China” as “Release area”, the following segments need to be included in Android Manifest:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="c">&lt;!--APPID--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_app_id"</span>
+    <span class="na">android:value=</span><span class="s">"APP ID"</span><span class="nt">/&gt;</span>                //Replace APP ID with the APPID applied by the application
+<span class="c">&lt;!--APPKEY--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_app_key"</span>
+    <span class="na">android:value=</span><span class="s">"APPK EY"</span><span class="nt">/&gt;</span>               //Replace APP KEY with APPKEY applied by the application
+<span class="c">&lt;!--Authorization Scope--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_scope"</span>
+    <span class="na">android:value=</span><span class="s">"SCOPE"</span><span class="nt">/&gt;</span>         //Replace the SCOPE with the fixed value get_user_info
+<span class="c">&lt;!--Developer ID--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_merchant_id"</span>
+    <span class="na">android:value=</span><span class="s">"DEVELOPER ID"</span><span class="nt">/&gt;</span>          //Replace DEVELOPER ID with the Developer's DEVELOPER ID
+<span class="c">&lt;!--Payment Key--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_pay_key"</span>
+    <span class="na">android:value=</span><span class="s">"APP SECRET"</span><span class="nt">/&gt;</span>            //Replace APP SECRET with APPSECRET applied by the application
+</pre></div>
+</div>
+<p>When selecting regions other than “China” as “Release area”, the following segments need to be included in Android Manifest:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="c">&lt;!--APPID--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_app_id_foreign"</span>
+    <span class="na">android:value=</span><span class="s">"APP ID"</span><span class="nt">/&gt;</span>
+<span class="c">&lt;!--APPKEY--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_app_key_foreign"</span>
+    <span class="na">android:value=</span><span class="s">"APPK EY"</span><span class="nt">/&gt;</span>
+<span class="c">&lt;!--Authorization Scope--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_scope_foreign"</span>
+    <span class="na">android:value=</span><span class="s">"SCOPE"</span><span class="nt">/&gt;</span>
+<span class="c">&lt;!--Developer ID--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_merchant_id_foreign"</span>
+    <span class="na">android:value=</span><span class="s">"DEVELOPER ID"</span><span class="nt">/&gt;</span>
+<span class="c">&lt;!--Payment Key--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_pay_key_foreign"</span>
+    <span class="na">android:value=</span><span class="s">"APP SECRET"</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<p>Note that selecting “Global” will include all regions, so both segments are required as follow:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="c">&lt;!--APPID--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_app_id"</span>
+    <span class="na">android:value=</span><span class="s">"APP ID"</span><span class="nt">/&gt;</span>                //Replace APP ID with the APPID applied by the application
+<span class="c">&lt;!--APPKEY--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_app_key"</span>
+    <span class="na">android:value=</span><span class="s">"APPK EY"</span><span class="nt">/&gt;</span>               //Replace APP KEY with APPKEY applied by the application
+<span class="c">&lt;!--Authorization Scope--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_scope"</span>
+    <span class="na">android:value=</span><span class="s">"SCOPE"</span><span class="nt">/&gt;</span>         //Replace the SCOPE with the fixed value get_user_info
+<span class="c">&lt;!--Developer ID--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_merchant_id"</span>
+    <span class="na">android:value=</span><span class="s">"DEVELOPER ID"</span><span class="nt">/&gt;</span>          //Replace DEVELOPER ID with the Developer's DEVELOPER ID
+<span class="c">&lt;!--Payment Key--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_pay_key"</span>
+    <span class="na">android:value=</span><span class="s">"APP SECRET"</span><span class="nt">/&gt;</span>            //Replace APP SECRET with APPSECRET applied by the application
+<span class="c">&lt;!--APPID--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_app_id_foreign"</span>
+    <span class="na">android:value=</span><span class="s">"APP ID"</span><span class="nt">/&gt;</span>
+<span class="c">&lt;!--APPKEY--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_app_key_foreign"</span>
+    <span class="na">android:value=</span><span class="s">"APPK EY"</span><span class="nt">/&gt;</span>
+<span class="c">&lt;!--Authorization Scope--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_scope_foreign"</span>
+    <span class="na">android:value=</span><span class="s">"SCOPE"</span><span class="nt">/&gt;</span>
+<span class="c">&lt;!--Developer ID--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_merchant_id_foreign"</span>
+    <span class="na">android:value=</span><span class="s">"DEVELOPER ID"</span><span class="nt">/&gt;</span>
+<span class="c">&lt;!--Payment Key--&gt;</span>
+<span class="nt">&lt;meta-data</span>
+    <span class="na">android:name=</span><span class="s">"pico_pay_key_foreign"</span>
+    <span class="na">android:value=</span><span class="s">"APP SECRET"</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<p>Note: In this configuration file, pico_pay_key/ pico_pay_key_foreign corresponds to AppSecret on the developer platform.</p>
+<p>Note: For Android 9 and above versions, the network request must use https, but the current default settings and initserver configuration are both http, so the system will intercept and report errors. Fix: Add http compatible configuration to Android Manifest.xml as follows:</p>
+<p>Create a network_security_config.xml file in the res/ xml directory with the following content:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>&lt;?xml version="1.0" encoding="utf-8"/&gt;
+&lt;network-security-config/&gt;
+&lt;base-config cleartextTrafficPermitted="true"/&gt;
+&lt;/network-security-config&gt;
+</pre></div>
+</div>
+<p>Add the following content to the application tag of Android Manifest.xml :</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>android:networkSecurityConfig="@xml/network_security_config"
+android:usesCleartextTraffic="true"
+</pre></div>
+</div>
+<p>Sample code snippet in Android Manifest:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.your.package"&gt;
+&lt;application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:supportsRtl="true""&gt;
+&lt;!-- China--&gt;
+&lt;!--Application ID--&gt;
+&lt;meta-data
+    android:name="pico_app_id"
+    android:value="[APPID from Pico Dev Platform]"/&gt;
+&lt;!--Application key--&gt;
+&lt;meta-data
+    android:name="pico_app_key"
+    android:value="[APP KEY from Pico Dev Platform]"/&gt;
+&lt;!--Granting scale--&gt;
+&lt;meta-data
+    android:name="pico_scope"
+    android:value="get_user_info"/&gt; &lt;!--Don't modify this--&gt;
+&lt;!--Merchant ID--&gt;
+&lt;meta-data
+    android:name="pico_merchant_id"
+    android:value="[Merchant ID from Pico Dev Platform]"/&gt;
+&lt;!--PAY Key--&gt;
+&lt;meta-data
+    android:name="pico_pay_key"
+    android:value="[PAY KEY from Pico Dev Platform]"/&gt;
+&lt;!-- Global --&gt;
+&lt;meta-data
+    android:name="pico_app_id_foreign"
+    android:value="[APPID from Pico Dev Platform]"/&gt;
+&lt;meta-data
+    android:name="pico_app_key_foreign"
+    android:value="[APP KEY from Pico Dev Platform]"/&gt;
+&lt;meta-data
+    android:name="pico_scope_foreign"
+    android:value="get_user_info"/&gt;&lt;!--Don't modify this--&gt;
+&lt;meta-data
+    android:name="pico_merchant_id_foreign"
+    android:value="[Merchant ID from Pico Dev Platform]"/&gt;
+&lt;meta-data
+    android:name="pico_pay_key_foreign"
+    android:value="[PAY KEY from Pico Dev Platform]"/&gt;
+&lt;/application&gt;
+&lt;/manifest&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="use-of-payment-system">
+<h2>9.2     Use of payment system<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#use-of-payment-system" title="Permalink to this headline">¶</a></h2>
+<p>The process of payment system is relatively complicated, and we have specially provided a Demo for reference. Expand Assets&gt; Pvr_Payment&gt;Demo&gt;Scenes to open the Demo scenes as follows:</p>
+<img alt="_images/9.6.png" src="./9 Payment system — PicoVR Unity SDK 0.1 documentation_files/9.6.png">
+<p>Figure 9.4 Payment of Demo</p>
+<p>In the above figure, the left side of each button represents the method to be called and the right side represents the callback method. When the developer uses the payment system, please refer to the above Demo for implementation.</p>
+<p>Note:</p>
+<p>1.“There is a Prefab of “PicoPayment” under the Prefabs folder for system callback. Be sure to add this object to the project. And DO NOT modify the prefab name, otherwise callback parameter won’t be accepted”</p>
+<p>2.“The “Callback” script bound to PicoPayment preprocesses some of the callback data. If developers need to process other data, please modify the contents of related functions, but the function name cannot be modified. And note that SDK will override this function so please backup the modified content before upgrading SDK”.</p>
+</div>
+<div class="section" id="function-interface-explanatio">
+<h2>9.3     Function interface explanatio<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#function-interface-explanatio" title="Permalink to this headline">¶</a></h2>
+<p>Callback functions are implemented in “Callback.cs” script file from Pico_Payment folder. Details can be found in Chapter 9.2</p>
+<div class="section" id="login">
+<h3>9.3.1   Login<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#login" title="Permalink to this headline">¶</a></h3>
+<p>Login is the prerequisite of calling the following interfaces. If not logged in or login fails, all other features like retrieving user info or payment would fail.</p>
+<ul class="simple">
+<li>Method of calling: void Login()</li>
+<li>Method of callback: void LoginCallback(string LoginInfo)</li>
+</ul>
+<p>Among them, LoginInfo is the login information returned from the background. The login demonstration format is as follows:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s">"isSuccess"</span><span class="p">:</span> <span class="s">"true or false"</span><span class="p">,</span> <span class="n">when</span> <span class="n">the</span> <span class="n">value</span> <span class="n">is</span> <span class="kc">true</span><span class="p">,</span> <span class="n">it</span> <span class="n">means</span> <span class="n">successful</span> <span class="n">login</span><span class="p">;</span> <span class="n">when</span> <span class="n">the</span> <span class="n">value</span> <span class="n">is</span> <span class="kc">false</span><span class="p">,</span> <span class="n">it</span> <span class="n">means</span> <span class="n">failed</span> <span class="n">login</span><span class="p">;</span> <span class="s">"msg"</span><span class="p">:</span> <span class="s">"Corresponding description information"</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Successful examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{"isSuccess":"true"，"msg":"SUCCESS"}
+</pre></div>
+</div>
+<p>Failure examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{"isSuccess":"false"，"msg":"Network exception"}
+</pre></div>
+</div>
+</div>
+<div class="section" id="payment">
+<h3>9.3.2   Payment<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#payment" title="Permalink to this headline">¶</a></h3>
+<p>Please note to the login method from Chapter 9.3.1 have been called.</p>
+<ul class="simple">
+<li>Method of calling: void Pay(string payOrderJson)</li>
+</ul>
+<p>Among them, payOrderJson is the Json string containing order information. The following parameters are the required parameters, including:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%">
+<col width="95%">
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>subject</td>
+<td>Order title and product overview</td>
+</tr>
+<tr class="row-even"><td>body</td>
+<td>Description of order and detailed description of goods</td>
+</tr>
+<tr class="row-odd"><td>order_id</td>
+<td>The order number generated by the developer, which shall not exceed 64 characters.</td>
+</tr>
+<tr class="row-even"><td>total</td>
+<td>The total price of the commodity is an integer greater than 0. It is entered when paying directly, but is not entered when paying by the product code.</td>
+</tr>
+<tr class="row-odd"><td>goods_tag</td>
+<td>Commodity label</td>
+</tr>
+<tr class="row-even"><td>pay_code</td>
+<td>The product code must be consistent with the configuration of the developer platform. It is entered when paying directly, but is not entered when paying by the product code.</td>
+</tr>
+</tbody>
+</table>
+<p>Example 1:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Pay</span> <span class="p">(</span><span class="s">"{'subject': 'Game',' body ': Buy a complete game', 'order_id ':'10000','total         ':'10','goods_tag ':'game' }"</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Example 2:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Pay</span> <span class="p">(</span><span class="s">"{'subject': 'Game',' body ': Buy a complete game', ,'order_id ':'10000',','goods_tag ':'game','pay_code':'123' }"</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note: Example 1 is a direct payment method and Example 2 is a payment method using the product code. The two methods cannot be carried out at the same time. The attribute of the product code cannot be filled in during direct payment and the total attribute cannot be filled in or set to 0 when using a product code. The two payment methods must be consistent with the payment types set in the developer platform account.</p>
+<p>Note: order_id is unique in the payment system. Therefore, in order to ensure that a single user has a unique order number on the same app, it needs to be named in the form of “openID + custom order number”.</p>
+<ul class="simple">
+<li>Method of callback: void QueryOrPayCallback(string queryOrPayInfo)</li>
+</ul>
+<p>Among them, queryOrPayInfo is the payment information returned from the background, and the exemplary format is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">"code "</span><span class="p">:</span><span class="s2">"12000"</span><span class="p">,</span><span class="s2">"msg"</span><span class="p">:</span><span class="s2">"PAY_SUCCESS"</span><span class="p">}</span> <span class="o">//</span><span class="n">When</span> <span class="n">the</span> <span class="n">code</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">12000</span><span class="p">,</span> <span class="n">the</span> <span class="n">payment</span> <span class="ow">is</span> <span class="n">successful</span><span class="p">;</span> <span class="n">Other</span> <span class="n">exception</span> <span class="n">codes</span> <span class="k">for</span> <span class="n">payment</span> <span class="n">failure</span>
+</pre></div>
+</div>
+<p>List of payment callback code and msg:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%">
+<col width="68%">
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Code</th>
+<th class="head">Msg</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>11001</td>
+<td>USER_NOT_LOGIN_OR_EXPIRED</td>
+</tr>
+<tr class="row-odd"><td>11004</td>
+<td>MISSING_APP_PARAMETERS</td>
+</tr>
+<tr class="row-even"><td>12000</td>
+<td>PAY_SUCCESS</td>
+</tr>
+<tr class="row-odd"><td>12002</td>
+<td>ENTER_AMOUNT_ERROR</td>
+</tr>
+<tr class="row-even"><td>12003</td>
+<td>PCOIN_NOT_ENOUGH</td>
+</tr>
+<tr class="row-odd"><td>12006</td>
+<td>NOT_ENTER_ORDER_INFO</td>
+</tr>
+<tr class="row-even"><td>12007</td>
+<td>PAY_ORDER_EXIST</td>
+</tr>
+<tr class="row-odd"><td>12008</td>
+<td>PAY_CODE_NOT_EXIST</td>
+</tr>
+<tr class="row-even"><td>12009</td>
+<td>PAY_CODE_ALERADY_CONSUMED</td>
+</tr>
+<tr class="row-odd"><td>14001</td>
+<td>SDK_LOCAL_ERROR</td>
+</tr>
+<tr class="row-even"><td>14004</td>
+<td>NETWORK_ERROR</td>
+</tr>
+<tr class="row-odd"><td>15001</td>
+<td>SYSTEM_ERROR</td>
+</tr>
+<tr class="row-even"><td>15003</td>
+<td>SERVICE_APP_PARAMETER_NOT_MATCH</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="order-query">
+<h3>9.3.3   Order query<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#order-query" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Method of calling: void QueryOrder(string orderId)</li>
+</ul>
+<p>Among them, orderId is the order number to be querieds</p>
+<ul class="simple">
+<li>Method of callback: void QueryOrPayCallback(string queryOrPayInfo)</li>
+</ul>
+<p>Among them, queryOrPayInfo returns order information for the background in the following format:</p>
+<ul class="simple">
+<li>code: When the value is 13000, the query order is successful. Other exception codes for payment failure</li>
+<li>msg: When the code is 13000, msg returns the json string of order information; when the code is other values, return to the corresponding description information</li>
+</ul>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s">"code "</span><span class="p">:</span><span class="s">"13000"</span><span class="p">,</span><span class="s">"msg"</span><span class="p">:</span><span class="s">"json string of user information "</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>When the code is 13000, the json string of msg’s order information is as follows:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s">"trade_no"</span><span class="p">:</span><span class="s">"22016082314719505878171324"</span><span class="p">,</span><span class="c1">// Pico Payment order No.</span>
+<span class="s">"open_id"</span><span class="p">:</span><span class="s">"4f3148bdc34d9bca104927729a173b64"</span><span class="p">,</span>
+<span class="s">"ret_msg"</span><span class="p">:</span><span class="s">""</span><span class="p">,</span>
+<span class="s">"coupon_fee"</span><span class="p">:</span><span class="mf">0.00</span><span class="p">,</span>
+<span class="s">"fee_type"</span><span class="p">:</span><span class="s">"PIC"</span><span class="p">,</span>
+<span class="s">"pay_time"</span><span class="p">:</span><span class="mi">1471950587000</span><span class="p">,</span><span class="c1">// Payment completion time</span>
+<span class="s">"nonce_str"</span><span class="p">:</span><span class="s">"yiUzuv4VQO1OXBAzVyZSRztOmRgIOioT"</span><span class="p">,</span>
+<span class="s">"out_trade_no"</span><span class="p">:</span><span class="s">"12345678903"</span><span class="p">,</span> <span class="c1">// Order number of merchant</span>
+<span class="s">"trade_status"</span><span class="p">:</span><span class="s">"SUCCESS"</span><span class="p">,</span><span class="c1">//SUCCESS—Successful payment</span>
+<span class="s">"trade_type"</span><span class="p">:</span><span class="s">"EGG"</span><span class="p">,</span>
+<span class="s">"result_code"</span><span class="p">:</span><span class="s">"SUCCESS"</span><span class="p">,</span>
+<span class="s">"mch_id"</span><span class="p">:</span><span class="s">"company_id"</span><span class="p">,</span>
+<span class="s">"ret_code"</span><span class="p">:</span><span class="s">"SUCCESS"</span><span class="p">,</span>
+<span class="s">"sub_msg"</span><span class="p">:</span><span class="s">"OK"</span><span class="p">,</span>
+<span class="s">"total_fee"</span><span class="p">:</span><span class="mf">100.00</span><span class="p">,</span><span class="c1">// Total order amount</span>
+<span class="s">"app_id"</span><span class="p">:</span><span class="s">"bf18ac2de375095d63428134e44d1867"</span><span class="p">,</span>
+<span class="s">"sub_code"</span><span class="p">:</span><span class="s">"SUCCESS"</span><span class="p">,</span>
+<span class="s">"receipt_fee"</span><span class="p">:</span><span class="mf">100.00</span><span class="p">,</span><span class="c1">// Paid-in amount</span>
+<span class="s">"buyer_pay_fee"</span><span class="p">:</span><span class="mf">100.00</span><span class="c1">// The amount paid by the buyer</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When code is other values, the json string of msg’s order information is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">"code "</span><span class="p">:</span><span class="s2">"13006"</span><span class="p">,</span><span class="s2">"msg"</span><span class="p">:</span><span class="s2">"QUERY_ORDER_NOT_EXIST"</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Code and msg for query:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%">
+<col width="68%">
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Code</th>
+<th class="head">Msg</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>11001</td>
+<td>USER_NOT_LOGIN_OR_EXPIRED</td>
+</tr>
+<tr class="row-odd"><td>13000</td>
+<td>QUERY_ORDER_SUCCESS</td>
+</tr>
+<tr class="row-even"><td>13003</td>
+<td>NOT_ENTER_ORDER_ID</td>
+</tr>
+<tr class="row-odd"><td>13006</td>
+<td>QUERY_ORDER_NOT_EXIST</td>
+</tr>
+<tr class="row-even"><td>14001</td>
+<td>SDK_LOCAL_ERROR</td>
+</tr>
+<tr class="row-odd"><td>14004</td>
+<td>NETWORK_ERROR</td>
+</tr>
+<tr class="row-even"><td>15001</td>
+<td>SYSTEM_ERROR</td>
+</tr>
+<tr class="row-odd"><td>15003</td>
+<td>SERVICE_APP_PARAMETER_NOT_MATCH</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="get-user-information">
+<h3>9.3.4   Get user information<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#get-user-information" title="Permalink to this headline">¶</a></h3>
+<p>Please note to the login method from Chapter 9.3.1 have been called.</p>
+<ul class="simple">
+<li>Method of calling: void GetUserAPI()</li>
+<li>Method of callback: void UserInfoCallback (string userInfo)</li>
+</ul>
+<p>Among them, userInfo is the user information returned from the background, which is an unprocessed Json string. Among them, openid is the unique identifier of the user in the current application (if necessary, this value will be changed when the application changes the appid. Please pay attention). When the query is successful, the exemplary format is as follows:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s">"ret_code"</span><span class="p">:</span><span class="s">"0000"</span><span class="p">,</span>
+<span class="s">"data"</span><span class="p">:{</span>
+<span class="s">"aboutme"</span><span class="p">:</span><span class="s">""</span><span class="p">,</span>
+<span class="s">"birthday"</span><span class="p">:</span><span class="mi">1460476800000</span><span class="p">,</span>  <span class="c1">// Long type value, date of birth, default time is the zero point of a certain year or month</span>
+<span class="s">"phone"</span><span class="p">:</span><span class="s">"13100000000"</span><span class="p">,</span>      <span class="c1">// Mobile phone number is required for registered users using mobile phones.</span>
+<span class="s">"username"</span><span class="p">:</span><span class="s">"Admin"</span><span class="p">,</span>                 <span class="c1">// The user name can be modified by the user</span>
+<span class="s">"email"</span><span class="p">:</span><span class="s">""</span><span class="p">,</span>                                 <span class="c1">// Mailbox is required for users to register with mailbox</span>
+<span class="s">"gender"</span><span class="p">:</span><span class="s">"male"</span><span class="p">,</span>
+<span class="s">"lastname"</span><span class="p">:</span><span class="s">""</span><span class="p">,</span>
+<span class="s">"openid"</span><span class="p">:</span><span class="s">"4f3148bdc34d9bca104927729a173b64"</span><span class="p">,</span>        <span class="c1">// Unique identification of user, required</span>
+<span class="s">"firstname"</span><span class="p">:</span><span class="s">""</span><span class="p">,</span>
+<span class="s">"avatar"</span><span class="p">:</span><span class="s">"http://172.31.83.11/upload/6dd6ee103714e967846c3d38ae48d511"</span><span class="p">,</span>
+<span class="s">"country"</span><span class="p">:</span><span class="s">"China"</span><span class="p">,</span>          <span class="c1">// The country can be set up on the official website</span>
+<span class="s">"city"</span><span class="p">:</span><span class="s">""</span>                           <span class="c1">// The city can be set on the official website</span>
+<span class="p">},</span>
+<span class="s">"ret_msg"</span><span class="p">:</span><span class="s">" Call success "</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When the query fails, there is no data part. The exemplary format is as follows:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s">"ret_code"</span><span class="p">:</span><span class="s">"5000"</span><span class="p">,</span>
+<span class="s">"ret_msg"</span><span class="p">:</span><span class="s">"SYSTEM_ERROR"</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>ret_code and ret_msg are listed as follows:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%">
+<col width="82%">
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>ret_code</td>
+<td>ret_msg</td>
+</tr>
+<tr class="row-even"><td>0000</td>
+<td>REQUEST_SUCCESS</td>
+</tr>
+<tr class="row-odd"><td>5000</td>
+<td>Error message returned by server</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="developer-server-interaction">
+<h2>9.4      Developer server interaction<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html#developer-server-interaction" title="Permalink to this headline">¶</a></h2>
+<p>After the payment is completed, the payment system will send the relevant payment results and user information to the merchant, and the merchant needs to receive and process them and return a response.</p>
+<p>When the background notifies the interaction, if the receiving of the merchant’s response by the payment system receives is not successful or overtime, the notification should be considered as failed, and the payment system will periodically re-initiate the notification through certain policies to maximize the success rate of the notification, but it may not guarantee that the notification will be eventually successful.</p>
+<p>The same notification may be sent to the merchant system repeatedly and the merchant system must be able to process duplicate notifications correctly. The recommended practice is to firstly check the status of the corresponding service data when it receives and processes the notification, and determine whether the notification has been processed, it should be re-processed if it has not been processed, and the result return will be successful directly if it has been processed. Before the status check and processing of business data, data locks should be used for concurrency control to avoid data confusion caused by function reentry.</p>
+<p>The merchant server needs to implement the following interface for receiving the request from the Pico server and get the payment result and user information of the Pico payment system:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%">
+<col width="83%">
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Name</td>
+<td>Payment result callback interface</td>
+</tr>
+<tr class="row-even"><td>Request type</td>
+<td>POST</td>
+</tr>
+<tr class="row-odd"><td>Request URL</td>
+<td>Pay, parameter notify_url transmitted by PayOrder</td>
+</tr>
+<tr class="row-even"><td>Request format</td>
+<td>JSON</td>
+</tr>
+<tr class="row-odd"><td>Return format</td>
+<td>JSON</td>
+</tr>
+<tr class="row-even"><td>Is login required</td>
+<td>Yes</td>
+</tr>
+<tr class="row-odd"><td>Request parameter</td>
+<td>For details, see the following “Table 9.1 notification parameters in payment result notification”</td>
+</tr>
+<tr class="row-even"><td>Return Params</td>
+<td><table border="1" class="first docutils">
+<colgroup>
+<col width="32%">
+<col width="34%">
+<col width="34%">
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Parameter</td>
+<td>Type</td>
+<td>Description</td>
+</tr>
+<tr class="row-even"><td>ret_code</td>
+<td>string</td>
+<td>Error code</td>
+</tr>
+<tr class="row-odd"><td>ret_msg</td>
+<td>string</td>
+<td>Error message</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="last">
+<div>See details in “table 9.2 Return Results” below</div></blockquote>
+</td>
+</tr>
+<tr class="row-even"><td>Return parameter example</td>
+<td>{“ret_code”: “SUCCESS”,”ret_msg” : “OK”}</td>
+</tr>
+<tr class="row-odd"><td>Update instruction</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>Table 9.1 Notification Parameters in Payment Result Notification</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%">
+<col width="6%">
+<col width="6%">
+<col width="5%">
+<col width="66%">
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field Name</th>
+<th class="head">Param Name</th>
+<th class="head">Required</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Return Status Code</td>
+<td>ret_code</td>
+<td>Yes</td>
+<td>String</td>
+<td>SUCCESS/FAIL This field is a notification identification, not a trade identification. The result_code is used to determine whether a trade is successful.</td>
+</tr>
+<tr class="row-odd"><td>Return Message</td>
+<td>ret_msg</td>
+<td>No</td>
+<td>String</td>
+<td>Return message, if not empty, then it’s the reason of the error: Name failed – param format validation error</td>
+</tr>
+<tr class="row-even"><td>Error Code</td>
+<td>sub_code</td>
+<td>No</td>
+<td>String</td>
+<td>Error code</td>
+</tr>
+<tr class="row-odd"><td>Error code description</td>
+<td>sub_msg</td>
+<td>No</td>
+<td>String</td>
+<td>The description of the error return message</td>
+</tr>
+<tr class="row-even"><td>Pico pay order number</td>
+<td>trade_no</td>
+<td>Yes</td>
+<td>String</td>
+<td>Pico payment order number</td>
+</tr>
+<tr class="row-odd"><td>Merchant order number</td>
+<td>out_trade_no</td>
+<td>Yes</td>
+<td>String</td>
+<td>The internal order number in merchant system</td>
+</tr>
+<tr class="row-even"><td>App ID</td>
+<td>app_id</td>
+<td>Yes</td>
+<td>String</td>
+<td>The app APP_ID that the platform has audited</td>
+</tr>
+<tr class="row-odd"><td>Merchant ID</td>
+<td>mch_id</td>
+<td>Yes</td>
+<td>String</td>
+<td>The merchant ID that the payment assigned</td>
+</tr>
+<tr class="row-even"><td>User ID</td>
+<td>open_id</td>
+<td>Yes</td>
+<td>String</td>
+<td>The unique ID of the user under the merchant’s appid</td>
+</tr>
+<tr class="row-odd"><td>Device ID</td>
+<td>device_id</td>
+<td>No</td>
+<td>String</td>
+<td>The ID of the terminal device</td>
+</tr>
+<tr class="row-even"><td>Random string</td>
+<td>nonce_str</td>
+<td>Yes</td>
+<td>String</td>
+<td>Random string, less than 32 chars. Random number generation algorithm is recommended.</td>
+</tr>
+<tr class="row-odd"><td>Name</td>
+<td>Name</td>
+<td>Yes</td>
+<td>String</td>
+<td>Name, see details in Name generation algorithm.</td>
+</tr>
+<tr class="row-even"><td>Business Result</td>
+<td>result_code</td>
+<td>Yes</td>
+<td>String</td>
+<td>SUCCESS/FAIL</td>
+</tr>
+<tr class="row-odd"><td>Trade Type</td>
+<td>trade_type</td>
+<td>Yes</td>
+<td>String</td>
+<td>Payment type</td>
+</tr>
+<tr class="row-even"><td>Currency Type</td>
+<td>fee_type</td>
+<td>Yes</td>
+<td>String</td>
+<td>Currency type</td>
+</tr>
+<tr class="row-odd"><td>Total Fee</td>
+<td>total_fee</td>
+<td>Yes</td>
+<td>String</td>
+<td>Total order amount</td>
+</tr>
+<tr class="row-even"><td>Actual Fee</td>
+<td>receipt_fee</td>
+<td>Yes</td>
+<td>String</td>
+<td>Actual Fee</td>
+</tr>
+<tr class="row-odd"><td>The amount of the fee the buyer paid</td>
+<td>buyer_pay_fee</td>
+<td>No</td>
+<td>String</td>
+<td>The amount of the fee the buyer paid</td>
+</tr>
+<tr class="row-even"><td>Voucher or Discount Amount</td>
+<td>coupon_fee</td>
+<td>No</td>
+<td>String</td>
+<td>Vouchers or Discount Amount</td>
+</tr>
+<tr class="row-odd"><td>Merchant Packet</td>
+<td>attach</td>
+<td>No</td>
+<td>String</td>
+<td>Merchant packets, returning as-is</td>
+</tr>
+<tr class="row-even"><td>Pay completion time</td>
+<td>pay_time</td>
+<td>Yes</td>
+<td>String</td>
+<td>The time that payment completes, the format is “yyyy-MM-dd HH:mm:ss”</td>
+</tr>
+</tbody>
+</table>
+<p>Table 9.2 Return Results</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%">
+<col width="9%">
+<col width="7%">
+<col width="5%">
+<col width="67%">
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field Name</th>
+<th class="head">Param</th>
+<th class="head">Required</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Return status code</td>
+<td>ret_code</td>
+<td>Yes</td>
+<td>String</td>
+<td>SUCCESS/FAIL  SUCCESS represents that the merchant has successfully received notification and validated.</td>
+</tr>
+<tr class="row-odd"><td>Return message</td>
+<td>ret_msg</td>
+<td>No</td>
+<td>String</td>
+<td>Return message, if not empty, then it’s the reason of error: Name failed - parameter format validation error</td>
+</tr>
+</tbody>
+</table>
+<p>Special remarks: The signature verification must be performed for the contents of the payment result notification in the merchant system to prevent “false notification” due to data leakage and capital loss.</p>
+<p>The function name verification rule is as follows:</p>
+<ol class="arabic simple">
+<li>Remove the signature parameter from the returned list of parameters, and simultaneously add key = “app_secret”, value=paykey, then sort it naturally according to the key value, separate the multiple parameters with &amp;, and finally take MD5 encryption</li>
+<li>Compare the encrypted string with the get signature</li>
+</ol>
+<p>The name of the function is as follows:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* result: the map collection of retrieved data</span>
+<span class="cm">* paykey: It’s the paykey on the developer platform</span>
+<span class="cm">*/</span>
+<span class="o">/**</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">createSign</span><span class="p">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">,</span> <span class="n">String</span> <span class="n">paykey</span><span class="p">)</span>
+    <span class="p">{</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">result</span><span class="p">.</span><span class="na">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+<span class="n">result</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">"app_secret"</span><span class="p">,</span> <span class="n">paykey</span><span class="p">);</span> <span class="c1">//1.Add key = “app_secret”, value=payke</span>
+<span class="n">String</span> <span class="n">sign</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">"Name"</span><span class="p">);</span><span class="c1">//2.Save Name value, to be used for validation</span>
+<span class="n">result</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="s">"Name"</span><span class="p">);</span> <span class="c1">//3.remove Name parameter</span>
+<span class="n">String</span><span class="o">[]</span> <span class="n">tmp</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">[</span><span class="n">result</span><span class="p">.</span><span class="na">size</span><span class="p">()</span><span class="o">]</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">String</span> <span class="n">key</span> <span class="p">:</span> <span class="n">result</span><span class="p">.</span><span class="na">keySet</span><span class="p">())</span>
+<span class="p">{</span>
+    <span class="n">tmp</span><span class="o">[</span><span class="n">i</span><span class="o">++]</span> <span class="o">=</span> <span class="n">key</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">Arrays</span><span class="p">.</span><span class="na">sort</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span> <span class="c1">//4.natural sort</span>
+<span class="n">String</span> <span class="n">signTemp</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">String</span> <span class="n">string</span> <span class="p">:</span> <span class="n">tmp</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span>
+        <span class="k">continue</span><span class="p">;</span>
+    <span class="n">signTemp</span> <span class="o">+=</span> <span class="n">string</span> <span class="o">+</span> <span class="s">"="</span> <span class="o">+</span> <span class="n">URLEncoder</span><span class="p">.</span><span class="na">encode</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">string</span><span class="p">).</span><span class="na">toString</span><span class="p">()</span>
+        <span class="p">,</span> <span class="s">"utf-8"</span><span class="p">)</span> <span class="o">+</span> <span class="s">"&amp;"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">signTemp</span><span class="p">.</span><span class="na">endsWith</span><span class="p">(</span><span class="s">"&amp;"</span><span class="p">))</span>
+    <span class="n">signTemp</span> <span class="o">=</span> <span class="n">sign</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">signTemp</span> <span class="p">.</span><span class="na">length</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+<span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s">"createSign: "</span> <span class="o">+</span> <span class="n">signTemp</span> <span class="p">);</span>
+<span class="n">String</span> <span class="n">localSign</span> <span class="o">=</span> <span class="n">MD5</span><span class="p">.</span><span class="na">MD5</span><span class="p">(</span><span class="n">sign</span><span class="p">);</span> <span class="c1">//5.generate MD5 encrypted string</span>
+<span class="k">return</span> <span class="n">localSign</span><span class="p">.</span><span class="na">equal</span><span class="p">(</span><span class="n">sign</span><span class="p">);</span><span class="c1">//6.validate with “sign” in 2</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="https://sdk.picovr.com/docs/sdk/en/chapter_ten.html" class="btn btn-neutral float-right" title="10 VR Input Keyboard" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html" class="btn btn-neutral float-left" title="8 Advanced features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <p>
+        © Copyright 2015-2021 Pico Interactive, Inc. All Rights Reserved..
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org/">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+
+</body></html>

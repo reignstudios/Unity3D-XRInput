@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)https://sdk.picovr.com/docs/sdk/en/chapter_seven.html -->
+<html class="writer-html4" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7 API Interface Function List — PicoVR Unity SDK 0.1 documentation</title><link rel="stylesheet" href="./7 API Interface Function List — PicoVR Unity SDK 0.1 documentation_files/theme.css" type="text/css">
+    <link rel="stylesheet" href="./7 API Interface Function List — PicoVR Unity SDK 0.1 documentation_files/pygments.css" type="text/css">
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="./7 API Interface Function List — PicoVR Unity SDK 0.1 documentation_files/documentation_options.js.download"></script>
+        <script type="text/javascript" src="./7 API Interface Function List — PicoVR Unity SDK 0.1 documentation_files/jquery.js.download"></script>
+        <script type="text/javascript" src="./7 API Interface Function List — PicoVR Unity SDK 0.1 documentation_files/underscore.js.download"></script>
+        <script type="text/javascript" src="./7 API Interface Function List — PicoVR Unity SDK 0.1 documentation_files/doctools.js.download"></script>
+        <script type="text/javascript" src="./7 API Interface Function List — PicoVR Unity SDK 0.1 documentation_files/language_data.js.download"></script>
+    <script src="./7 API Interface Function List — PicoVR Unity SDK 0.1 documentation_files/theme.js.download"></script>
+    <link rel="index" title="Index" href="https://sdk.picovr.com/docs/sdk/en/genindex.html">
+    <link rel="search" title="Search" href="https://sdk.picovr.com/docs/sdk/en/search.html">
+    <link rel="next" title="8 Advanced features" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html">
+    <link rel="prev" title="6 Performance optimization guide" href="https://sdk.picovr.com/docs/sdk/en/chapter_six.html"> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+            <a href="https://sdk.picovr.com/docs/sdk/en/index.html" class="icon icon-home"> PicoVR Unity SDK
+          </a>
+              <div class="version">
+                v_2.8.12
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="https://sdk.picovr.com/docs/sdk/en/search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs">
+    <input type="hidden" name="check_keywords" value="yes">
+    <input type="hidden" name="area" value="default">
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_one.html">1       Introduction to SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_two.html">2       Instructions for SDK configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html">3       Development notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_four.html">4       Quick start of SDK access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html">5       Hardware product development guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_six.html">6       Performance optimization guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#">7       API Interface Function List</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#get-version-information">7.1     Get version information</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getunitysdkversion">UPvr_GetUnitySDKVersion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#sensor-tracking-related">7.2     Sensor tracking related</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-startsensor">UPvr_StartSensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-resetsensor">UPvr_ResetSensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-optionalresetsensor">UPvr_OptionalResetSensor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#controller-related">7.3     Controller related</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollerpower">UPvr_GetControllerPower</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollerpowerbypercent">UPvr_GetControllerPowerByPercent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#changemaincontrollercallback">changeMainControllerCallback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollerability">UPvr_GetControllerAbility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#setcontrollerstatechanged">setControllerStateChanged</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollerstate">UPvr_GetControllerState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#resetcontroller">ResetController</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#startupgrade">StartUpgrade</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#getbleversion">GetBLEVersion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#setupdatefailed">setupdateFailed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#setupdatesuccess">setupdateSuccess</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#setupdateprogress">setupdateProgress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollerqua">UPvr_GetControllerQUA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollerpos">UPvr_GetControllerPOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getmainhandness">UPvr_GetMainHandNess</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setmainhandness">UPvr_SetMainHandNess</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getkey">UPvr_GetKey</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getkeydown">UPvr_GetKeyDown</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getkeyup">UPvr_GetKeyUp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getkeylongpressed">UPvr_GetKeyLongPressed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getkeyclick">UPvr_GetKeyClick</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-gettouch">UPvr_GetTouch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-gettouchdown">UPvr_GetTouchDown</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-gettouchup">UPvr_GetTouchUp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-istouching">UPvr_IsTouching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getjoystickup">UPvr_GetJoystickUp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getjoystickdown">UPvr_GetJoystickDown</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getjoystickleft">UPvr_GetJoystickLeft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getjoystickright">UPvr_GetJoystickRight</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getswipedirection">UPvr_GetSwipeDirection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-gettouchpadposition-discarded-it-is-recommended-to-use-the-upvr-getaxis2d-interface-uniformly">UPvr_GetTouchPadPosition (Discarded. It is recommended to use the UPvr_GetAxis2D interface uniformly.)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getaxis1d">UPvr_GetAxis1D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getaxis2d">UPvr_GetAxis2D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-gettouchpadclick">UPvr_GetTouchPadClick</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollertriggervalue">UPvr_GetControllerTriggerValue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-vibrateneo2controller">UPvr_VibrateNeo2Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getdevicetype">UPvr_GetDeviceType</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollerbindingstate">UPvr_GetControllerBindingState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getangularvelocity">UPvr_GetAngularVelocity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getacceleration">UPvr_GetAcceleration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getvelocity">UPvr_GetVelocity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setcontrolleroriginoffset">UPvr_SetControllerOriginOffset</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#power-volume-and-brightness-service-related">7.4     Power, volume and brightness service-related</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-initbatteryvolclass">UPvr_InitBatteryVolClass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-startaudioreceiver">UPvr_StartAudioReceiver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setaudio">UPvr_SetAudio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-stopaudioreceiver">UPvr_StopAudioReceiver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-startbatteryreceiver">UPvr_StartBatteryReceiver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setbattery">UPvr_SetBattery</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-stopbatteryreceiver">UPvr_StopBatteryReceiver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getmaxvolumenumber">UPvr_GetMaxVolumeNumber</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcurrentvolumenumber">UPvr_GetCurrentVolumeNumber</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-volumeup">UPvr_VolumeUp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-volumedown">UPvr_VolumeDown</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setvolumenum">UPvr_SetVolumeNum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getscreenbrightnesslevel">UPvr_GetScreenBrightnessLevel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setscreenbrightnesslevel">UPvr_SetScreenBrightnessLevel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcommonbrightness">UPvr_GetCommonBrightness</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setcommonbrightness">UPvr_SetCommonBrightness</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-gethmdbatterylevel-deprecated">UPvr_GetHmdBatteryLevel(deprecated)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#head-mounted-distance-sensor-related">7.5     Head-mounted distance sensor related</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-initpsensor">UPvr_InitPsensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getpsensorstate">UPvr_GetPsensorState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-unregisterpsensor">UPvr_UnregisterPsensor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#hardware-device-related">7.6     Hardware device related</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getdevicemode">UPvr_GetDeviceMode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getdevicesn">UPvr_GetDeviceSN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-sleep">UPvr_Sleep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setextralatencymode">UPvr_SetExtraLatencyMode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getpredicteddisplaytime">UPvr_GetPredictedDisplayTime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#id2">UPvr_Sleep</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#eye-tracking-related">7.7     Eye Tracking related</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-geteyetrackingpos">UPvr_getEyeTrackingPos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-geteyetrackingdata">UPvr_getEyeTrackingData</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-geteyetrackinggazeray">UPvr_getEyeTrackingGazeRay</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#foveated-rendering-related">7.8     Foveated rendering related</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#getfoveatedrenderinglevel">GetFoveatedRenderingLevel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#setfoveatedrenderinglevel">SetFoveatedRenderingLevel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#setfoveatedrenderingparameters">SetFoveatedRenderingParameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#user-entitlement-check-related">7.9  User entitlement check related</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#safety-boundary-related">7.10 Safety Boundary related</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarygetconfigured">UPvr_BoundaryGetConfigured</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarygetenabled">UPvr_BoundaryGetEnabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarysetvisible">UPvr_BoundarySetVisible</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarygetvisible">UPvr_BoundaryGetVisible</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarygetdimensions">UPvr BoundaryGetDimensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarytestnode">UPvr_BoundaryTestNode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarytestpoint">UPvr_BoundaryTestPoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarygetgeometry">UPvr_BoundaryGetGeometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getdialogstate">UPvr_GetDialogState</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#seethrough-camera-related">7.11    SeeThrough Camera related</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarygetseethroughdata">UPvr_BoundaryGetSeeThroughData</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarysetcameraimagerect">UPvr_BoundarySetCameraImageRect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-enableseethroughmanual">UPvr_EnableSeeThroughManual</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#system-related">7.12    System related</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#general-interfaces">7.12.1 General Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-stategetdeviceinfo">UPvr_StateGetDeviceInfo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-controlsetautoconnectwifi">UPvr_ControlSetAutoConnectWIFI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-controlclearautoconnectwifi">UPvr_ControlClearAutoConnectWIFI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-propertysethomekey">UPvr_PropertySetHomeKey</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-propertysethomekeyall">UPvr_PropertySetHomeKeyAll</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-propertydisablepowerkey">UPvr_PropertyDisablePowerKey</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-propertysetscreenoffdelay">UPvr_PropertySetScreenOffDelay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-propertysetsleepdelay">UPvr_PropertySetSleepDelay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-switchsystemfunction">UPvr_SwitchSystemFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-switchsetusbconfigurationoption">UPvr_SwitchSetUsbConfigurationOption</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-acquirewakelock">UPvr_AcquireWakeLock</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-releasewakelock">UPvr_ReleaseWakeLock</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-enableenterkey">UPvr_EnableEnterKey</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-disableenterkey">UPvr_DisableEnterKey</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-enablevolumekey">UPvr_EnableVolumeKey</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-disablevolumekey">UPvr_DisableVolumeKey</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-enablebackkey">UPvr_EnableBackKey</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-disablebackkey">UPvr_DisableBackKey</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-writeconfigfiletodatalocal">UPvr_WriteConfigFileToDataLocal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-resetallkeytodefault">UPvr_ResetAllKeyToDefault</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-openmiracast-new">UPvr_OpenMiracast (New)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-ismiracaston-new">UPvr_IsMiracastOn (New)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-closemiracast-new">UPvr_CloseMiracast (New)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-startscan-new">UPvr_StartScan (New)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-stopscan-new">UPvr_StopScan (New)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setwdjsoncallback-new">UPvr_SetWDJsonCallback (New)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-connectwifidisplay-new">UPvr_ConnectWifiDisplay (New)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-disconnectwifidisplay-new">UPvr_DisConnectWifiDisplay (New)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-forgetwifidisplay-new">UPvr_ForgetWifiDisplay (New)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-renamewifidisplay-new">UPvr_RenameWifiDisplay (New)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-updatewifidisplays-new">UPvr_UpdateWifiDisplays (New)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getconnectedwd-new">UPvr_GetConnectedWD (New)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#protected-interfaces">7.12.2 Protected interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-controlsetdeviceaction">UPvr_ControlSetDeviceAction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-controlappmanger">UPvr_ControlAPPManger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-screenon">UPvr_ScreenOn</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-screenoff">UPvr_ScreenOff</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setappashome">UPvr_SetAPPAsHome</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-killappsbypidorpackagename-new">UPvr_KillAppsByPidOrPackageName (New)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievement-system-related">7.13 Achievement system related</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#preparations">7.13.1 Preparations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#calling-interfaces">7.13.2 Calling interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-init">Achievements.Init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-getalldefinitions">Achievements.GetAllDefinitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-getallprogress">Achievements.GetAllProgress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-getdefinitionsbyname">Achievements.GetDefinitionsByName</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-getprogressbyname">Achievements.GetProgressByName</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-addcount">Achievements.AddCount</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-addfields">Achievements.AddFields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-unlock">Achievements.Unlock</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-getnextachievementdefinitionlistpage">Achievements.GetNextAchievementDefinitionListPage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-getnextachievementprogresslistpage">Achievements. GetNextAchievementProgressListPage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#notes">7.13.3 Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html">8       Advanced features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html">9       Payment system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_ten.html">10      VR Input Keyboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eleven.html">11 Developer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_twelve.html">12      Frequently Asked Questions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="https://sdk.picovr.com/docs/sdk/en/index.html">PicoVR Unity SDK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="https://sdk.picovr.com/docs/sdk/en/index.html" class="icon icon-home"></a> »</li>
+      <li>7       API Interface Function List</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="https://sdk.picovr.com/docs/sdk/en/_sources/chapter_seven.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="api-interface-function-list">
+<span id="id1"></span><h1>7       API Interface Function List<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#api-interface-function-list" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="get-version-information">
+<h2>7.1     Get version information<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#get-version-information" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="upvr-getunitysdkversion">
+<h3>UPvr_GetUnitySDKVersion<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getunitysdkversion" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static string UPvr_GetUnitySDKVersion()</p>
+<p>Functions: Get SDK version number</p>
+<p>Parameter: None</p>
+<p>Return value: SDK version number</p>
+<p>Method of calling: Pvr_UnitySDKAPI.System.UPvr_GetUnitySDKVersion()</p>
+</div>
+</div>
+<div class="section" id="sensor-tracking-related">
+<h2>7.2     Sensor tracking related<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#sensor-tracking-related" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="upvr-startsensor">
+<h3>UPvr_StartSensor<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-startsensor" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static int UPvr_StartSensor(int index)</p>
+<p>Functions: Open sensor tracking</p>
+<p>Parameter: 0</p>
+<p>Return value: 0: Call success; 1: Call failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI. Sensor. UPvr_StartSensor(index)</p>
+</div>
+<div class="section" id="upvr-resetsensor">
+<h3>UPvr_ResetSensor<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-resetsensor" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static int UPvr_ResetSensor (int index)</p>
+<p>Functions: Reset sensor tracking, the direction is determined by the system, and the horizontal and vertical directions are reset by default</p>
+<p>Parameter: 0</p>
+<p>Return value: 0: Call success; 1: Call failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI. Sensor. UPvr_ResetSensor (index)</p>
+</div>
+<div class="section" id="upvr-optionalresetsensor">
+<h3>UPvr_OptionalResetSensor<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-optionalresetsensor" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static int UPvr_OptionalResetSensor (int index, int resetRot, int resetPos)</p>
+<p>Functions: Reset sensor orientation and position</p>
+<p>Parameter: index: 0 resetRot: Orientation resetPos: Position 0: Not reset 1: Reset</p>
+<p>Return value: 0: Call success; 1: Call failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI. Sensor. UPvr_OptionalResetSensor (0,1,1)</p>
+</div>
+</div>
+<div class="section" id="controller-related">
+<h2>7.3     Controller related<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#controller-related" title="Permalink to this headline">¶</a></h2>
+<p>Note：The API interface can be used normally only after the controller service is successfully started.</p>
+<p>Post-successful events can be obtained through Pvr_ControllerManager.PvrServiceStartSuccessEvent</p>
+<div class="section" id="upvr-getcontrollerpower">
+<h3>UPvr_GetControllerPower<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollerpower" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static int UPvr_GetControllerPower(int hand)</p>
+<p>Functions: Get controller power</p>
+<p>For G2 and G2 4K, please enter 0; for Neo 2 and Neo 3 ,0 represents the left controller and 1 represents the right controller)</p>
+<p>Return value: 1 to 5</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetControllerPower(int hand)</p>
+</div>
+<div class="section" id="upvr-getcontrollerpowerbypercent">
+<h3>UPvr_GetControllerPowerByPercent<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollerpowerbypercent" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static int UPvr_GetControllerPowerByPercent(int hand)</p>
+<p>Functions: Get controller power</p>
+<p>For G2 and G2 4K, please enter 0; for Neo 2 and Neo 3 ,0 represents the left controller and 1 represents the right controller)</p>
+<p>Return value: 1 to 100</p>
+<p>Method of calling: Pvr_UnitySDKAPI. Controller .UPvr_GetControllerPowerByPercent(int hand)</p>
+</div>
+<div class="section" id="changemaincontrollercallback">
+<h3>changeMainControllerCallback<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#changemaincontrollercallback" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void changeMainControllerCallback (string index)</p>
+<p>Functions: Callback of Master Hand Change</p>
+<p>Parameter: 0/1 represents which the current master control controller is changed (the main control controller is a controller for enabling ray to participate in UI interaction, which has no specific relationship with the index number of the controller)</p>
+<p>Return value: None</p>
+<p>Method of calling: Pvr_ControllerManager.ChangeMainControllerCallBackEvent += XXXXX</p>
+</div>
+<div class="section" id="upvr-getcontrollerability">
+<h3>UPvr_GetControllerAbility<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollerability" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static int UPvr_GetControllerAbility(int hand)</p>
+<p>Functions: Gets whether the current Neo 2 controller supports 3Dof or 6Dof.</p>
+<p>Parameter: 0/1</p>
+<p>Return value: -1 is call failure, 0/2 is 6Dof, and 1 is 3Dof</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller. UPvr_GetControllerAbility(int hand)</p>
+</div>
+<div class="section" id="setcontrollerstatechanged">
+<h3>setControllerStateChanged<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#setcontrollerstatechanged" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void setControllerStateChanged (string state)</p>
+<p>Functions: Callback of change in connection status of Neo 2 and Neo 3 controller</p>
+<p>Parameter: The format is (x,x). The first number is the serial number of the controller, and the second number is the connection status of the controller. For example, in 0,0, 0 means the controller 0 is disconnected, 1 means controller 0 is connected</p>
+<p>Return value: None</p>
+<p>Method of calling: Pvr_ControllerManager.SetControllerStateChangedEvent += XXXXX</p>
+</div>
+<div class="section" id="upvr-getcontrollerstate">
+<h3>UPvr_GetControllerState<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollerstate" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static ControllerState UPvr_GetControllerState(int hand)</p>
+<p>Functions: Get the connection status of Controller</p>
+<p>Parameter: For G2 and G2 4K, please enter 0; For Neo 2 and Neo 3, it corresponds to the corresponding controller 0/1.</p>
+<p>Return value: Connection status (Note: For Pico Neo using one controller, it is recommended to call twice to determine the connection status because the index of the current controller is inconvenient to be determined)</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetControllerState(hand)</p>
+</div>
+<div class="section" id="resetcontroller">
+<h3>ResetController<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#resetcontroller" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void ResetController(int num)</p>
+<p>Functions: Reset controller orientation(This interface is not available for Neo 2 and Neo 3)</p>
+<p>Parameter: For G2 and G2 4K, please enter 0.</p>
+<p>Return value: None</p>
+<p>Method of calling: Pvr_ControllerManager.ResetController(num)</p>
+</div>
+<div class="section" id="startupgrade">
+<h3>StartUpgrade<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#startupgrade" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool StartUpgrade ()</p>
+<p>Functions: Start upgrading the controller</p>
+<p>Parameter: None</p>
+<p>Return value: true: true false: false</p>
+<p>Method of calling: Pvr_ControllerManager.StartUpgrade()</p>
+</div>
+<div class="section" id="getbleversion">
+<h3>GetBLEVersion<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#getbleversion" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool StartUpgrade ()</p>
+<p>Functions: Get the BLE version</p>
+<p>Parameter: None</p>
+<p>Return value: BLE version(Not applicable to G2/G2 4K)</p>
+<p>Method of calling: Pvr_ControllerManager.GetBLEVersion()</p>
+</div>
+<div class="section" id="setupdatefailed">
+<h3>setupdateFailed<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#setupdatefailed" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void setupdateFailed()</p>
+<p>Functions: Callback of failed upgrading</p>
+<p>Parameter: None</p>
+<p>Return value: None</p>
+<p>Method of calling: You can either add logic directly within this method or use delegate to call</p>
+</div>
+<div class="section" id="setupdatesuccess">
+<h3>setupdateSuccess<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#setupdatesuccess" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool setupdateSuccess()</p>
+<p>Functions: Callback of successful upgrading (Not applicable to G2/G2 4K)</p>
+<p>Parameter: None</p>
+<p>Return value: None</p>
+<p>Method of calling: You can either add logic directly within this method or use delegate to call</p>
+</div>
+<div class="section" id="setupdateprogress">
+<h3>setupdateProgress<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#setupdateprogress" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void setupdateProgress (string progress)</p>
+<p>Functions: Callback of upgrading schedule</p>
+<p>Parameter: Schedule 0-100</p>
+<p>Return value: None</p>
+<p>Method of calling: You can either add logic directly within this method or use delegate to call</p>
+</div>
+<div class="section" id="upvr-getcontrollerqua">
+<h3>UPvr_GetControllerQUA<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollerqua" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Quaternion UPvr_GetControllerQUA (int hand)</p>
+<p>Functions: Get controller orientation</p>
+<p>Parameter: For G2 and G2 4K, please enter 0; For Neo 2 and Neo 3, it corresponds to the corresponding controller 0/1.</p>
+<p>Return value: Quaternion, controller orientation</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetControllerQUA(hand)</p>
+</div>
+<div class="section" id="upvr-getcontrollerpos">
+<h3>UPvr_GetControllerPOS<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollerpos" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Vector3 UPvr_GetControllerPOS (int hand)</p>
+<p>Functions: Get controller position</p>
+<p>Parameter: For G2 and G2 4K, please enter 0; For Neo 2 and Neo 3, it corresponds to the corresponding controller 0/1.</p>
+<p>Return value: 3 dimensional vector, controller position</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetControllerPOS(hand)</p>
+</div>
+<div class="section" id="upvr-getmainhandness">
+<h3>UPvr_GetMainHandNess<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getmainhandness" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static int UPvr_GetMainHandNess()</p>
+<p>Functions: Get the current master control controller index</p>
+<p>Parameter: None</p>
+<p>Return value: 0/1 (Note: this is exclusive for Neo 2 and Neo 3 and the correct value can be returned only after the bind controller service is successful. Our SDK will bind the controller service when the application starts, and it is recommended that developers use the Bind callback function to judge whether the bind is successful)</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetMainHandNess()</p>
+</div>
+<div class="section" id="upvr-setmainhandness">
+<h3>UPvr_SetMainHandNess<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setmainhandness" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_SetMainHandNess(int hand)</p>
+<p>Functions: Set the current master control controller</p>
+<p>Parameter: 0/1</p>
+<p>Return value: None</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_SetMainHandNess(hand)</p>
+</div>
+<div class="section" id="upvr-getkey">
+<h3>UPvr_GetKey<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getkey" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_GetKey (int hand, Pvr_KeyCode key)</p>
+<p>Functions: Judging whether the key is pressed or not</p>
+<p>Parameter: 0/1, Pvr_KeyCode</p>
+<p>Return value: true: Press false: Fail to press</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetKey (hand, key)</p>
+</div>
+<div class="section" id="upvr-getkeydown">
+<h3>UPvr_GetKeyDown<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getkeydown" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_GetKeyDown (int hand, Pvr_KeyCode key)</p>
+<p>Functions: Checking whether the key is pressed or not</p>
+<p>Parameter: 0/1，Pvr_KeyCode</p>
+<p>Return value: true: Press once false : Fail to press</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetKeyDown (hand , key)</p>
+</div>
+<div class="section" id="upvr-getkeyup">
+<h3>UPvr_GetKeyUp<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getkeyup" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_GetKeyUp (int hand, Pvr_KeyCode key)</p>
+<p>Functions: Checking whether the key is lifted or not</p>
+<p>Parameter: 0/1, Pvr_KeyCode</p>
+<p>Return value: true: Lift once false: Fail to lift</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetKeyUp (hand , key)</p>
+</div>
+<div class="section" id="upvr-getkeylongpressed">
+<h3>UPvr_GetKeyLongPressed<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getkeylongpressed" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_GetKeyLongPressed (int hand, Pvr_KeyCode key)</p>
+<p>Functions: Checking whether the key is pressed for a long time</p>
+<p>Parameter: 0/1, Pvr_KeyCode</p>
+<p>Return value: true: Long press the key for more than 0.5 seconds false: Fail to reach the long press time</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetKeyLongPressed (hand , key)</p>
+</div>
+<div class="section" id="upvr-getkeyclick">
+<h3>UPvr_GetKeyClick<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getkeyclick" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_GetKeyLongPressed (int hand, Pvr_KeyCode key)</p>
+<p>Functions: Checking whether the key is pressed as a short click</p>
+<p>Parameter: 0/1, Pvr_KeyCode</p>
+<p>Return value: true: Long press the key for less than 0.5 seconds false: Time out</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetKeyClick(hand , key)</p>
+</div>
+<div class="section" id="upvr-gettouch">
+<h3>UPvr_GetTouch<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-gettouch" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_GetTouch (int hand，Pvr_KeyCode key)</p>
+<p>Functions:  Checking whether the key is touched</p>
+<p>Parameter: 0/1，Pvr_KeyCode (Only TOUCHPAD, TRIGGER, Thumbrest, X and Y have Touch key values)</p>
+<p>Return value: true: Yes; false: No</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetTouch (hand , key)</p>
+</div>
+<div class="section" id="upvr-gettouchdown">
+<h3>UPvr_GetTouchDown<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-gettouchdown" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_GetTouchDown (int hand，Pvr_KeyCode key)</p>
+<p>Functions: Checking whether the key has just been touched</p>
+<p>Parameter: 0/1，Pvr_KeyCode (Only TOUCHPAD, TRIGGER, Thumbrest, X and Y have Touch key values)</p>
+<p>Return value: true: Yes;  false: No</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetTouchDown (hand , key)</p>
+</div>
+<div class="section" id="upvr-gettouchup">
+<h3>UPvr_GetTouchUp<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-gettouchup" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_GetTouchUp (int hand，Pvr_KeyCode key)</p>
+<p>Functions: Checking whether the key is lifted after touching</p>
+<p>Parameter: 0/1，Pvr_KeyCode (Only TOUCHPAD, TRIGGER, Thumbrest, X and Y have Touch key values)</p>
+<p>Return value: true: Lifted; false: Not lifted</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetTouchUp (hand , key)</p>
+</div>
+<div class="section" id="upvr-istouching">
+<h3>UPvr_IsTouching<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-istouching" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_IsTouching (int hand)</p>
+<p>Functions: Checking whether the touchpad is touched or not(This interface is not available for Neo2 and Neo 3)</p>
+<p>Parameter: 0/1</p>
+<p>Return value: true: Touching false: Not touching</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_IsTouching(hand)</p>
+</div>
+<div class="section" id="upvr-getjoystickup">
+<h3>UPvr_GetJoystickUp<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getjoystickup" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_GetJoystickUp(int hand)</p>
+<p>Functions: Checking whether the Joystick key is moved upward</p>
+<p>Parameter: 0/1</p>
+<p>Return value: true: upward false: not upward</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetJoystickUp(hand)</p>
+</div>
+<div class="section" id="upvr-getjoystickdown">
+<h3>UPvr_GetJoystickDown<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getjoystickdown" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_GetJoystickDown(int hand)</p>
+<p>Functions: Checking whether the Joystick key is moved downward</p>
+<p>Parameter: 0/1</p>
+<p>Return value: true: downward false: not downward</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetJoystickDown(hand)</p>
+</div>
+<div class="section" id="upvr-getjoystickleft">
+<h3>UPvr_GetJoystickLeft<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getjoystickleft" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_GetJoystickLeft(int hand)</p>
+<p>Functions: Checking whether the Joystick key is moved left</p>
+<p>Parameter: 0/1</p>
+<p>Return value: true: left false: not left</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetJoystickLeft(hand)</p>
+</div>
+<div class="section" id="upvr-getjoystickright">
+<h3>UPvr_GetJoystickRight<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getjoystickright" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_GetJoystickRight(int hand)</p>
+<p>Functions: Checking whether the Joystick key is moved right</p>
+<p>Parameter: 0/1</p>
+<p>Return value: true: right false: not right</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetJoystickRight(hand)</p>
+</div>
+<div class="section" id="upvr-getswipedirection">
+<h3>UPvr_GetSwipeDirection<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getswipedirection" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static SwipeDirection UPvr_GetSwipeDirection(int hand)</p>
+<p>Functions: Get the state of a sliding gesture.</p>
+<p>Parameter: 0/1</p>
+<p>Return value: SwipeDirection</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetSwipeDirection(hand)</p>
+</div>
+<div class="section" id="upvr-gettouchpadposition-discarded-it-is-recommended-to-use-the-upvr-getaxis2d-interface-uniformly">
+<h3>UPvr_GetTouchPadPosition (Discarded. It is recommended to use the UPvr_GetAxis2D interface uniformly.)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-gettouchpadposition-discarded-it-is-recommended-to-use-the-upvr-getaxis2d-interface-uniformly" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Vector2 UPvr_GetTouchPadPosition (int hand)</p>
+<p>Functions: Get the touch value of the touchpad</p>
+<p>Parameter: 0/1</p>
+<p>Return value: The touch value of the touchpad.</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetTouchPadPosition(hand)</p>
+</div>
+<div class="section" id="upvr-getaxis1d">
+<h3>UPvr_GetAxis1D<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getaxis1d" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static float UPvr_GetAxis1D(int hand, Pvr_KeyCode key)</p>
+<p>Functions: Get the toggle value of Trigger/Grip</p>
+<p>Parameter: 0/1,Pvr_KeyCode.TRIGGER/Pvr_KeyCode.Left/Pvr_KeyCode.Right</p>
+<p>Return value: Range from 0 to 1</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetAxis1D (hand，key)</p>
+</div>
+<div class="section" id="upvr-getaxis2d">
+<h3>UPvr_GetAxis2D<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getaxis2d" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Vector2 UPvr_GetAxis2D(int hand)</p>
+<p>Functions: Get the joystick value</p>
+<p>Parameter: 0/1</p>
+<p>Return value: Range from -1 to 1</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetAxis2D (hand)</p>
+</div>
+<div class="section" id="upvr-gettouchpadclick">
+<h3>UPvr_GetTouchPadClick<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-gettouchpadclick" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static TouchPadClick UPvr_GetTouchPadClick(int hand)</p>
+<p>Functions: The simulation clicking function of the touchpad (divide the touchpad into 4 pieces to simulate the up and down and left and right functions of the game controller)(This interface is not available for Neo 2 and Neo 3)</p>
+<p>Parameter: 0/1</p>
+<p>Return value: TouchPadClick</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetTouchPadClick (hand)</p>
+</div>
+<div class="section" id="upvr-getcontrollertriggervalue">
+<h3>UPvr_GetControllerTriggerValue<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollertriggervalue" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static int UPvr_GetControllerTriggerValue(int hand)</p>
+<p>Functions: Get the input value of the trigger</p>
+<p>Parameter: 0/1</p>
+<p>Return value: 0-255 (applicable to Neo 2 and Neo 3 )</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller.UPvr_GetControllerTriggerValue(hand)</p>
+</div>
+<div class="section" id="upvr-vibrateneo2controller">
+<h3>UPvr_VibrateNeo2Controller<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-vibrateneo2controller" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public void UPvr_VibrateNeo2Controller(float strength, int time, int hand)</p>
+<p>Functions: Vibration interface of Neo 2 controller</p>
+<p>Parameter: hand: 0,1 Vibration strength: 0-1 time:0-65535(millisecond)</p>
+<p>Return value: None</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller. UPvr_VibrateNeo2Controller (float strength, int time, int hand)</p>
+</div>
+<div class="section" id="upvr-getdevicetype">
+<h3>UPvr_GetDeviceType<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getdevicetype" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static int UPvr_GetDeviceType ()</p>
+<p>Functions: Get the connected controller type</p>
+<p>Parameter: None</p>
+<p>Return value: 0: No connection; 3: G2, G2 4K; 4: Neo2; 5: Neo 3</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller. UPvr_GetDeviceType ();</p>
+</div>
+<div class="section" id="upvr-getcontrollerbindingstate">
+<h3>UPvr_GetControllerBindingState<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcontrollerbindingstate" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static int UPvr_GetControllerBindingState(int id)</p>
+<p>Functions: get controller binding state</p>
+<p>Parameter:int id</p>
+<p>Return value: -1:Error 0: Unbound 1:bind</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller. UPvr_GetControllerBindingState(int id)</p>
+</div>
+<div class="section" id="upvr-getangularvelocity">
+<h3>UPvr_GetAngularVelocity<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getangularvelocity" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Vector3 UPvr_GetAngularVelocity (int id)</p>
+<p>Functions: get controller angular velocity</p>
+<p>Parameter:int id (Controller ID)</p>
+<p>Return value: angular velocity in rad/s</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller. UPvr_GetAngularVelocity (int id)</p>
+</div>
+<div class="section" id="upvr-getacceleration">
+<h3>UPvr_GetAcceleration<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getacceleration" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Vector3 UPvr_GetAcceleration (int id)</p>
+<p>Functions: get controller acceleration</p>
+<p>Parameter:int id (Controller ID)</p>
+<p>Return value: acceleration in m/s^2</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller. UPvr_GetAcceleration (int id)</p>
+</div>
+<div class="section" id="upvr-getvelocity">
+<h3>UPvr_GetVelocity<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getvelocity" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Vector3 UPvr_GetVelocity (int id)</p>
+<p>Functions: get controller velocity</p>
+<p>Parameter:int id (Controller ID)</p>
+<p>Return value: velocity in m/s</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller. UPvr_GetVelocity (int id)</p>
+</div>
+<div class="section" id="upvr-setcontrolleroriginoffset">
+<h3>UPvr_SetControllerOriginOffset<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setcontrolleroriginoffset" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_SetControllerOriginOffset(int hand, Vector3 offset)</p>
+<p>Functions: get controller position offset</p>
+<p>Parameter:int id (Controller ID)</p>
+<p>Return value:  Vector3 offset value in m</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Controller. UPvr_SetControllerOriginOffset(id，offset)</p>
+<p>Note:New API in version 2.8.10</p>
+</div>
+</div>
+<div class="section" id="power-volume-and-brightness-service-related">
+<h2>7.4     Power, volume and brightness service-related<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#power-volume-and-brightness-service-related" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="upvr-initbatteryvolclass">
+<h3>UPvr_InitBatteryVolClass<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-initbatteryvolclass" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public bool UPvr_InitBatteryVolClass()</p>
+<p>Functions: Initialize power, volume and brightness service</p>
+<p>Parameter: None</p>
+<p>Return value: true: Successful false: Failure (Please call this interface to initialize before using services such as power, volume, brightness, etc.)</p>
+<p>Method of calling: Pvr_UnitySDKAPI.VolumePowerBrightness.UPvr_InitBatteryVolClass()</p>
+</div>
+<div class="section" id="upvr-startaudioreceiver">
+<h3>UPvr_StartAudioReceiver<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-startaudioreceiver" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public bool UPvr_StartAudioReceiver (string startreceiver)</p>
+<p>Functions: Turn on volume service</p>
+<p>Parameter:  The name of gameobject that starts Audio Receiver</p>
+<p>Return value: true: Successful false: Failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI.VolumePowerBrightness.UPvr_StartAudioReceiver (string startreceiver)</p>
+</div>
+<div class="section" id="upvr-setaudio">
+<h3>UPvr_SetAudio<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setaudio" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public void UPvr_SetAudio(string s)</p>
+<p>Functions: Callback when volume changes</p>
+<p>Parameter: Current volume</p>
+<p>Return value: None</p>
+<p>Method of calling: You can either add logic directly within this method or use delegate to call</p>
+</div>
+<div class="section" id="upvr-stopaudioreceiver">
+<h3>UPvr_StopAudioReceiver<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-stopaudioreceiver" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public bool UPvr_StopAudioReceiver ()</p>
+<p>Functions: Turn off volume service</p>
+<p>Parameter: None</p>
+<p>Return value: true: Successful false: Failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI.VolumePowerBrightness.UPvr_StopAudioReceiver()</p>
+</div>
+<div class="section" id="upvr-startbatteryreceiver">
+<h3>UPvr_StartBatteryReceiver<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-startbatteryreceiver" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public bool UPvr_StartBatteryReceiver (string startreceiver)</p>
+<p>Functions: Turn on power service</p>
+<p>Parameter: The name of gameobject that starts Battery Receiver</p>
+<p>Return value: true: Successful false: Failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI.VolumePowerBrightness.UPvr_StartBatteryReceiver(string startreceiver)</p>
+</div>
+<div class="section" id="upvr-setbattery">
+<h3>UPvr_SetBattery<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setbattery" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public void UPvr_SetBattery(string s)</p>
+<p>Functions: Callback when volume changes</p>
+<p>Parameter: Current electric quantity (range: 0.00-1.00)</p>
+<p>Return value: None</p>
+<p>Method of calling: You can either add logic directly within this method or use delegate to call</p>
+</div>
+<div class="section" id="upvr-stopbatteryreceiver">
+<h3>UPvr_StopBatteryReceiver<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-stopbatteryreceiver" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public bool UPvr_StopBatteryReceiver ()</p>
+<p>Functions: Turn off power service</p>
+<p>Parameter: None</p>
+<p>Return value: true: Successful false: Failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI.VolumePowerBrightness.UPvr_StopBatteryReceiver()</p>
+</div>
+<div class="section" id="upvr-getmaxvolumenumber">
+<h3>UPvr_GetMaxVolumeNumber<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getmaxvolumenumber" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public int UPvr_GetMaxVolumeNumber ()</p>
+<p>Functions: Get maximum volume</p>
+<p>Parameter: None</p>
+<p>Return value: Maximum volume</p>
+<p>Method of calling: Pvr_UnitySDKAPI.VolumePowerBrightness.UPvr_GetMaxVolumeNumber ()</p>
+</div>
+<div class="section" id="upvr-getcurrentvolumenumber">
+<h3>UPvr_GetCurrentVolumeNumber<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcurrentvolumenumber" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public int UPvr_GetCurrentVolumeNumber ()</p>
+<p>Functions: Get the current volume</p>
+<p>Parameter: None</p>
+<p>Return value: Current volume value (range is 0-15)</p>
+<p>Method of calling: Pvr_UnitySDKAPI.VolumePowerBrightness.UPvr_GetCurrentVolumeNumber ()</p>
+</div>
+<div class="section" id="upvr-volumeup">
+<h3>UPvr_VolumeUp<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-volumeup" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public bool UPvr_VolumeUp ()</p>
+<p>Functions: Increase volume</p>
+<p>Parameter: None</p>
+<p>Return value: true: Successful false: Failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI.VolumePowerBrightness.UPvr_VolumeUp ()</p>
+</div>
+<div class="section" id="upvr-volumedown">
+<h3>UPvr_VolumeDown<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-volumedown" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public bool UPvr_VolumeDown ()</p>
+<p>Functions: Decrease volume</p>
+<p>Parameter: None</p>
+<p>Return value: true: Successful false: Failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI.VolumePowerBrightness.UPvr_VolumeDown ()</p>
+</div>
+<div class="section" id="upvr-setvolumenum">
+<h3>UPvr_SetVolumeNum<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setvolumenum" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public bool UPvr_SetVolumeNum(int volume)</p>
+<p>Functions: Set volume</p>
+<p>Parameter: Set volume value (volume value range is 0-15)</p>
+<p>Return value: true: Successful false: Failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI.VolumePowerBrightness. UPvr_SetVolumeNum(volume)</p>
+</div>
+<div class="section" id="upvr-getscreenbrightnesslevel">
+<h3>UPvr_GetScreenBrightnessLevel<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getscreenbrightnesslevel" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public int[] UPvr_GetScreenBrightnessLevel ()</p>
+<p>Functions: Gets the brightness level of the current screen</p>
+<p>Parameter: None</p>
+<p>Return value: int array. The first bit is the total brightness level supported, the second bit is the current brightness level, and it is the interval value of the brightness level from the third bit to the end bit</p>
+<p>Method of calling: Pvr_UnitySDKAPI.VolumePowerBrightness.UPvr_GetScreenBrightnessLevel()</p>
+</div>
+<div class="section" id="upvr-setscreenbrightnesslevel">
+<h3>UPvr_SetScreenBrightnessLevel<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setscreenbrightnesslevel" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public bool UPvr_SetScreenBrightnessLevel (int vrBrightness, int level)</p>
+<p>Functions: Set the brightness of the screen</p>
+<p>Parameter: vrBrightness: Brightness mode; level: Brightness value (brightness level value). If vrBrightness passes in 1, level passes in brightness level; if vrBrightness passes in 0, it means that the system default brightness setting mode is adopted. Level can be set to a value between 1 and 255.</p>
+<p>Return value: None</p>
+<p>Method of calling: Pvr_UnitySDKAPI.VolumePowerBrightness.UPvr_SetScreenBrightnessLevel (vrBrightness,level)</p>
+</div>
+<div class="section" id="upvr-getcommonbrightness">
+<h3>UPvr_GetCommonBrightness<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getcommonbrightness" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public int UPvr_GetCommonBrightness ()</p>
+<p>Functions: Get the brightness value of the current general device</p>
+<p>Parameter: None</p>
+<p>Return value: Current brightness value (brightness value range: 0-255)</p>
+<p>Method of calling: Pvr_UnitySDKAPI.VolumePowerBrightness.UPvr_GetCommonBrightness()</p>
+</div>
+<div class="section" id="upvr-setcommonbrightness">
+<h3>UPvr_SetCommonBrightness<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setcommonbrightness" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public bool UPvr_SetCommonBrightness(int brightness)</p>
+<p>Functions: Set the brightness value of the current general device</p>
+<p>Parameter: Brightness value (brightness value range is 0-255)</p>
+<p>Return value: true: Successful false: Failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI.VolumePowerBrightness.UPvr_SetCommonBrightness (brightness)</p>
+</div>
+<div class="section" id="upvr-gethmdbatterylevel-deprecated">
+<h3>UPvr_GetHmdBatteryLevel(deprecated)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-gethmdbatterylevel-deprecated" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="head-mounted-distance-sensor-related">
+<h2>7.5     Head-mounted distance sensor related<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#head-mounted-distance-sensor-related" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="upvr-initpsensor">
+<h3>UPvr_InitPsensor<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-initpsensor" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_InitPsensor()</p>
+<p>Functions: Initialize the distance sensor</p>
+<p>Parameter: None</p>
+<p>Return value: None</p>
+<p>Method of calling: Pvr_UnitySDKAPI. Sensor. UPvr_InitPsensor ()</p>
+</div>
+<div class="section" id="upvr-getpsensorstate">
+<h3>UPvr_GetPsensorState<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getpsensorstate" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static int UPvr_GetPsensorState()</p>
+<p>Functions: Get the status of the head-mounted distance sensor</p>
+<p>Parameter: None</p>
+<p>Return value: The return value is 0 when wearing a headset and it is 1 when walking away.</p>
+<p>Method of calling: Pvr_UnitySDKAPI. Sensor. UPvr_GetPsensorState() (Note: UPvr_InitPsensor needs to be called for initialization (initialization for only once) before getting the status of Psensor)</p>
+</div>
+<div class="section" id="upvr-unregisterpsensor">
+<h3>UPvr_UnregisterPsensor<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-unregisterpsensor" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_UnregisterPsensor ()</p>
+<p>Functions: Release distance sensor</p>
+<p>Parameter: None</p>
+<p>Return value: None</p>
+<p>Method of calling: Pvr_UnitySDKAPI. Sensor. UPvr_UnregisterPsensor ()</p>
+</div>
+</div>
+<div class="section" id="hardware-device-related">
+<h2>7.6     Hardware device related<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#hardware-device-related" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="upvr-getdevicemode">
+<h3>UPvr_GetDeviceMode<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getdevicemode" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static string UPvr_GetDeviceMode ()</p>
+<p>Functions: Get device type</p>
+<p>Parameter: None</p>
+<p>Return value: SystemInfo.deviceModel</p>
+<p>Method of calling: Pvr_UnitySDKAPI. System. UPvr_GetDeviceMode ()</p>
+</div>
+<div class="section" id="upvr-getdevicesn">
+<h3>UPvr_GetDeviceSN<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getdevicesn" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static string UPvr_GetDeviceSN ()</p>
+<p>Functions: Get SN serial number of device</p>
+<p>Parameter: None</p>
+<p>Return value: Serial number SN of device</p>
+<p>Method of calling: Pvr_UnitySDKAPI. System. UPvr_GetDeviceSN ()</p>
+</div>
+<div class="section" id="upvr-sleep">
+<h3>UPvr_Sleep<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-sleep" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_Sleep()</p>
+<p>Functions: Screen off</p>
+<p>Parameter: None</p>
+<p>Return value: None</p>
+<p>Method of calling: Pvr_UnitySDKAPI. System. UPvr_Sleep()</p>
+<p>Note：To use the UPvr_Sleep interface, you need to add the following permissions in AndroidManifest, and you need a system signature:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>android:sharedUserId="android.uid.system"
+<span class="nt">&lt;uses-permission</span> <span class="na">android:name=</span><span class="s">"android.permission.DEVICE_POWER"</span> <span class="nt">/&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="upvr-setextralatencymode">
+<h3>UPvr_SetExtraLatencyMode<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setextralatencymode" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_SetExtraLatencyMode (ExtraLatencyMode mode)</p>
+<p>Functions: Set current ExtraLatencyMode (only need to call once)</p>
+<p>Parameter:</p>
+<dl class="docutils">
+<dt>public enum ExtraLatencyMode</dt>
+<dd><dl class="first docutils">
+<dt>{</dt>
+<dd><p class="first">ExtraLatencyModeOff = 0, //Disable ExtraLatencyMode mode. This option will display the latest rendered frame for display.</p>
+<p>ExtraLatencyModeOn = 1, //Enable ExtraLatencyMode mode. This option will display one frame prior to the latest rendered frame.</p>
+<p class="last">ExtraLatencyModeDynamic = 2 // Use system default setup.</p>
+</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+<p>Return value:  true: Success，false: Failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI.System. UPvr_SetExtraLatencyMode (ExtraLatencyMode.ExtraLatencyModeOff);</p>
+</div>
+<div class="section" id="upvr-getpredicteddisplaytime">
+<h3>UPvr_GetPredictedDisplayTime<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getpredicteddisplaytime" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static float UPvr_GetPredictedDisplayTime ()</p>
+<p>Functions: Get predicted display time delay (the interval between time of frame rendering end and time of actual display)</p>
+<p>Parameter: None</p>
+<p>Return value: Delay time (miliseconds)</p>
+<p>Method of calling: Pvr_UnitySDKAPI. System. UPvr_GetPredictedDisplayTime ()；</p>
+</div>
+<div class="section" id="id2">
+<h3>UPvr_Sleep<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#id2" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_Sleep()</p>
+<p>Functions: Turn off screen</p>
+<p>Parameter: None</p>
+<p>Return value: None</p>
+<p>Method of calling: Pvr_UnitySDKAPI. System. UPvr_Sleep()</p>
+<p>Note that using this interface requires following Android manifest permission and system signature:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>android:sharedUserId="android.uid.system"
+<span class="nt">&lt;uses-permission</span> <span class="na">android:name=</span><span class="s">"android.permission.DEVICE_POWER"</span> <span class="nt">/&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="eye-tracking-related">
+<h2>7.7     Eye Tracking related<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#eye-tracking-related" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="upvr-geteyetrackingpos">
+<h3>UPvr_getEyeTrackingPos<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-geteyetrackingpos" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Vector3 UPvr_getEyeTrackingPos ()</p>
+<p>Functions: Get Eye Tracking Position(Only applicable on Neo 2 Eye)</p>
+<p>Parameter: None</p>
+<p>Return value: Current Eye Tracking Position</p>
+<p>Method of calling: Pvr_UnitySDKAPI. System. UPvr_getEyeTrackingPos ()</p>
+</div>
+<div class="section" id="upvr-geteyetrackingdata">
+<h3>UPvr_getEyeTrackingData<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-geteyetrackingdata" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_getEyeTrackingData(ref EyeTrackingData trackingData)</p>
+<p>Functions: Get Eye Tracking Data,include Openness etc.(Only applicable on Neo 2 Eye)</p>
+<p>Parameter: Struct variable for receiving result</p>
+<p>Return value: The return value is true when Succeed and it is false when failed.</p>
+<p>Method of calling: Pvr_UnitySDKAPI. System. UPvr_getEyeTrackingData(ref trackingData)</p>
+<p>Note: Acquired eye-tracking date is expressed in world coordinate. If position data is desired to be transformed in front of camera, a matrix transform is required. Please refer to following example code for implementation:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span>    <span class="n">bool</span> <span class="n">result</span> <span class="o">=</span> <span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="na">System</span><span class="p">.</span><span class="na">UPvr_getEyeTrackingData</span><span class="p">(</span><span class="n">ref</span> <span class="n">eyePoseData</span><span class="p">);</span>
+<span class="n">bool</span> <span class="n">dataValid</span> <span class="o">=</span> <span class="p">(</span><span class="n">eyePoseData</span><span class="p">.</span><span class="na">combinedEyePoseStatus</span> <span class="o">&amp;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">pvrEyePoseStatus</span><span class="p">.</span><span class="na">kGazeVectorValid</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">&amp;&amp;</span> <span class="n">dataValid</span><span class="p">)</span>
+   <span class="p">{</span>
+           <span class="c1">//Init Matrix</span>
+           <span class="n">Transform</span> <span class="n">target</span> <span class="o">=</span> <span class="n">Pvr_UnitySDKEyeManager</span><span class="p">.</span><span class="na">Instance</span><span class="p">.</span><span class="na">transform</span><span class="p">;</span>
+           <span class="n">Matrix4x4</span> <span class="n">mat</span> <span class="o">=</span> <span class="n">Matrix4x4</span><span class="p">.</span><span class="na">TRS</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="na">position</span><span class="p">,</span> <span class="n">target</span><span class="p">.</span><span class="na">rotation</span><span class="p">,</span> <span class="n">Vector3</span><span class="p">.</span><span class="na">one</span><span class="p">);</span>
+
+           <span class="c1">//Transform origin</span>
+           <span class="n">eyePoseData</span><span class="p">.</span><span class="na">combinedEyeGazePoint</span> <span class="o">=</span> <span class="n">mat</span><span class="p">.</span><span class="na">MultiplyPoint</span><span class="p">(</span><span class="n">eyePoseData</span><span class="p">.</span><span class="na">combinedEyeGazePoint</span><span class="p">);</span>
+
+           <span class="c1">//Transform vector</span>
+           <span class="n">eyePoseData</span><span class="p">.</span><span class="na">combinedEyeGazeVector</span> <span class="o">=</span> <span class="n">mat</span><span class="p">.</span><span class="na">MultiplyVector</span><span class="p">(</span><span class="n">eyePoseData</span><span class="p">.</span><span class="na">combinedEyeGazeVector</span><span class="p">);</span>
+   <span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Notes</strong>:</p>
+<p>Definition of variables in the EyeTrackingData struct variable:</p>
+<p>leftEyePoseStatus: confirm the pose status of the left eye</p>
+<p>rightEyePoseStatus:  confirm the pose status of the right eye</p>
+<p>combinedEyePoseStatus: confirm the pose status of both eyes</p>
+<p>leftEyeGazePoint: the gaze point of the left eye</p>
+<p>rightEyeGazePoint: the gaze point of the right eye</p>
+<p>combinedEyeGazePoint: the combined gaze point</p>
+<p>leftEyeOpenness:  openness/closeness of the left eye</p>
+<p>rightEyeOpenness: openness/closeness of the right eye</p>
+<p>leftEyePositionGuide: guide to the left eye position</p>
+<p>rightEyePositionGuide: guide to the right eye position</p>
+<p>combinedEyeGazeVector: the direction of combined gaze point</p>
+</div>
+<div class="section" id="upvr-geteyetrackinggazeray">
+<h3>UPvr_getEyeTrackingGazeRay<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-geteyetrackinggazeray" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_getEyeTrackingGazeRay(ref EyeTrackingGazeRay gazeRay)</p>
+<p>Functions: Get Eye Tracking Origin and Eyesight direction (Only applicable on Neo 2 Eye)</p>
+<p>Parameter: EyeTrackingGazeRay struct</p>
+<p>Return value: true: Successful false: Failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI.System.UPvr_getEyeTrackingGazeRay(ref gazeRay)</p>
+<p>Note: Returned eyesight data is calibrated on headset sensor. If eyesight needs to be in front of the camera when Pvr_UnitySDK moves, a Matrix transform is required. Please refer to following example code for implementation:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span>  <span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="na">System</span><span class="p">.</span><span class="na">UPvr_getEyeTrackingGazeRay</span><span class="p">(</span><span class="n">ref</span> <span class="n">gazeRay</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="n">gazeRay</span><span class="p">.</span><span class="na">IsValid</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="c1">//Init Matrix</span>
+        <span class="n">Transform</span> <span class="n">target</span> <span class="o">=</span> <span class="n">Pvr_UnitySDKManager</span><span class="p">.</span><span class="na">SDK</span><span class="p">.</span><span class="na">transform</span><span class="p">;</span>
+        <span class="n">Matrix4x4</span> <span class="n">mat</span> <span class="o">=</span> <span class="n">Matrix4x4</span><span class="p">.</span><span class="na">TRS</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="na">position</span><span class="p">,</span> <span class="n">target</span><span class="p">.</span><span class="na">rotation</span><span class="p">,</span> <span class="n">Vector3</span><span class="p">.</span><span class="na">one</span><span class="p">);</span>
+
+        <span class="c1">//Transform ray origin</span>
+        <span class="n">gazeRay</span><span class="p">.</span><span class="na">Origin</span> <span class="o">=</span> <span class="n">mat</span><span class="p">.</span><span class="na">MultiplyPoint</span><span class="p">(</span><span class="n">gazeRay</span><span class="p">.</span><span class="na">Origin</span><span class="p">);</span>
+
+        <span class="c1">//Transform ray direction</span>
+        <span class="n">gazeRay</span><span class="p">.</span><span class="na">Direction</span> <span class="o">=</span> <span class="n">mat</span><span class="p">.</span><span class="na">MultiplyVector</span><span class="p">(</span><span class="n">gazeRay</span><span class="p">.</span><span class="na">Direction</span><span class="p">);</span>
+     <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="foveated-rendering-related">
+<h2>7.8     Foveated rendering related<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#foveated-rendering-related" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getfoveatedrenderinglevel">
+<h3>GetFoveatedRenderingLevel<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#getfoveatedrenderinglevel" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static EFoveationLevel GetFoveatedRenderingLevel()</p>
+<p>Functions: Get current foveated rendering level</p>
+<p>Parameter: None</p>
+<p>Return value: Current foveated rendering level</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Render.GetFoveatedRenderingLevel ()</p>
+</div>
+<div class="section" id="setfoveatedrenderinglevel">
+<h3>SetFoveatedRenderingLevel<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#setfoveatedrenderinglevel" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void SetFoveatedRenderingLevel(EFoveationLevel level)</p>
+<p>Functions: Set foveated rendering level</p>
+<p>Parameter: Targeted foveated rendering level with 4 levels (Low, Med, High and Top High)</p>
+<p>Return value: None</p>
+<p>Method of calling: Pvr_UnitySDKAPI.Render.SetFoveatedRenderingLevel(level)</p>
+</div>
+<div class="section" id="setfoveatedrenderingparameters">
+<h3>SetFoveatedRenderingParameters<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#setfoveatedrenderingparameters" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void SetFoveatedRenderingParameters(Vector2 ffrGainValue, float ffrAreaValue, float ffrMinimumValue)</p>
+<p>Functions: Set current foveated rendering parameters</p>
+<p>Parameter: Target foveated rendering parameters</p>
+<blockquote>
+<div><p>ffrGainValue：Ratio of peripheral pixel scaling down in X/Y direction, larger value indicates more ratio scaling down.</p>
+<p>ffrAreaValue： The resolution of the area around the gazing point will stay the same, and the higher the value is, the larger the clear center area gets.</p>
+<p>ffrMinimumValue： The minimum pixels per inch by default, and the pixel per inch is equal to or bigger than ffrMinimumValue.</p>
+</div></blockquote>
+<p>There are four levels provided by SDK:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%">
+<col width="23%">
+<col width="25%">
+<col width="38%">
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Level</td>
+<td>ffrGainValue</td>
+<td>ffrAreaValue</td>
+<td>ffrMinimumValue</td>
+</tr>
+<tr class="row-even"><td>Low</td>
+<td>(3.0f,3.0f)</td>
+<td>1.0f</td>
+<td>0.125f</td>
+</tr>
+<tr class="row-odd"><td>Med</td>
+<td>(4.0f,4.0f)</td>
+<td>1.0f</td>
+<td>0.125f</td>
+</tr>
+<tr class="row-even"><td>High</td>
+<td>(6.0f,6.0f)</td>
+<td>1.0f</td>
+<td>0.0625f</td>
+</tr>
+<tr class="row-odd"><td>Top High</td>
+<td>(7.0f,7.0f)</td>
+<td>0.0f</td>
+<td>0.0625f</td>
+</tr>
+</tbody>
+</table>
+<p>Return value: None</p>
+<p>Method of calling: Pvr_UnitySDKAPI. Render. SetFoveatedRenderingParameters (ffrGainValue, ffrAreaValue, ffrMinimumValue)
+The original interface mode has been changed. See 8.10 for the new mode.</p>
+</div>
+</div>
+<div class="section" id="user-entitlement-check-related">
+<h2>7.9  User entitlement check related<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#user-entitlement-check-related" title="Permalink to this headline">¶</a></h2>
+<p>Usage of user entitlement check has been changed. See Chapter 8.10 for the new method.</p>
+</div>
+<div class="section" id="safety-boundary-related">
+<h2>7.10 Safety Boundary related<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#safety-boundary-related" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="upvr-boundarygetconfigured">
+<h3>UPvr_BoundaryGetConfigured<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarygetconfigured" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_BoundaryGetConfigured()</p>
+<p>Functions: Return result of Safety Boundary configuring</p>
+<p>Parameter: None</p>
+<p>Return value: True: Succes; False: Failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI.BoundarySystem.UPvr_BoundaryGetConfigured()</p>
+</div>
+<div class="section" id="upvr-boundarygetenabled">
+<h3>UPvr_BoundaryGetEnabled<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarygetenabled" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static bool UPvr_BoundaryGetEnabled()</p>
+<p>Functions: Return result of whether Safety Boundary is enabled</p>
+<p>Parameter: None</p>
+<p>Return value: True: Success; False: Failure</p>
+<p>Method of calling: Pvr_UnitySDKAPI.BoundarySystem.UPvr_BoundaryGetEnabled()</p>
+</div>
+<div class="section" id="upvr-boundarysetvisible">
+<h3>UPvr_BoundarySetVisible<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarysetvisible" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_BoundarySetVisible(bool value)</p>
+<p>Functions: Force to set Safety Boundary visible even when player stays within boundary (Note: when Safety Boundary is activated or when user configuration in system settings will overwrite this interface’s action)</p>
+<p>Parameter: true: visible; false: invisible</p>
+<p>Return value: None</p>
+<p>Method of calling: Pvr_UnitySDKAPI.BoundarySystem.UPvr_BoundarySetVisible(bool)</p>
+</div>
+<div class="section" id="upvr-boundarygetvisible">
+<h3>UPvr_BoundaryGetVisible<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarygetvisible" title="Permalink to this headline">¶</a></h3>
+<p>Function name：public static bool UPvr BoundaryGetVisible()</p>
+<p>Functions: Get whether the safety boundary is visible or not</p>
+<p>Parameter: None</p>
+<p>Return Value：Whether the safety area is visible or not</p>
+<p>Method of calling: Pvr UnitySDKAPI. BoundarySystem. UPvr BoundaryGetVisible()</p>
+</div>
+<div class="section" id="upvr-boundarygetdimensions">
+<h3>UPvr BoundaryGetDimensions<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarygetdimensions" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Vector 3 UPvr BoundaryGetDimensions(BoundaryType boundaryType)</p>
+<p>Functions: Get the size of self-defined safety boundary PlayArea</p>
+<p>Parameter: boundaryType: current boundary type, OuterBoundary or PlayArea</p>
+<p>Return Value: Vector3, x: length of PlayArea, y:1, z: width of PlayArea. If it is the in situ safety area, V3 is (0,0,0).</p>
+<p>Method of calling: Pvr UnitySDKAPI.BoundarySystem.
+UPvr_BoundaryGetDimensions(boundaryType);</p>
+</div>
+<div class="section" id="upvr-boundarytestnode">
+<h3>UPvr_BoundaryTestNode<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarytestnode" title="Permalink to this headline">¶</a></h3>
+<p>Function name：public static BoundaryTestResult UPvr_BoundaryTestNode(BoundaryTrackingNode node, BoundaryType boundaryType)</p>
+<p>Functions: Return testing results of tracking nodes to specific boundary type. Tracking node includes HMD and controllers. And the returned results include status of boundary triggering, closest distance of tracking nodes and boundary, closest point of tracking nodes and boundary, normal of closest point</p>
+<p>Parameter：node：tracking nodes，boundaryType：type of boundary</p>
+<p>Return Value：BoundaryTestResult which is a struct of boundary test result</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>public struct BoundaryTestResult
+       {
+           public bool IsTriggering;                   // If boundary is triggered
+           public float ClosestDistance;               // Minimum distance of tracking nodes and boundary
+           public Vector3 ClosestPoint;                // Closest point of tracking nodes and boundary
+           public Vector3 ClosestPointNormal;  // Normal of closest point
+        }
+</pre></div>
+</div>
+<p>Method of calling： Pvr_UnitySDKAPI.BoundarySystem.UPvr_BoundaryTestNode(node, boundaryType);</p>
+</div>
+<div class="section" id="upvr-boundarytestpoint">
+<h3>UPvr_BoundaryTestPoint<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarytestpoint" title="Permalink to this headline">¶</a></h3>
+<p>Function name：public static BoundaryTestResult UPvr_BoundaryTestPoint(Vector3 point, BoundaryType boundaryType)</p>
+<p>Functions：Return testing results of a tracking point to a specific boundary type. And the returned results include status of boundary triggering, closest distance of tracking nodes and boundary, closest point of tracking nodes and boundary, normal of closest point</p>
+<p>Parameters：point：coordinate of tracking point，boundaryType：type of boundary</p>
+<p>Return Value：BoundaryTestResult which is a struct of boundary test result</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>public struct BoundaryTestResult
+       {
+           public bool IsTriggering;                   // If boundary is triggered
+           public float ClosestDistance;               // Minimum distance of tracking nodes and boundary
+           public Vector3 ClosestPoint;                // Closest point of tracking nodes and boundary
+           public Vector3 ClosestPointNormal;  // Normal of closest point
+        }
+</pre></div>
+</div>
+<p>Method of calling： Pvr_UnitySDKAPI.BoundarySystem.UPvr_BoundaryTestPoint(point, boundaryType)</p>
+</div>
+<div class="section" id="upvr-boundarygetgeometry">
+<h3>UPvr_BoundaryGetGeometry<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarygetgeometry" title="Permalink to this headline">¶</a></h3>
+<p>Function name：public static Vector3[] UPvr_BoundaryGetGeometry(BoundaryType boundaryType)</p>
+<p>Functions： Return the collection of boundary points</p>
+<p>Parameter：boundaryType：type of safety boundary</p>
+<p>Return Value：Vector3[]： Collection of safety boundary points</p>
+<p>Method of Calling： Pvr_UnitySDKAPI. BoundarySystem.UPvr_BoundaryGetGeometry(boundaryType)</p>
+</div>
+<div class="section" id="upvr-getdialogstate">
+<h3>UPvr_GetDialogState<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getdialogstate" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static int UPvr_GetDialogState ()</p>
+<p>Functions: Get boundary dialog state</p>
+<p>Parameter: None</p>
+<p>Return Value: NothingDialog = -1,GobackDialog = 0,ToofarDialog = 1,LostDialog = 2,LostNoReason = 3,LostCamera = 4,LostHighLight = 5,LostLowLight = 6,LostLowFeatureCount = 7,LostReLocation = 8</p>
+<p>Method of Calling: Pvr_UnitySDKAPI. BoundarySystem. UPvr_GetDialogState();</p>
+</div>
+</div>
+<div class="section" id="seethrough-camera-related">
+<h2>7.11    SeeThrough Camera related<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#seethrough-camera-related" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="upvr-boundarygetseethroughdata">
+<h3>UPvr_BoundaryGetSeeThroughData<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarygetseethroughdata" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_BoundaryGetSeeThroughData(int cameraIndex, RenderTexture renderTexture)</p>
+<p>Functions:  Get the front camera image of Neo 2 and Neo 3 series</p>
+<p>Parameter: cameraIndex: camera id, 0 left camera, 1 right camera; renderTexture: texture rendered for camera imaging(Texture size 640*640)</p>
+<p>Others: This interface cannot be directly called. Before calling it, camera needs to be opened. For details, please refer to PicoMobileSDKPvr_UnitySDKScenesExamplesGetSeeThroughImage.</p>
+<p>Return Value: None</p>
+<p>Method of Calling: Pvr_UnitySDKAPI.BoundarySystem.UPvr_BoundaryGetSeeThroughData(0, renderTexture)</p>
+</div>
+<div class="section" id="upvr-boundarysetcameraimagerect">
+<h3>UPvr_BoundarySetCameraImageRect<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-boundarysetcameraimagerect" title="Permalink to this headline">¶</a></h3>
+<p>Function name：public static void UPvr_BoundarySetCameraImageRect (int width,int height)</p>
+<p>Functions：Set the width and height of Camera image.</p>
+<p>Parameter：width, height.</p>
+<p>Return Value: None</p>
+<p>Method of Calling： Pvr_UnitySDKAPI.BoundarySystem. UPvr_BoundarySetCameraImageRect (width, height)</p>
+</div>
+<div class="section" id="upvr-enableseethroughmanual">
+<h3>UPvr_EnableSeeThroughManual<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-enableseethroughmanual" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_EnableSeeThroughManual(bool value)</p>
+<p>Functions: Get the camera image of Neo 2 and set it as the environmental background</p>
+<p>Parameter: value: whether SeeThrough is enabled or not, true enabled, false disenabled</p>
+<p>Return Value: None</p>
+<p>Method of Calling: Pvr_UnitySDKAPI.BoundarySystem. UPvr_EnableSeeThroughManual(true)</p>
+<p>Others:</p>
+<ol class="arabic simple">
+<li>Select clear flags for solid color of the prefab’s Camera (LeftEye and RightEye)</li>
+<li>Select 0 for the background color alpha channel of the prefab’s Camera (LeftEye and RightEye)</li>
+</ol>
+</div>
+</div>
+<div class="section" id="system-related">
+<h2>7.12    System related<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#system-related" title="Permalink to this headline">¶</a></h2>
+<p>Through system-related interfaces, developers can obtain and set some configuration of the system, and developers can use it as needed.</p>
+<p>Supporting equipment:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="43%">
+<col width="57%">
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Devices</th>
+<th class="head">PUI Version</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>G2 4K/G2 4K E/G2 4K Plus</td>
+<td>4.0.3 and above</td>
+</tr>
+<tr class="row-odd"><td>Neo 3 Pro/Neo 3 Pro Eye</td>
+<td>All PUI versions</td>
+</tr>
+</tbody>
+</table>
+<p>Please check sample scene TobService.unity and script “Pvr_ToBService.cs” about how to initialize ToBService before using the interface in this chapter. “Pvr_ToBService.cs” can be directly attached to developing scene for binding service. Detailed description of interface usage is as follow:</p>
+<div class="highlight-C# notranslate"><div class="highlight"><pre><span></span><span class="c1">//Initializing and bind ToBService, the objectname refers to name of the object which is used to receive callback.</span>
+<span class="k">private</span> <span class="k">void</span> <span class="nf">Awake</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">UPvr_InitToBService</span><span class="p">();</span>
+    <span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">UPvr_SetUnityObjectName</span><span class="p">(</span><span class="n">objectName</span><span class="p">);</span>
+    <span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">UPvr_BindToBService</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="c1">//Unbind the ToBService</span>
+<span class="k">private</span> <span class="k">void</span> <span class="nf">OnDestory</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">UPvr_UnBindToBService</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="c1">//Add 4 callback methods to allow corresponding callback can be received.</span>
+<span class="k">private</span> <span class="k">void</span> <span class="nf">BoolCallback</span><span class="p">(</span><span class="kt">string</span> <span class="k">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">BoolCallback</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">BoolCallback</span><span class="p">(</span><span class="kt">bool</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="k">value</span><span class="p">));</span>
+    <span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">BoolCallback</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">private</span> <span class="k">void</span> <span class="nf">IntCallback</span><span class="p">(</span><span class="kt">string</span> <span class="k">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">IntCallback</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">IntCallback</span><span class="p">(</span><span class="kt">int</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="k">value</span><span class="p">));</span>
+    <span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">IntCallback</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">private</span> <span class="k">void</span> <span class="nf">LongCallback</span><span class="p">(</span><span class="kt">string</span> <span class="k">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">LongCallback</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">LongCallback</span><span class="p">(</span><span class="kt">int</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="k">value</span><span class="p">));</span>
+    <span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">LongCallback</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">private</span> <span class="k">void</span> <span class="nf">StringCallback</span><span class="p">(</span><span class="kt">string</span> <span class="k">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">StringCallback</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">StringCallback</span><span class="p">(</span><span class="kt">int</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="k">value</span><span class="p">));</span>
+    <span class="n">Pvr_UnitySDKAPI</span><span class="p">.</span><span class="n">ToBService</span><span class="p">.</span><span class="n">StringCallback</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Make sure ToBService is bound successfully before calling the interface. For callback of ToBService binding success, please add the following code to the initialization script. After TobService binding success, this method will be called.</p>
+<div class="highlight-C# notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">void</span> <span class="nf">toBServiceBind</span><span class="p">(</span><span class="kt">string</span> <span class="n">s</span><span class="p">){</span><span class="n">Debug</span><span class="p">.</span><span class="n">Log</span><span class="p">(</span><span class="s">"Bind success."</span><span class="p">);}</span>
+</pre></div>
+</div>
+<div class="section" id="general-interfaces">
+<h3>7.12.1 General Interfaces<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#general-interfaces" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="upvr-stategetdeviceinfo">
+<h3>UPvr_StateGetDeviceInfo<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-stategetdeviceinfo" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static string UPvr_StateGetDeviceInfo(PBS_SystemInfoEnum type)</p>
+<p><strong>Function</strong>: Get device information</p>
+<p><strong>Parameter</strong>: type: Get information type of the device</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>PBS_SystemInfoEnum.ELECTRIC_QUANTITY：Battery Power
+PBS_SystemInfoEnum.PUI_VERSION：PUI Version
+PBS_SystemInfoEnum.EQUIPMENT_MODEL：Device Model
+PBS_SystemInfoEnum.EQUIPMENT_SN：Device SN code
+PBS_SystemInfoEnum.CUSTOMER_SN：Customer SN code
+PBS_SystemInfoEnum.INTERNAL_STORAGE_SPACE_OF_THE_DEVICE：Device Storage
+PBS_SystemInfoEnum.DEVICE_BLUETOOTH_STATUS：Bluetooth Status
+PBS_SystemInfoEnum.BLUETOOTH_NAME_CONNECTED：Bluetooth Name
+PBS_SystemInfoEnum.BLUETOOTH_MAC_ADDRESS：Bluetooth MAC Address
+PBS_SystemInfoEnum.DEVICE_WIFI_STATUS：Wi-Fi connection status
+PBS_SystemInfoEnum.WIFI_NAME_CONNECTED：Connected Wi-Fi ID
+PBS_SystemInfoEnum.WLAN_MAC_ADDRESS：WLAN MAC Adress
+PBS_SystemInfoEnum.DEVICE_IP：Device IP Address
+</pre></div>
+</div>
+<p><strong>Return value</strong>: string: device information</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_StateGetDeviceInfo(PBS_SystemInfoEnum.PUI_VERSION)</p>
+</div>
+<div class="section" id="upvr-controlsetautoconnectwifi">
+<h3>UPvr_ControlSetAutoConnectWIFI<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-controlsetautoconnectwifi" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_ControlSetAutoConnectWIFI(string ssid, string pwd,Action&lt;bool&gt; callback)</p>
+<p><strong>Function</strong>: Enable Auto-Connect to the specific WiFi on boot</p>
+<p><strong>Parameter</strong>:  ssid: wifi name; pwd: wifi password; callback: whether WiFi is connected</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_ControlSetAutoConnectWIFI(ssid, pwd, callback)</p>
+</div>
+<div class="section" id="upvr-controlclearautoconnectwifi">
+<h3>UPvr_ControlClearAutoConnectWIFI<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-controlclearautoconnectwifi" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_ControlClearAutoConnectWIFI(Action&lt;bool&gt; callback)</p>
+<p><strong>Function</strong>: Disable Auto-Connect to specific WiFi on boot</p>
+<p><strong>Parameter</strong>: callback: whether the connection is cleared</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_ControlClearAutoConnectWIFI(callback)</p>
+</div>
+<div class="section" id="upvr-propertysethomekey">
+<h3>UPvr_PropertySetHomeKey<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-propertysethomekey" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_PropertySetHomeKey(PBS_HomeEventEnum eventEnum, PBS_HomeFunctionEnum function, Action&lt;bool&gt; callback)</p>
+<p><strong>Function</strong>: Set Home button press events. It will redefine the Home button and affect the system definition of it. Please use this function with discretion.</p>
+<p><strong>Parameter</strong>: eventEnum: single click, double click or long press events</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>PBS_HomeEventEnum.SINGLE_CLICK：Single Click
+PBS_HomeEventEnum.DOUBLE_CLICK：Double Click
+PBS_HomeEventEnum.LONG_PRESS：Long Press (Not applicable for Neo3)
+</pre></div>
+</div>
+<p>function: launch setting application, return, calibration, etc..</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>PBS_HomeFunctionEnum.VALUE_HOME_GO_TO_SETTING：Open Settings
+PBS_HomeFunctionEnum.VALUE_HOME_BACK：Back Home App (Not applicable for Neo3)
+PBS_HomeFunctionEnum.VALUE_HOME_RECENTER：Recenter
+PBS_HomeFunctionEnum.VALUE_HOME_OPEN_APP：Open Defined App (Not applicable for Neo3)
+PBS_HomeFunctionEnum.VALUE_HOME_DISABLE：Disable Home Button
+PBS_HomeFunctionEnum.VALUE_HOME_GO_TO_HOME：Back to PUI Launcher
+PBS_HomeFunctionEnum.VALUE_HOME_SEND_BROADCAST：Send Home Button Broadcast (Not applicable for Neo3)
+PBS_HomeFunctionEnum.VALUE_HOME_CLEAN_MEMORY：Clear Background Process (Not applicable for Neo3)
+</pre></div>
+</div>
+<p><strong>callback</strong>: whether the setting is successful</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_PropertySetHomeKey(eventEnum,function，callback)</p>
+</div>
+<div class="section" id="upvr-propertysethomekeyall">
+<h3>UPvr_PropertySetHomeKeyAll<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-propertysethomekeyall" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_PropertySetHomeKeyAll(PBS_HomeEventEnum eventEnum, PBS_HomeFunctionEnum function, int timesetup, string pkg, string className, Action&lt;bool&gt; callback)</p>
+<p><strong>Function</strong>: Extended settings for Home button press</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>PBS_HomeEventEnum.SINGLE_CLICK：Single Click
+PBS_HomeEventEnum.DOUBLE_CLICK：Double Click
+PBS_HomeEventEnum.LONG_PRESS：Long Press (Not applicable for Neo3)
+</pre></div>
+</div>
+<p><strong>Parameter</strong>: eventEnum: single click, double click and long press events</p>
+<p>function: start up the setting application, return, calibrate, etc..</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>PBS_HomeFunctionEnum.VALUE_HOME_GO_TO_SETTING：Open Settings
+PBS_HomeFunctionEnum.VALUE_HOME_BACK：Back Home App (Not applicable for Neo3)
+PBS_HomeFunctionEnum.VALUE_HOME_RECENTER：Recenter
+PBS_HomeFunctionEnum.VALUE_HOME_OPEN_APP：Open Defined App (Not applicable for Neo3)
+PBS_HomeFunctionEnum.VALUE_HOME_DISABLE：Disable Home Button
+PBS_HomeFunctionEnum.VALUE_HOME_GO_TO_HOME：Back to PUI Launcher
+PBS_HomeFunctionEnum.VALUE_HOME_SEND_BROADCAST：Send Home Button Broadcast (Not applicable for Neo3)
+PBS_HomeFunctionEnum.VALUE_HOME_CLEAN_MEMORY：Clear Background Process (Not applicable for Neo3)
+</pre></div>
+</div>
+<p>Timesetup: Only double click and long press events need to set interval between button presses; The system default internals are 300ms and 500ms for double-click and long-press coresspondingly. Input expected value to change double-click/long-press intervals. Enter 0 for short press.</p>
+<p>Pkg: when function is HOME_FUNCTION_OPEN_APP enter the specific package name; enter null for other cases</p>
+<p>className: when function is HOME_FUNCTION_OPEN_APP: enter the specific class name; enter null for other cases</p>
+<p>callback: whether the setting is called back successfully</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_PropertySetHomeKeyAll(eventEnum,function, timesetup, pkg, className, callback)</p>
+</div>
+<div class="section" id="upvr-propertydisablepowerkey">
+<h3>UPvr_PropertyDisablePowerKey<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-propertydisablepowerkey" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_PropertyDisablePowerKey(bool isSingleTap, bool enable,Action&lt;int&gt; callback)</p>
+<p><strong>Function</strong>: Set Power button press events</p>
+<p><strong>Parameter</strong>: isSingleTap : single click event [true], long press event [false], enable: the usage state of the button press</p>
+<p>callback: Whether the callback setting is successful</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_PropertyDisablePowerKey(isSingleTap, enable,callback)</p>
+</div>
+<div class="section" id="upvr-propertysetscreenoffdelay">
+<h3>UPvr_PropertySetScreenOffDelay<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-propertysetscreenoffdelay" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_PropertySetScreenOffDelay(PBS_ScreenOffDelayTimeEnum timeEnum,Action&lt;int&gt; callback)</p>
+<p><strong>Function</strong>: Set the screen off delay, please note that screen off timeout should not be larger than system sleep timeout.</p>
+<p><strong>Parameter</strong>: timeEnum: delayed time for screen off</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>PBS_ScreenOffDelayTimeEnum. THREE：3 Seconds
+PBS_ScreenOffDelayTimeEnum. TEN：10 Seconds
+PBS_ScreenOffDelayTimeEnum. THIRTY：30 Seconds
+PBS_ScreenOffDelayTimeEnum. SIXTY：60 Seconds
+PBS_ScreenOffDelayTimeEnum. THREE_HUNDRED：5 Minutes
+PBS_ScreenOffDelayTimeEnum. SIX_HUNDRED：10 Minutes
+PBS_ScreenOffDelayTimeEnum. NEVER：Never Turn Screen Off
+</pre></div>
+</div>
+<p>callback: whether the setting is successful</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_PropertySetScreenOffDelay(timeEnum,callback)</p>
+</div>
+<div class="section" id="upvr-propertysetsleepdelay">
+<h3>UPvr_PropertySetSleepDelay<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-propertysetsleepdelay" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_PropertySetSleepDelay(PBS_SleepDelayTimeEnum timeEnum)</p>
+<p><strong>Function</strong>: Set the system sleep delay</p>
+<p><strong>Parameter</strong>: timeEnum: system sleep time delay</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>PBS_SleepDelayTimeEnum. FIFTEEN：15 Seconds
+PBS_SleepDelayTimeEnum. THIRTY：30 Seconds
+PBS_SleepDelayTimeEnum. SIXTY：60 Seconds
+PBS_SleepDelayTimeEnum. THREE_HUNDRED：5 Minutes
+PBS_SleepDelayTimeEnum. SIX_HUNDRED：10 Minutes
+PBS_SleepDelayTimeEnum. ONE_THOUSAND_AND_EIGHT_HUNDRED：30 Minutes
+PBS_SleepDelayTimeEnum. NEVER：Never Sleep
+</pre></div>
+</div>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_PropertySetSleepDelay(timeEnum)</p>
+</div>
+<div class="section" id="upvr-switchsystemfunction">
+<h3>UPvr_SwitchSystemFunction<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-switchsystemfunction" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_SwitchSystemFunction(PBS_SystemFunctionSwitchEnum systemFunction, PBS_SwitchEnum switchEnum)</p>
+<p><strong>Function</strong>: set configurations in system settings</p>
+<p><strong>Prameter</strong>:  systemFunction: type of function</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>PBS_SystemFunctionSwitchEnum.SFS_USB：USB Debugging
+PBS_SystemFunctionSwitchEnum.SFS_AUTOSLEEP：Auto Sleep
+PBS_SystemFunctionSwitchEnum.SFS_SCREENON_CHARGING：Screen-On Charging
+PBS_SystemFunctionSwitchEnum.SFS_OTG_CHARGING：OTG Charging
+PBS_SystemFunctionSwitchEnum.SFS_RETURN_MENU_IN_2DMODE：Return Button In 2D Mode
+PBS_SystemFunctionSwitchEnum.SFS_COMBINATION_KEY：Key Combination
+PBS_SystemFunctionSwitchEnum.SFS_CALIBRATION_WITH_POWER_ON：Recenter/Re-Calibration On Device Boot
+PBS_SystemFunctionSwitchEnum.SFS_SYSTEM_UPDATE：System Update
+PBS_SystemFunctionSwitchEnum.SFS_CAST_SERVICE：Casting Service (This Property is not valid when using Pico Enterprise Solution)
+PBS_SystemFunctionSwitchEnum.SFS_EYE_PROTECTION：Eye-Protection Mode
+PBS_SystemFunctionSwitchEnum.SFS_SECURITY_ZONE_PERMANENTLY：Disable 6Dof Safety Boundary Permanently
+PBS_SystemFunctionSwitchEnum.SFS_GLOBAL_CALIBRATION：Global Recenter/Re-Calibrate (Only available for G2 series)
+PBS_SystemFunctionSwitchEnum.SFS_Auto_Calibration：Auto Recenter/Re-Calibrate
+PBS_SystemFunctionSwitchEnum.SFS_USB_BOOT：USB Plug-in Boot
+</pre></div>
+</div>
+<p>switchEnum: value of switch</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>PBS_SwitchEnum.S_ON：On
+PBS_SwitchEnum.S_OFF：Off
+</pre></div>
+</div>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_SwitchSystemFunction(systemFunction,switchEnum)</p>
+</div>
+<div class="section" id="upvr-switchsetusbconfigurationoption">
+<h3>UPvr_SwitchSetUsbConfigurationOption<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-switchsetusbconfigurationoption" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_SwitchSetUsbConfigurationOption(PBS_USBConfigModeEnum uSBConfigModeEnum)</p>
+<p><strong>Function</strong>: Set USB configuration mode (MTP, charging)</p>
+<p><strong>Parameter</strong>: uSBConfigModeEnum: MTP, charging</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>PBS_USBConfigModeEnum.MTP：MTP Mode
+PBS_USBConfigModeEnum.CHARGE：Charging Mode
+</pre></div>
+</div>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_SwitchSetUsbConfigurationOption(uSBConfigModeEnum)</p>
+</div>
+<div class="section" id="upvr-acquirewakelock">
+<h3>UPvr_AcquireWakeLock<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-acquirewakelock" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_AcquireWakeLock()</p>
+<p><strong>Functions</strong>: Acquire wakelock</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_AcquireWakeLock ();</p>
+</div>
+<div class="section" id="upvr-releasewakelock">
+<h3>UPvr_ReleaseWakeLock<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-releasewakelock" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_ReleaseWakeLock()</p>
+<p><strong>Functions</strong>: Release wakelock</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>:  Pvr_UnitySDKAPI.ToBService.UPvr_ReleaseWakeLock ();</p>
+</div>
+<div class="section" id="upvr-enableenterkey">
+<h3>UPvr_EnableEnterKey<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-enableenterkey" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_EnableEnterKey()</p>
+<p><strong>Functions</strong>: Enable Confirm key</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_EnableEnterKey();</p>
+</div>
+<div class="section" id="upvr-disableenterkey">
+<h3>UPvr_DisableEnterKey<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-disableenterkey" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_DisableEnterKey()</p>
+<p><strong>Functions</strong>: Disable Confirm key</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_DisableEnterKey();</p>
+</div>
+<div class="section" id="upvr-enablevolumekey">
+<h3>UPvr_EnableVolumeKey<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-enablevolumekey" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_EnableVolumeKey()</p>
+<p><strong>Functions</strong>: Enable Volume key</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_EnableVolumeKey();</p>
+</div>
+<div class="section" id="upvr-disablevolumekey">
+<h3>UPvr_DisableVolumeKey<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-disablevolumekey" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_DisableVolumeKey()</p>
+<p><strong>Functions</strong>: Disable Volume key</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_DisableVolumeKey();</p>
+</div>
+<div class="section" id="upvr-enablebackkey">
+<h3>UPvr_EnableBackKey<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-enablebackkey" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_EnableBackKey()</p>
+<p><strong>Functions</strong>: Enable Back key</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_EnableBackKey();</p>
+</div>
+<div class="section" id="upvr-disablebackkey">
+<h3>UPvr_DisableBackKey<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-disablebackkey" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_DisableBackKey()</p>
+<p><strong>Functions</strong>: Disable Back key</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_DisableBackKey();</p>
+</div>
+<div class="section" id="upvr-writeconfigfiletodatalocal">
+<h3>UPvr_WriteConfigFileToDataLocal<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-writeconfigfiletodatalocal" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_WriteConfigFileToDataLocal(string path, string content, Action&lt;bool&gt; callback)</p>
+<p><strong>Functions</strong>: Write configuration file under Data/local/tmp</p>
+<p><strong>Parameter</strong>: path:  configure file path (“/data/local/tmp/config.txt”), content: configure file content (“” ), callback: whether the configuration file has been successfully written</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_WriteConfigFileToDataLocal(string path, string content, Action&lt;bool&gt; callback);</p>
+</div>
+<div class="section" id="upvr-resetallkeytodefault">
+<h3>UPvr_ResetAllKeyToDefault<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-resetallkeytodefault" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_ResetAllKeyToDefault (Action&lt;bool&gt; callback)</p>
+<p><strong>Functions</strong>:  Reset all keys to default</p>
+<p><strong>Parameter</strong>: callback: whether all keys have been successfully reset to default</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_ResetAllKeyToDefault (Action&lt;bool&gt; callback);</p>
+</div>
+<div class="section" id="upvr-openmiracast-new">
+<h3>UPvr_OpenMiracast (New)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-openmiracast-new" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_OpenMiracast()</p>
+<p><strong>Functions</strong>: Turn on the screencast function.</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_OpenMiracast();</p>
+</div>
+<div class="section" id="upvr-ismiracaston-new">
+<h3>UPvr_IsMiracastOn (New)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-ismiracaston-new" title="Permalink to this headline">¶</a></h3>
+<p>Function name:public static void UPvr_IsMiracastOn()</p>
+<p><strong>Functions</strong>: Get the status of the screencast.</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: true: on; false:off.</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_IsMiracastOn ();</p>
+</div>
+<div class="section" id="upvr-closemiracast-new">
+<h3>UPvr_CloseMiracast (New)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-closemiracast-new" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_CloseMiracast ()</p>
+<p><strong>Functions</strong>: Turn off the screencast function.</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>:None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_CloseMiracast ();</p>
+</div>
+<div class="section" id="upvr-startscan-new">
+<h3>UPvr_StartScan (New)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-startscan-new" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_StartScan()</p>
+<p><strong>Functions</strong>: .Start scanning for devices that can be screened</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>:None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_StartScan();</p>
+</div>
+<div class="section" id="upvr-stopscan-new">
+<h3>UPvr_StopScan (New)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-stopscan-new" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_StopScan()</p>
+<p><strong>Functions</strong>: .Stop scanning for devices that can be screened</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>:None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_StopScan();</p>
+</div>
+<div class="section" id="upvr-setwdjsoncallback-new">
+<h3>UPvr_SetWDJsonCallback (New)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setwdjsoncallback-new" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_SetWDJsonCallback ()</p>
+<p><strong>Functions</strong>: .Set callback of scanning result , return a string in json format, including devices connected and scanned before.</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>:None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_SetWDJsonCallback ();</p>
+</div>
+<div class="section" id="upvr-connectwifidisplay-new">
+<h3>UPvr_ConnectWifiDisplay (New)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-connectwifidisplay-new" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_ConnectWifiDisplay(string modelJson)</p>
+<p><strong>Functions</strong>: Project to the specified device.</p>
+<p><strong>Parameter</strong>: modelJson</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd><p class="first">“deviceAddress”: “e2:37:bf:76:33:c6”,</p>
+<p>“deviceName”: “u5BA2u5385u7684u5C0Fu7C73u7535u89C6”,</p>
+<p>“isAvailable”: “true”,</p>
+<p>“canConnect”: “true”,</p>
+<p>“isRemembered”: “false”,</p>
+<p>“statusCode”: “-1”,</p>
+<p>“status”: “”,</p>
+<p class="last">“description”: “”</p>
+</dd>
+</dl>
+<p>}</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_ConnectWifiDisplay(string modelJson);</p>
+</div>
+<div class="section" id="upvr-disconnectwifidisplay-new">
+<h3>UPvr_DisConnectWifiDisplay (New)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-disconnectwifidisplay-new" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_DisConnectWifiDisplay ()</p>
+<p><strong>Functions</strong>: Disconnected for screencast.</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_DisConnectWifiDisplay ();</p>
+</div>
+<div class="section" id="upvr-forgetwifidisplay-new">
+<h3>UPvr_ForgetWifiDisplay (New)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-forgetwifidisplay-new" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_ForgetWifiDisplay(string address)</p>
+<p><strong>Functions</strong>: Forget the devices that have been connected.</p>
+<p><strong>Parameter</strong>: adress: the adress of the device.</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_ForgetWifiDisplay(address);</p>
+</div>
+<div class="section" id="upvr-renamewifidisplay-new">
+<h3>UPvr_RenameWifiDisplay (New)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-renamewifidisplay-new" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_RenameWifiDisplay(string address, string newName)</p>
+<p><strong>Functions</strong>: Modify the name of the connected device (only the name for local storage)</p>
+<p><strong>Parameter</strong>: adress: the adress of the device; newName: target name of the device.</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_RenameWifiDisplay(string address, string newName);</p>
+</div>
+<div class="section" id="upvr-updatewifidisplays-new">
+<h3>UPvr_UpdateWifiDisplays (New)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-updatewifidisplays-new" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_UpdateWifiDisplays(Action&lt;string&gt;callback)</p>
+<p><strong>Functions</strong>: Manually update the list.</p>
+<p><strong>Parameter</strong>: callback: the result of the SetWDJsonCallback.</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_UpdateWifiDisplays(callback);</p>
+</div>
+<div class="section" id="upvr-getconnectedwd-new">
+<h3>UPvr_GetConnectedWD (New)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-getconnectedwd-new" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_GetConnectedWD()</p>
+<p><strong>Functions</strong>: Get the information of the currently connected device.</p>
+<p><strong>Parameter</strong>: None.</p>
+<p><strong>Return value</strong>: Return the currently connected device information.</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_GetConnectedWD();</p>
+</div>
+<div class="section" id="protected-interfaces">
+<h3>7.12.2 Protected interfaces<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#protected-interfaces" title="Permalink to this headline">¶</a></h3>
+<p>Note: To secure system steadiness and user experiences, application which uses following interfaces are not allowed to publish on Pico Store.
+It’s required to add the label to AndroidManifest as below to use these interfaces:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;meta-data</span> <span class="na">android:name=</span><span class="s">"pico_advance_interface"</span> <span class="na">android:value=</span><span class="s">"0"</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="upvr-controlsetdeviceaction">
+<h3>UPvr_ControlSetDeviceAction<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-controlsetdeviceaction" title="Permalink to this headline">¶</a></h3>
+<p>Function name: Pvr_UnitySDKAPI.ToBService. UPvr_ControlSetDeviceAction(PBS_DeviceControlEnum deviceControl,Action&lt;int&gt; callback)</p>
+<p><strong>Function</strong>: deviceControl: Control the device to power off or reboot</p>
+<p><strong>Parameter</strong>:  deviceControl: control the device to power off or reboot</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>PBS_DeviceControlEnum.DEVICE_CONTROL_REBOOT：Reboot
+PBS_DeviceControlEnum.DEVICE_CONTROL_SHUTDOWN：Power Off
+</pre></div>
+</div>
+<p>callback: callback interface, whether power off/reboot is successful</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_ControlSetDeviceAction(PBS_DeviceControlEnum.DEVICE_CONTROL_SHUTDOWN，callback)</p>
+</div>
+<div class="section" id="upvr-controlappmanger">
+<h3>UPvr_ControlAPPManger<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-controlappmanger" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_ControlAPPManger(PBS_PackageControlEnum packageControl, string path, Action&lt;int&gt; callback)</p>
+<p><strong>Function</strong>: Silent install/uninstall application</p>
+<p><strong>Parameter</strong>:</p>
+<p>packageControl: Silent install/uninstall application</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>PBS_PackageControlEnum.PACKAGE_SILENCE_INSTALL：Install
+PBS_PackageControlEnum.PACKAGE_SILENCE_UNINSTALL：Uninstall
+</pre></div>
+</div>
+<p>path: apk path of the application to install/package name of the application to uninstall</p>
+<p>callback: calling back interfaces, whether the install/uninstall is successful</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService.UPvr_ControlAPPManger(PBS_PackageControlEnum.PACKAGE_SILENCE_UNINSTALL, “com.xxx.xxx”，callback)</p>
+</div>
+<div class="section" id="upvr-screenon">
+<h3>UPvr_ScreenOn<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-screenon" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_ScreenOn()</p>
+<p><strong>Function</strong>: Turn screen on</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_ScreenOn();</p>
+</div>
+<div class="section" id="upvr-screenoff">
+<h3>UPvr_ScreenOff<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-screenoff" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_ScreenOff()</p>
+<p><strong>Function</strong>: Turn screen off</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_ScreenOff();</p>
+</div>
+<div class="section" id="upvr-setappashome">
+<h3>UPvr_SetAPPAsHome<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-setappashome" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_SetAPPAsHome(PBS_SwitchEnum switchEnum, string packageName)</p>
+<p><strong>Function</strong>: Set desired application as Kiosk Mode launcher</p>
+<p><strong>Parameter</strong>: switchEnum: switch on/off，packageName: package name of application to set as launcher</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_SetAPPAsHome(switchEnum,packageName);</p>
+</div>
+<div class="section" id="upvr-killappsbypidorpackagename-new">
+<h3>UPvr_KillAppsByPidOrPackageName (New)<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#upvr-killappsbypidorpackagename-new" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static void UPvr_KillAppsByPidOrPackageName(int[] pids, string[] packageNames)</p>
+<p><strong>Function</strong>: Kill the application by passing in the application pid or package name.</p>
+<p><strong>Parameter</strong>: pid: an array of application pid，packageNames: an array of package names.</p>
+<p><strong>Return value</strong>: None</p>
+<p><strong>Method of calling</strong>: Pvr_UnitySDKAPI.ToBService. UPvr_KillAppsByPidOrPackageName(pids, packageNames);</p>
+</div>
+</div>
+<div class="section" id="achievement-system-related">
+<h2>7.13 Achievement system related<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievement-system-related" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="preparations">
+<h3>7.13.1 Preparations<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#preparations" title="Permalink to this headline">¶</a></h3>
+<p>To access the Achievement system, developers need to create the application on Pico Developer Platform and obtain APP ID. Steps:</p>
+<ul class="simple">
+<li><ol class="first arabic">
+<li>Log on to Pico Developer Platform (<a class="reference external" href="https://developer.pico-interactive.com/">https://developer.pico-interactive.com/</a>)  and sign up for a Pico membership</li>
+</ol>
+</li>
+<li><ol class="first arabic" start="2">
+<li>Apply to be a developer</li>
+</ol>
+</li>
+</ul>
+<p>Developers are divided into individual developers and enterprise developers, please apply according to the actual situation. After submission, we will give feedback within 3 working days. Please check the status in time.</p>
+<ul>
+<li><ol class="first arabic simple" start="3">
+<li>View Merchant ID</li>
+</ol>
+</li>
+<li><ol class="first arabic simple" start="4">
+<li>Create Achievement</li>
+</ol>
+<blockquote>
+<div><p>(1). Click “View” for more operations. Creating first if you don’t have any App. After successful creation, the platform will assign an unique APP ID automatically.</p>
+</div></blockquote>
+</li>
+</ul>
+<img alt="_images/7.13.1.png" src="./7 API Interface Function List — PicoVR Unity SDK 0.1 documentation_files/7.13.1.png">
+<p>Figure 7.13.1  Pico Developer Platform</p>
+<blockquote>
+<div>(2). Click the button of “Platform Service - Achievements” at the bottom of the View page.</div></blockquote>
+<img alt="_images/7.13.2.png" src="./7 API Interface Function List — PicoVR Unity SDK 0.1 documentation_files/7.13.2.png">
+<p>Figure 7.13.2  Pico Developer Platform</p>
+<blockquote>
+<div>(3). Checking the list of achievements you have created. Click “Create” if you don’t have any achievement.</div></blockquote>
+<img alt="_images/7.13.3.png" src="./7 API Interface Function List — PicoVR Unity SDK 0.1 documentation_files/7.13.3.png">
+<p>Figure 7.13.3  Pico Developer Platform</p>
+<blockquote>
+<div>(4). Fill in the fields of your achievement. Write the same API Name of that in your coding.</div></blockquote>
+<img alt="_images/7.13.4.png" src="./7 API Interface Function List — PicoVR Unity SDK 0.1 documentation_files/7.13.4.png">
+<ul>
+<li><ol class="first arabic simple" start="5">
+<li>Achievement types:</li>
+</ol>
+<blockquote>
+<div><p>(1). Simple: Unlock by completing a single event or target without achievement progress</p>
+<p>(2). Counter: Unlock when the specified number of targets is reached (e.g. reach 5 targets to unlock, Target = 5)</p>
+<p>(3). Bitfield: Unlock when the specified number of targets in the specified  range is reached (e.g. reach 3 out of 7 targets to unlock, Target = 3, Bitfield Length = 7)</p>
+</div></blockquote>
+</li>
+<li><ol class="first arabic simple" start="6">
+<li>Platform Settings configuration application APPID</li>
+</ol>
+<blockquote>
+<div><p>(1). Configure a valid APP ID in the project Platform Settings and Manifest.xml:</p>
+</div></blockquote>
+</li>
+</ul>
+<img alt="_images/7.13.5.png" src="./7 API Interface Function List — PicoVR Unity SDK 0.1 documentation_files/7.13.5.png">
+<p>Figure 7.13.4  Pico Developer Platform</p>
+<blockquote>
+<div>(2). See Chapter 9.1.1 and Chapter 9.1.2 for detailed AndroidManifest configuration.</div></blockquote>
+<p>See Chapter 9.1.1 and Chapter 9.1.2 for detailed AndroidManifest configuration.</p>
+</div>
+<div class="section" id="calling-interfaces">
+<h3>7.13.2 Calling interfaces<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#calling-interfaces" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="achievements-init">
+<h3>Achievements.Init<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-init" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Pvr_Request&lt;Pvr_AchievementUpdate&gt; Init()</p>
+<p><strong>Function</strong>: Achievement system initialization</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: Result of calling</p>
+<p><strong>Method of calling</strong>:  Pvr_UnitySDKAPI. Achievements.Init()</p>
+</div>
+<div class="section" id="achievements-getalldefinitions">
+<h3>Achievements.GetAllDefinitions<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-getalldefinitions" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Pvr_Request&lt;Pvr_AchievementDefinitionList&gt; GetAllDefinitions()</p>
+<p><strong>Function</strong>: Get all definitions of achievements</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: Result of calling</p>
+<p><strong>Method of calling</strong>:  Pvr_UnitySDKAPI. Achievements. GetAllDefinitions ()</p>
+</div>
+<div class="section" id="achievements-getallprogress">
+<h3>Achievements.GetAllProgress<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-getallprogress" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Pvr_Request&lt;Pvr_AchievementProgressList&gt; GetAllProgress()</p>
+<p><strong>Function</strong>: Get progress of all modified achievements</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: Result of calling</p>
+<p><strong>Method of calling</strong>:  Pvr_UnitySDKAPI. Achievements. GetAllProgress ()</p>
+</div>
+<div class="section" id="achievements-getdefinitionsbyname">
+<h3>Achievements.GetDefinitionsByName<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-getdefinitionsbyname" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Pvr_Request&lt;Pvr_AchievementDefinitionList&gt; GetDefinitionsByName(string[] names)</p>
+<p><strong>Function</strong>: Get definitions by name</p>
+<p><strong>Parameter</strong>: names: get the achievement apiname for obtaining definitions</p>
+<p><strong>Return value</strong>: Result of calling</p>
+<p><strong>Method of calling</strong>:  Pvr_UnitySDKAPI. Achievements. GetDefinitionsByName (names)</p>
+</div>
+<div class="section" id="achievements-getprogressbyname">
+<h3>Achievements.GetProgressByName<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-getprogressbyname" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Pvr_Request&lt;Pvr_AchievementProgressList&gt; GetProgressByName(string[] names)</p>
+<p><strong>Function</strong>: Get achievement progress by name</p>
+<p><strong>Parameter</strong>: names: the achievement apiname for obtaining definitions</p>
+<p><strong>Return value</strong>: Result of calling</p>
+<p><strong>Method of calling</strong>:  Pvr_UnitySDKAPI. Achievements. GetProgressByName (names)</p>
+</div>
+<div class="section" id="achievements-addcount">
+<h3>Achievements.AddCount<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-addcount" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Pvr_Request&lt;Pvr_AchievementUpdate&gt; AddCount(string name, long count)</p>
+<p><strong>Function</strong>: Add count achievements</p>
+<p><strong>Parameter</strong>: name: achievement apiname，count: additions</p>
+<p><strong>Return value</strong>: Result of calling</p>
+<p><strong>Method of calling</strong>:  Pvr_UnitySDKAPI. Achievements. AddCount (name，count)</p>
+</div>
+<div class="section" id="achievements-addfields">
+<h3>Achievements.AddFields<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-addfields" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Pvr_Request&lt;Pvr_AchievementUpdate&gt; AddFields(string name, string fields)</p>
+<p><strong>Function</strong>: Add bitfield achievements</p>
+<p><strong>Parameter</strong>: name: achievement apiname, fields: additions</p>
+<p><strong>Return value</strong>: Result of calling</p>
+<p><strong>Method of calling</strong>:  Pvr_UnitySDKAPI. Achievements. AddFields (name，bitfield)</p>
+</div>
+<div class="section" id="achievements-unlock">
+<h3>Achievements.Unlock<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-unlock" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Pvr_Request&lt;Pvr_AchievementUpdate&gt; Unlock(string name)</p>
+<p><strong>Function</strong>: Unlock achievement according to apiname</p>
+<p><strong>Parameter</strong>: name: achievement apiname</p>
+<p><strong>Return value</strong>: Result of calling</p>
+<p><strong>Method of calling</strong>:  Pvr_UnitySDKAPI. Achievements. Unlock (name)</p>
+</div>
+<div class="section" id="achievements-getnextachievementdefinitionlistpage">
+<h3>Achievements.GetNextAchievementDefinitionListPage<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-getnextachievementdefinitionlistpage" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Pvr_Request&lt;Pvr_AchievementDefinitionList&gt; GetNextAchievementDefinitionListPage (Pvr_AchievementDefinitionList list)</p>
+<p><strong>Function</strong>: When getting all the achievement definitions, if there are multiple pages, get the next page</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: Result of calling</p>
+<p><strong>Method of calling</strong>:  Pvr_UnitySDKAPI. Achievements. GetNextAchievementDefinitionListPage(achievementDefinitionList)</p>
+</div>
+<div class="section" id="achievements-getnextachievementprogresslistpage">
+<h3>Achievements. GetNextAchievementProgressListPage<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#achievements-getnextachievementprogresslistpage" title="Permalink to this headline">¶</a></h3>
+<p>Function name: public static Pvr_Request&lt;Pvr_AchievementProgressList&gt; GetNextAchievementProgressListPage(Pvr_AchievementProgressList list)</p>
+<p><strong>Function</strong>: When getting all modified achievement progress information, if there are multiple pages, get the next page</p>
+<p><strong>Parameter</strong>: None</p>
+<p><strong>Return value</strong>: Result of calling</p>
+<p><strong>Method of calling</strong>:  Pvr_UnitySDKAPI. Achievements. GetNextAchievementProgressListPage(achievementProgressList)</p>
+</div>
+<div class="section" id="notes">
+<h3>7.13.3 Notes<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html#notes" title="Permalink to this headline">¶</a></h3>
+<p>(1). Please log in to the device with Pico account first, and then use the achievement interface and functions</p>
+<p>(2). To avoid errors in achievement data caused by account switching and logout, please call initialization again in App Resume() to ensure that the App gets the correct user login information.</p>
+<p>(3). At the development and debugging phase, the following method can be adopted to debug and test</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>Logcat</li>
+<li>View the data from the Developer Platform - Apps - Achievements page</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="https://sdk.picovr.com/docs/sdk/en/chapter_six.html" class="btn btn-neutral float-left" title="6 Performance optimization guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html" class="btn btn-neutral float-right" title="8 Advanced features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <p>© Copyright 2015-2021 Pico Interactive, Inc. All Rights Reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+
+</body></html>

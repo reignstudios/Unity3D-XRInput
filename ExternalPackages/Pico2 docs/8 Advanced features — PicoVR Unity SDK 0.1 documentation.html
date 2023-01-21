@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)https://sdk.picovr.com/docs/sdk/en/chapter_eight.html -->
+<html class="writer-html4" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>8 Advanced features — PicoVR Unity SDK 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/theme.css" type="text/css">
+  <link rel="stylesheet" href="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/pygments.css" type="text/css">
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/documentation_options.js.download"></script>
+        <script type="text/javascript" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/jquery.js.download"></script>
+        <script type="text/javascript" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/underscore.js.download"></script>
+        <script type="text/javascript" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/doctools.js.download"></script>
+        <script type="text/javascript" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/language_data.js.download"></script>
+    
+    <script type="text/javascript" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/theme.js.download"></script>
+
+    
+    <link rel="index" title="Index" href="https://sdk.picovr.com/docs/sdk/en/genindex.html">
+    <link rel="search" title="Search" href="https://sdk.picovr.com/docs/sdk/en/search.html">
+    <link rel="next" title="9 Payment system" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html">
+    <link rel="prev" title="7 API Interface Function List" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html"> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="https://sdk.picovr.com/docs/sdk/en/index.html" class="icon icon-home"> PicoVR Unity SDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v_2.8.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="https://sdk.picovr.com/docs/sdk/en/search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs">
+    <input type="hidden" name="check_keywords" value="yes">
+    <input type="hidden" name="area" value="default">
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_one.html">1       Introduction to SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_two.html">2       Instructions for SDK configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_three.html">3       Development notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_four.html">4       Quick start of SDK access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_five.html">5       Hardware product development guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_six.html">6       Performance optimization guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html">7       API Interface Function List</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#">8       Advanced features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#display-frame-rate">8.1     Display frame rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#open-screen-fade-of-the-scenes">8.2     Open Screen Fade of the Scenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#limited-frame-rate">8.3     Limited frame rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#configure-the-size-of-eyebuffer">8.4     Configure the size of EyeBuffer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#custom-application-launch-animation">8.5     Custom Application Launch Animation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#launch-animation-with-the-unity-app">8.5.1 Launch animation with the Unity app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#launch-animation-with-the-default-app-provided-by-the-pico-sdk">8.5.2 Launch animation with the default app provided by the Pico SDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#starting-an-animation-with-a-custom-app">8.5.3 Starting an animation with a custom app</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#eye-tracking">8.6     Eye Tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#foveated-rendering">8.7     Foveated Rendering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#vr-compositor-layers">8.8     VR Compositor Layers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#overlay-underlay-examples">8.8.1   Overlay &amp; Underlay examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#panorama-texture">8.8.2   360 panorama texture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#head-locked-world-locked-mode">8.8.3   Head-Locked &amp; World-Locked Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#monocular-camera">8.9     Monocular camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#user-entitlement-check">8.10    User entitlement check</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#entitlement-check-simulation-during-development-and-debugging-phases">8.10.1 Entitlement check simulation during development and debugging phases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#user-entitlement-check-after-official-release">8.10.2 User entitlement check after official release</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#tracking-origin">8.11    Tracking Origin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#singlepass">8.12    SinglePass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#quick-compilation-tool">8.13    Quick compilation tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#scene-quick-view-tool">8.14    Scene Quick View Tool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html">9       Payment system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_ten.html">10      VR Input Keyboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://sdk.picovr.com/docs/sdk/en/chapter_eleven.html">11      Frequently Asked Questions</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="https://sdk.picovr.com/docs/sdk/en/index.html">PicoVR Unity SDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="https://sdk.picovr.com/docs/sdk/en/index.html" class="icon icon-home"></a> »</li>
+        
+      <li>8       Advanced features</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="https://sdk.picovr.com/docs/sdk/en/_sources/chapter_eight.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="advanced-features">
+<span id="id1"></span><h1>8       Advanced features<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#advanced-features" title="Permalink to this headline">¶</a></h1>
+<p>This chapter describes several advanced features for some of the developer’s specific needs and optimizations.</p>
+<div class="section" id="display-frame-rate">
+<h2>8.1     Display frame rate<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#display-frame-rate" title="Permalink to this headline">¶</a></h2>
+<p>To show the frame rate in real time, go to the Inspector panel of Pvr_UnitySDK and check the “Show FPS” under the Pvr_UnitySDK Manager component:</p>
+<img alt="_images/8.1.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.1.png">
+<p>Figure 8.1 Opening of FPS</p>
+</div>
+<div class="section" id="open-screen-fade-of-the-scenes">
+<h2>8.2     Open Screen Fade of the Scenes<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#open-screen-fade-of-the-scenes" title="Permalink to this headline">¶</a></h2>
+<p>The SDK provides Open Screen Fade of the Scenes to be turned on through options as follows</p>
+<img alt="_images/8.2.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.2.png">
+<img alt="_images/8.2.1.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.2.1.png">
+<p>Figure 8.2 Opening of Screen Fade</p>
+<p>Figure 8.3 can be used to set the Fade Time and Fade Color of the Scenes (time unit is S)</p>
+<img alt="_images/8.3.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.3.png">
+<img alt="_images/8.3.1.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.3.1.png">
+<p>Figure 8.3 Fade Time and Fade Color after Opening the Scenes</p>
+</div>
+<div class="section" id="limited-frame-rate">
+<h2>8.3     Limited frame rate<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#limited-frame-rate" title="Permalink to this headline">¶</a></h2>
+<p>The SDK provides the function of limiting frame rate, which is opened by unchecking the Use Default FPS option as follows</p>
+<img alt="_images/8.4.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.4.png">
+<p>Figure 8.4 Opening of limited frame rate</p>
+<p>Then enter the desired frame rate value in the FPS text box.</p>
+</div>
+<div class="section" id="configure-the-size-of-eyebuffer">
+<h2>8.4     Configure the size of EyeBuffer<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#configure-the-size-of-eyebuffer" title="Permalink to this headline">¶</a></h2>
+<p>The SDK provides the function of configuring the size of the Eyebuffer, which is opened by unchecking the Use Default RenderTexture option as follows</p>
+<img alt="_images/8.5.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.5.png">
+<p>Figure 8.5 Configuration size of Eyebuffer</p>
+<p>Tips：</p>
+<p>Developers are advised to use the Use Default RenderTexture to use custom RT sizes only for special needs. For this option developers must understand the following two points：</p>
+<ul class="simple">
+<li>If the RT setting is too small, it will improve performance and reduce latency, but it will also result in lower resolution.</li>
+<li>If the RT setting is too large, it will reduce performance and increase latency, so it is not recommended that the RT setting exceed the hardware recommended texture size.</li>
+</ul>
+</div>
+<div class="section" id="custom-application-launch-animation">
+<h2>8.5     Custom Application Launch Animation<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#custom-application-launch-animation" title="Permalink to this headline">¶</a></h2>
+<p>The SDK provides the function of customizing the application to launch animation. Click the menu bar Pvr_UnitySDK/ Splash Screen to open the Splash Screen editing interface, as shown in the figure:</p>
+<img alt="_images/8.6.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.6.png">
+<p>Figure 8.6 Splash Screen option</p>
+<p>SplashScreenType contains three types of values: UseUnitySplashScreen, UsePicoSplashScreen, UseDynamicSplashScreen. Each type corresponds to a different application startup animation, and the following describes   the configuration methods of the three startup animations.</p>
+<div class="section" id="launch-animation-with-the-unity-app">
+<h3>8.5.1 Launch animation with the Unity app<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#launch-animation-with-the-unity-app" title="Permalink to this headline">¶</a></h3>
+<p>SplashScreenType selects UseUnitySplashScreen, then click ok, the log message prompts Congratulations when the configuration is complete. At this point, the application startup animation uses the startup animation set in Unity PlayerSetting-&gt;Splash Image.</p>
+</div>
+<div class="section" id="launch-animation-with-the-default-app-provided-by-the-pico-sdk">
+<h3>8.5.2 Launch animation with the default app provided by the Pico SDK<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#launch-animation-with-the-default-app-provided-by-the-pico-sdk" title="Permalink to this headline">¶</a></h3>
+<p>SplashScreenType selects UsePicoSplashScreen, then click ok, the log message prompts Congratulations when the configuration is complete. The application startup animation is now using the default startup animation provided by the Pico SDK.</p>
+</div>
+<div class="section" id="starting-an-animation-with-a-custom-app">
+<h3>8.5.3 Starting an animation with a custom app<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#starting-an-animation-with-a-custom-app" title="Permalink to this headline">¶</a></h3>
+<p>SplashScreenType selects UseDynamicSplashScreen, the Splash Screen interface is as follows:</p>
+<img alt="_images/8.7.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.7.png">
+<p>Figure 8.7 Splash Screen interface</p>
+<p>SplashImage: An array of frame animation files that plays when the application starts. The order of the frame animation files in the array should correspond to the order of playback. Image pixel size should be less than 1080x720.</p>
+<p>Inside_background: The background image of the application launch animation. Image pixel size should be less than 1080x720.</p>
+<p>Use Splash Text: Startup copy when the app starts, check to enable it. After checking, the sub-items appear as shown below:</p>
+<img alt="_images/8.8.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.8.png">
+<p>Figure 8.8  Use Splash Text option</p>
+<p>Default Text: The default startup copy, if the system language of the device does not belong to any of the LanguageLocalization, the default startup copy is displayed.</p>
+<p>LanguageLocalization: Fill in the corresponding startup copy content for different languages. When the application starts, it will select which startup copy to display according to the system language of the device. If the current system language is not included in LanguageLocalization, the Default Text default startup copy content will be displayed.</p>
+<p>FontSize: Starts the copy text size.</p>
+<p>FontColor: Starts the copy text color.</p>
+<p>TextHeight: The distance from the start of the copy text to the bottom of the screen, in pixels.</p>
+<p>Use Carousel: After the marquee, check the marquee function, if the text of the startup copy is too long, it will scroll.</p>
+<p>Alignment: Starts the alignment of the copy text.</p>
+<p>After all configuration items are configured, click the OK button to save the configuration. The Log message prompts Congratulations to be saved later.</p>
+</div>
+</div>
+<div class="section" id="eye-tracking">
+<h2>8.6     Eye Tracking<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#eye-tracking" title="Permalink to this headline">¶</a></h2>
+<p>Pico Neo 2 Eye supports eye tracking feature. Eye Tracking can track the eye gaze position, optimize rendering performance with Foveated Rendering.You can open Eye Tracking in the Pvr_UnitySDK under Head:</p>
+<img alt="_images/8.9.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.9.png">
+<p>Figure 8.9  Eye Tracking</p>
+</div>
+<div class="section" id="foveated-rendering">
+<h2>8.7     Foveated Rendering<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#foveated-rendering" title="Permalink to this headline">¶</a></h2>
+<p>Foveated rendering can optimize the rendering of VR scenes by providing full resolution (lossless) for the center of the field of view and reducing the resolution of peripheral views (outside the focus area of eyes).</p>
+<p>Fixed foveation rendering (FFR) means the focus of the field of view is fixed in the center of viewport, and the definition will gradually decrease from the center to peripherals. Figure 8.10 shows how to enable and configure Foveated Rendering.</p>
+<p>Dynamic foveated rendering (DFR)  refers to that the focus of the field of view follows movement of eyesight. This feature only applies to Pico Neo2 Eye (supporting EyeTracking) and the configuration is as shown in Figure 8.6. Foveated rendering options can be found under Head object of Pvr_UnitySDK, just as illustrated in the following figure:</p>
+<p>When checking “Foveated Rendering”, a sub option will appear. Choose an option of a certain level and then foveated rendering is enabled. There is no need for any extra code.</p>
+<img alt="_images/8.10.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.10.png">
+<p>Figure 8.10 Foveated Rendering</p>
+<p>Foveation Level: Available in Low, Med, High and Top High pre-defined levels. Usually it is suggested that developers choose the pre-defined level while not adjust the rendering details with self-defined parameters (unless developers bear a deep understanding of foveated rendering).</p>
+<p>Apart from panel settings, Chapter 7.8 can help get/set the level of foveated rendering by calling foveated rendering related API and apply/self-define parameters of it.</p>
+<p>Foveated rendering demonstration：</p>
+<img alt="_images/8.11.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.11.png">
+<p>This demonstration is a screenshot of the bottom right at Low Level with 10 times zoom-in, and the image is a little blurred.</p>
+<img alt="_images/8.12.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.12.png">
+<p>This demonstration is a screenshot of the bottom right at Med Level with 10 times zoom-in, and the image is more blurred.</p>
+<img alt="_images/8.13.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.13.png">
+<p>This demonstration is a screenshot of the bottom right at High Level with 10 times zoom-in, and the image is much more blurred.</p>
+</div>
+<div class="section" id="vr-compositor-layers">
+<h2>8.8     VR Compositor Layers<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#vr-compositor-layers" title="Permalink to this headline">¶</a></h2>
+<p>In SDK rendering pipeline, contents in the scene is rendered by LeftEye/RightEye cameras thenrendered to the “Eye Buffer”, after that “Eye Buffer” will be sampled by the ATW thread and finally rendered onto the VR screen.</p>
+<p>The Compositor Layers (also known as “transmission layer”) provides a rendering method that is different from “rendering scene content directly into the eye buffer”: this method does not need to render the content to the “Eye Buffer”, but directly “transparently” the content to ATW thread for sampling and synthesis processing, thus avoiding a texture sampling process (rendering the content onto the “eye buffer”), which significantly improves the sharpness of the texture and video.</p>
+<p>VR Compositor Layers is more useful when rendering messages, text, videos which are used as “Focus of the Scene”. Meanwhile it can also be used for simple scenes and backgrounds. Currently Compositor Layers supports up to 15 layers (more than 15 layers will not be displayed). And in each scene there can be 1 Equirect Layer and 1 Cylinder Layer at most. Considering drawback to the performance, we recommend limit number of layers to 4 for each scene.</p>
+<p>Note that using Overlay should observe that nearby objects occlude distant ones, otherwise it may cause discomfort or slight shaking.</p>
+<p>It is easy to use “VR Compositor Layers”. Just create an empty GameObject in Hierarchy view of Unity Editor and then drag the Pvr_UnitySDKEyeOverlay.cs script (path: PicoMobileSDK/Pvr_UnitySDK/Render/) into the GameObject created.</p>
+<p>VR Compositor Layer property settings related to functions are as following:</p>
+<img alt="_images/8.14.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.14.png">
+<p>Figure 8.11  Settings</p>
+<p>Detailed descriptions:</p>
+<ul>
+<li><p class="first"><strong>Overlay Type</strong>: set overlay type, default option is Overlay</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Overlay: Texture will be displayed in front of “Eye Buffer”</p>
+</li>
+<li><p class="first">Underlay: Texture will be displayer behind “Eye Buffer”</p>
+<blockquote>
+<div><ul class="simple">
+<li>Note: Underlay relies on alpha channel of render target, when all objects are drawn behind the “Eye Buffer”, developers will need to hollow out an area to display the Underlay texture, A ready shader UnderlayHole.shader (PicoMobileSDKPvr_UnitySDKResourcesMaterials) can be used. Or developers can choose to write their own shaders.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Layer Index</strong>: set reference value used for composite sequence (lower value means layer will be earlier to be composited)</p>
+<blockquote>
+<div><ul class="simple">
+<li>[Camera](Overlay)2/1/0[EyeBuffer]0/1/2(Underlay)</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Overlay Shape</strong>: set overlay shape, default is Quad</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Quad: Quadrate texture, normally used for Text or Messages in Scene</p>
+</li>
+<li><p class="first">Cylinder: Curved cylinder texture, normally used for curved UI</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Note 1: Centre of Transform component will be the centre of the cylinder, Transform.scale will be used for size of cylinder, [size.z] is radius of cylinder, [size, y] is height of cylinder, [scale.z] is arc length of cylinder</p>
+</li>
+<li><p class="first">Note 2: When using Cylinder texture, camera needs to be placed inside inscribed sphere of the cylinder. Overlay won’t be displayed if camera is too close to the inscribed sphere surface.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Equirect: Sphere texture, normally used for 360/180 video players (not available for Underlay currently)</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>External Surfaces</strong>: Checking this option indicates the layer will obtain texture from Android Surface externally. (e.g. texture of Android Player)</p>
+<blockquote>
+<div><ul class="simple">
+<li>Note: When enabled, an Android Surface will be initialized and managed by SDK, meanwhile rendering it directly onto Compositor Layer (We suggest enable External Surface to gain shaper video images, i.e. using Android player plugin to send video texture to Compositor Layer bypassing Unity)</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Texture</strong>: Assign textures for left and right eye</p>
+<blockquote>
+<div><ul class="simple">
+<li>Left Texture: Texture to be displayed on left eye.</li>
+<li>Right Texture: Texture to be displayed on right eye.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Override Color Scale</strong>: Set the color scale and color offset of the layer</p>
+<blockquote>
+<div><ul class="simple">
+<li>Color Scale: the zoom scale of the color value of the layer</li>
+<li>Color Offset: the offset of the color value of the layer</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<div class="section" id="overlay-underlay-examples">
+<h3>8.8.1   Overlay &amp; Underlay examples<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#overlay-underlay-examples" title="Permalink to this headline">¶</a></h3>
+<p>In order to facilitate developers to quickly experience the 2D texture pass-through function, the SDK provides a 2DOverlay and a 2DUnderlay example, developers can directly package and install on the device to experience the effect (Note:Editor can not experience this function).</p>
+<p>If the developer applies the feature to their project, follow these steps:</p>
+<ul class="simple">
+<li>Step 1: Open Unity to create an empty scene, find Pvr_UnitySDK.prefab in the</li>
+</ul>
+<p>PicoMobileSDK/Pvr_UnitySDK/Prefabs/ folder and drag it into the empty scene, and delete the Main Camera object.</p>
+<img alt="_images/8.15.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.15.png">
+<p>Figure 8.12 Drag into prefab</p>
+<ul class="simple">
+<li>Step 2: Create a Quad in the scene, name it OverlayTransform, then adjust the position of the Quad so that it is in the visible position of the Camera. After determining the display position, uncheck the Mesh Render and Mesh Collider components on the Inspector view panel.</li>
+</ul>
+<img alt="_images/8.16.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.16.png">
+<p>Figure 8.13 Create a Quad</p>
+<img alt="_images/8.17.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.17.png">
+<p>Figure 8.14 Cancel Mesh components</p>
+<p>Tips：The Transmit Layer will use the Quad’s Transform information: position, rotation, scale.</p>
+<ul class="simple">
+<li>Step 3: Bind the Pvr_UnitySDKEyeOverlay.cs script to the Quad created in the previous step and adjust its property parameters on the inspector.</li>
+</ul>
+<img alt="_images/8.18.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.18.png">
+<p>Figure 8.15 Bind script</p>
+<ul class="simple">
+<li>Overlay Type: Set overlay layer type as Overlay</li>
+<li>Layer Index: Set reference the rendering priority (Smaller value means higher priority for rendering);</li>
+<li>Overlay Shape: Select the overlay shape as Quad;</li>
+<li>Textures: Specify the 2D texture to be transparently transmitted (Tips: the left and right eyes specify the same texture, otherwise it will cause the left and right eye content to be different, causing dizziness);</li>
+<li>Color Scale and Offset: Adjust the parameters of chromatic aberration and color shift in the pass-through layer.</li>
+</ul>
+<p>Tips:Developers who need to dynamically modify passthrough 2D textures can call the SetTexture (Texture Texture) interface in the Pvr_UnitySDKEyeOverlay. cs script.</p>
+<ul class="simple">
+<li>Step 4: The last step, package and install to the device to experience the effect.</li>
+</ul>
+<img alt="_images/8.19.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.19.png">
+<p>Figure 8.16 running result</p>
+</div>
+<div class="section" id="panorama-texture">
+<h3>8.8.2   360 panorama texture<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#panorama-texture" title="Permalink to this headline">¶</a></h3>
+<p>Usually we need three steps to achieve “360 panoramic view”:</p>
+<ol class="arabic simple">
+<li>Create a sphere model in the scene;</li>
+<li>Create a “360 Panorama Texture” material and assign it to the sphere model, then modify the shader to remove the front rendering (Cull Front);</li>
+<li>Place the Camera in the center of the sphere;</li>
+</ol>
+<p>The “transmission layer” function requires only two step:</p>
+<ol class="arabic simple">
+<li>Create an empty object in the scene and bind the Pvr_UnitySDKEyeOverlay.cs script;</li>
+<li>Set the Overlay shape as Equirect type and specify a “360 Panorama Texture”</li>
+</ol>
+<p>In order to facilitate the developer to quickly familiarize the 360 panoramic texture transparent transmission function, the SDK provides a 360Overlay example, developers can directly package and install on the device to experience the effect (Note:Editor can not experience this function).</p>
+<p>If the developer applies the feature to their project, follow these steps:</p>
+<ul class="simple">
+<li>Step 1: The steps are the same as the Overlay &amp; Underlay examples;</li>
+<li>Step 2: Create an empty object in the scene, name it 360OverlayTransform, and bind Pvr_UnitySDKEyeOverlay.cs script;</li>
+</ul>
+<img alt="_images/8.20.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.20.png">
+<p>Figure 8.17 Create an empty object</p>
+<ul class="simple">
+<li>Step 3: Set property parameters on the script inspector;</li>
+</ul>
+<img alt="_images/8.21.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.21.png">
+<p>Figure 8.18 Set property parameters</p>
+<ul class="simple">
+<li>Overlay Type: Set overlay layer type as Overlay</li>
+<li>Layer Index: Set reference the rendering priority (Smaller value means higher priority for rendering)</li>
+<li>Overlay Shape: Set overlay shape as Equirect;</li>
+<li>Textures: Specify the same 360 panorama texture for the left and right eyes;</li>
+</ul>
+<p>Tips：For Equirect type, we recommend disable Pvr_UnitySDKEye.cs script component of LeftEye and RightEye Camera to reduce rendering resources.</p>
+<ul class="simple">
+<li>Step 4: The last step, package and install on the device to experience the effect</li>
+</ul>
+<img alt="_images/8.22.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.22.png">
+<p>Figure 8.19 running result</p>
+</div>
+<div class="section" id="head-locked-world-locked-mode">
+<h3>8.8.3   Head-Locked &amp; World-Locked Mode<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#head-locked-world-locked-mode" title="Permalink to this headline">¶</a></h3>
+<p>By default, the “transmission layer” is World-Locked mode. If you want to implement Head-Locked mode, you only need to create an empty Transform under the Head node and bind the Pvr_UnitySDKEyeOverlay.cs script.</p>
+<img alt="_images/8.23.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.23.png">
+<p>Figure 8.20 Head-Locked Mode</p>
+</div>
+</div>
+<div class="section" id="monocular-camera">
+<h2>8.9     Monocular camera<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#monocular-camera" title="Permalink to this headline">¶</a></h2>
+<p>Binocular camera: Provides a separate image for each eye from different angles, and the object will be closer to real life.</p>
+<p>Monocular camera: Use a single image to render to both eyes, which effectively reduces rendering.</p>
+<p>The way to enable a monocular camera is as follows: Check Use Monoscopic to enable the monocular camera, otherwise use a binocular camera.</p>
+<img alt="_images/8.24.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.24.png">
+<p>Figure 8.21 monocular camera</p>
+</div>
+<div class="section" id="user-entitlement-check">
+<h2>8.10    User entitlement check<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#user-entitlement-check" title="Permalink to this headline">¶</a></h2>
+<p>Developers are allowed to use this function during development and debugging phases as well as final release to the Pico Store.</p>
+<p>Entry: go to Menu/Pvr_UnitySDK/ Platform Settings, and enable “User Entitlement Check”.</p>
+<p>User entitlement check does not require connection to the Internet. The SDK provides a return code that is the check result, but no extra processing is done. Developers need to deal with the failed situations. For example, if you receive “not successful”, show the user the failure reason and exit the app, or enter Demo mode, and prompt the user to go to Pico Store to buy the full version.</p>
+<div class="section" id="entitlement-check-simulation-during-development-and-debugging-phases">
+<h3>8.10.1 Entitlement check simulation during development and debugging phases<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#entitlement-check-simulation-during-development-and-debugging-phases" title="Permalink to this headline">¶</a></h3>
+<p>In the development stage, developers can simulate the user entitlement check process by filling in the development device SN code in the configuration interface, and the  processing logic after the check is failed to test the effect.</p>
+<p>In the menu, click Pvr_UnitySDK then Platform Settings to open up Platform Settings menu as shown in the picture below:</p>
+<img alt="_images/8.25.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.25.png">
+<p>Figure 8.22 Platform Settings Option</p>
+<p>Entitlement Check Simulation is disabled by default. After checking this option, developers can type in allowed device number and corresponding SN code. It provides entitlement check validation function, which is used for simulating if user entitlement check is working correctly.</p>
+<p>Methods to get SN code of the device:</p>
+<p>1.Enter Settings – About – Serial Number</p>
+<p>2.Use adb command “adb devices” to get device SN code,</p>
+<img alt="_images/8.26.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.26.png">
+<p>Figure 8.23 Platform Settings Inspector</p>
+<p>Related API are listed in Chapter 7.9</p>
+</div>
+<div class="section" id="user-entitlement-check-after-official-release">
+<h3>8.10.2 User entitlement check after official release<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#user-entitlement-check-after-official-release" title="Permalink to this headline">¶</a></h3>
+<p>The figure below shows that after User Entitlement Check is checked, inputting the correct App ID can enable this function. The App ID is the unique ID assigned to an app by the Pico Developer Platform. It can be applied and viewed at <a class="reference external" href="https://developer.pico-interactive.com/developer/overview">https://developer.pico-interactive.com/developer/overview</a>.</p>
+<img alt="_images/8.29.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.29.png">
+<p>Figure 8.24 Platform Settings</p>
+<p>The Pvr_UnitySDKManager.EntitlementCheckResultEvent event can be monitored with code and the corresponding return values can be dealt with. For detailed information, please refer to the sample scenario provided by SDK at AssetsPicoMobileSDKPvr_UnitySDKScenesExamplesUserEntitlementCheck.unity.</p>
+<p>The list of return values are as follows.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%">
+<col width="71%">
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Return value</th>
+<th class="head">Implication</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>Success.</td>
+</tr>
+<tr class="row-odd"><td>-2</td>
+<td>Service does not exist.</td>
+</tr>
+<tr class="row-even"><td>-3</td>
+<td>Service binding failed.</td>
+</tr>
+<tr class="row-odd"><td>-4</td>
+<td>Catching exception code.</td>
+</tr>
+<tr class="row-even"><td>-5</td>
+<td>Timeout.</td>
+</tr>
+<tr class="row-odd"><td>10</td>
+<td>The package name is missing.</td>
+</tr>
+<tr class="row-even"><td>11</td>
+<td>The APPID is missing.</td>
+</tr>
+<tr class="row-odd"><td>13</td>
+<td>The package name and APPID do not match.</td>
+</tr>
+<tr class="row-even"><td>20</td>
+<td>The user has not logged in.</td>
+</tr>
+<tr class="row-odd"><td>21</td>
+<td>The user has not purchased.</td>
+</tr>
+<tr class="row-even"><td>31</td>
+<td>The application was not found.</td>
+</tr>
+<tr class="row-odd"><td>32</td>
+<td>The purchasing SN number does not match with the device SN number.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes</strong>: Development devices with SN code filled in the entitlement check simulation will pass the user entitlement check by default after the app is uploaded to the Pico Store, and no formal user entitlement check will be carried out. If  developers need to carry out formal user entitlement check on the development device after the app is on the Pico Store, please close the “Entitlement Check Simulation” when compiling the formal version.</p>
+</div>
+</div>
+<div class="section" id="tracking-origin">
+<h2>8.11    Tracking Origin<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#tracking-origin" title="Permalink to this headline">¶</a></h2>
+<p>SDK allows setting the Tracking Origin. The default value is EyeLevel. When set to FloorLevel, tracking origin will be calculated by the height above the ground detected by headset. (Only applicable on supported devices)</p>
+<p>EyeLevel is recommended for sitting usage while FloorLevel is better for standing usage.</p>
+<p>StageLevel is based on FloorLevel and calibration does not reset the positive direction of the scene.</p>
+<img alt="_images/8.27_2.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.27_2.png">
+<p>Figure 8.25 Tracking Origin Options</p>
+</div>
+<div class="section" id="singlepass">
+<h2>8.12    SinglePass<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#singlepass" title="Permalink to this headline">¶</a></h2>
+<p>SinglePass is based on native Unity SinglePass feature. It uses one camera to fulfill stereo rendering, reducing half of Draw Call and Occlusion Culling. Using this feature can increase frame rate dramatically in complex scenes. But SinglePass don’t support post processing.</p>
+<p>Check “Use SinglePass” to enable SinglePass mode. Uncheck “Use SinglePass” to disable SinglePass mode.</p>
+<img alt="_images/8.28.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.28.png">
+<p>Figure 8.26 Enable SinglePass</p>
+</div>
+<div class="section" id="quick-compilation-tool">
+<h2>8.13    Quick compilation tool<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#quick-compilation-tool" title="Permalink to this headline">¶</a></h2>
+<p>The tool leverages gradle cache to speed up the build process. It only updates the increment of compilation during the compilation process by using gradle cache, thus reducing the time for compilation and deployment by 10% to 50% compared to that of the Unity’s compilation file, and the final.apk file is exactly the same as the Unity’s compilation file. However, to release the final.apk, you must use Unity’s compilation function.</p>
+<p>To use this function, please follow these steps:
+1.Open Build Settings and select scenes that you want to package</p>
+<p>2.Click Pvr_UnitySDK-&gt;Build Tool-&gt;Build And Run in the menu bar</p>
+<img alt="_images/8.271.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.271.png">
+<p>Figure 8.27 Quick compilation</p>
+</div>
+<div class="section" id="scene-quick-view-tool">
+<h2>8.14    Scene Quick View Tool<a class="headerlink" href="https://sdk.picovr.com/docs/sdk/en/chapter_eight.html#scene-quick-view-tool" title="Permalink to this headline">¶</a></h2>
+<p>This tool decompose project into multiple asset bundles and upload to Pico devices. When developer made changes to the project, using this tool will update only essential changes to Pico devices when building new version.</p>
+<img alt="_images/8.272.png" src="./8 Advanced features — PicoVR Unity SDK 0.1 documentation_files/8.272.png">
+<p>Figure 8.28 Scene Quick Preview</p>
+<p>To use Scene Quick Preview, please follow the steps below:</p>
+<p>To use Scene Quick View, please follow steps:</p>
+<p>From Menu Bar select PXR_SDK -&gt; Build Tool -&gt; Scene Quick View to open Quick View Panel.</p>
+<p>Click “Select Scenes” button and choose the scenes for Quick View Tool to build.</p>
+<p>Click “Build Scenes(s)” button and start compiling.</p>
+<p>Additionally, you may also use following：
+“Force Restart[?]”: When this option is enabled, the application restarts on each re-compiling.
+“Restart APP”: Restart the application.
+“Uninstall APP”: Uninstall the application.
+“Delete Cache Bundles”: Delete cache files generated during compilation</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="https://sdk.picovr.com/docs/sdk/en/chapter_nine.html" class="btn btn-neutral float-right" title="9 Payment system" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="https://sdk.picovr.com/docs/sdk/en/chapter_seven.html" class="btn btn-neutral float-left" title="7 API Interface Function List" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <p>
+        © Copyright 2015-2021 Pico Interactive, Inc. All Rights Reserved..
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org/">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+
+</body></html>
