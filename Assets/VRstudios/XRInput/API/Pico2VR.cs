@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 #if !XRINPUT_DISABLE_PICO2
@@ -9,45 +7,51 @@ using Pvr_UnitySDKAPI;
 namespace VRstudios.API
 {
 	#if !XRINPUT_DISABLE_PICO2
-	public class Pico2VR : XRInputAPI
+	public sealed class Pico2VR : XRInputAPI
 	{
 		public override bool GatherInput(XRControllerState[] state_controllers, out int controllerCount, out bool leftSet, out int leftSetIndex, out bool rightSet, out int rightSetIndex, out SideToSet sideToSet)
 		{
 			// defaults
             GatherInputDefaults(out controllerCount, out leftSet, out leftSetIndex, out rightSet, out rightSetIndex, out sideToSet);
 
-			// validate required objects
-			//if (Pvr_ControllerManager.controllerlink == null) return false;
-
-			// gather input
-			//var controller = Pvr_ControllerManager.controllerlink.Controller0;
-			//if (controller != null)
+			if (Pvr_UnitySDKManager.SDK != null)
 			{
-				leftSet = true;
-                leftSetIndex = controllerCount;
-				GatherInputForController(0, ref state_controllers[controllerCount]);
-				controllerCount++;
+				// force hand index
+				const int leftHandIndex = 0;
+				const int rightHandIndex = 1;
+				Controller.UPvr_SetHandNess(Pvr_Controller.UserHandNess.Left);
+				Controller.UPvr_SetMainHandNess(leftHandIndex);
+
+				// get hand index
+				//int mainControllerIndex = Controller.UPvr_GetMainHandNess();
+				//var mainControlerSide = Controller.UPvr_GetHandNess();
+				//int leftHandIndex = mainControlerSide == Pvr_Controller.UserHandNess.Left ? mainControllerIndex : (1 - mainControllerIndex);
+				//int rightHandIndex = 1 - leftHandIndex;
+
+				// gather input
+				if (Controller.UPvr_GetControllerState(leftHandIndex) == ControllerState.Connected)
+				{
+					leftSet = true;
+					leftSetIndex = controllerCount;
+					GatherInputForController(leftHandIndex, XRControllerSide.Left, ref state_controllers[controllerCount]);
+					controllerCount++;
+				}
+
+				if (Controller.UPvr_GetControllerState(rightHandIndex) == ControllerState.Connected)
+				{
+					rightSet = true;
+					rightSetIndex = controllerCount;
+					GatherInputForController(rightHandIndex, XRControllerSide.Right, ref state_controllers[controllerCount]);
+					controllerCount++;
+				}
+
+				// hmd velocity (doesn't seem to be supported in API)
+				hmdLinearVelocityValid = false;
+				hmdLinearVelocity = Vector3.zero;
+
+				hmdAngularVelocityValid = false;
+				hmdAngularVelocity = Vector3.zero;
 			}
-
-			//controller = Pvr_ControllerManager.controllerlink.Controller1;
-			//if (controller != null)
-			{
-				rightSet = true;
-                rightSetIndex = controllerCount;
-				GatherInputForController(1, ref state_controllers[controllerCount]);
-				controllerCount++;
-			}
-
-			// TODO: make simple tracking driver
-			//Controller.UPvr_GetControllerPOS // Get controller pos
-			//Controller.UPvr_GetControllerQUA // get controller rot
-
-			// hmd velocity
-            /*hmdLinearVelocityValid = true;
-            hmdLinearVelocity = OVRPlugin.GetNodeVelocity(OVRPlugin.Node.Head, OVRPlugin.Step.Render).FromFlippedZVector3f();
-
-            hmdAngularVelocityValid = true;
-            hmdAngularVelocity = OVRPlugin.GetNodeAngularVelocity(OVRPlugin.Node.Head, OVRPlugin.Step.Render).FromFlippedZVector3f();*/
 
 			// finish
             GatherInputFinish(state_controllers, controllerCount, ref leftSet, ref leftSetIndex, ref rightSet, ref rightSetIndex, ref sideToSet);
@@ -55,10 +59,10 @@ namespace VRstudios.API
 			return true;
 		}
 
-		private void GatherInputForController(int controllerIndex, ref XRControllerState state_controller)
+		private void GatherInputForController(int controllerIndex, XRControllerSide side, ref XRControllerState state_controller)
 		{
-			var side = controllerIndex == 0 ? XRControllerSide.Left : XRControllerSide.Right;
 			state_controller.side = side;
+			state_controller.connected = true;
 			
 			// common buttons
             state_controller.button1.Update(Controller.UPvr_GetKey(controllerIndex, side == XRControllerSide.Right ? Pvr_KeyCode.A : Pvr_KeyCode.X));
@@ -83,11 +87,13 @@ namespace VRstudios.API
             state_controller.touchJoystick.Update(Controller.UPvr_IsTouching(controllerIndex));
 
 			// velocity
-            /*state_controller.linearVelocityValid = true;
-            state_controller.linearVelocity = OVRInput.GetLocalControllerVelocity(controller);
+            state_controller.linearVelocityValid = true;
+            state_controller.linearVelocity = Controller.UPvr_GetVelocity(controllerIndex) / 1000f;
+			state_controller.linearVelocity.z = -state_controller.linearVelocity.z;
 
             state_controller.angularVelocityValid = true;
-            state_controller.angularVelocity = -OVRInput.GetLocalControllerAngularVelocity(controller);*/
+			state_controller.angularVelocity = -Controller.UPvr_GetAngularVelocity(controllerIndex);
+			state_controller.angularVelocity.z = -state_controller.angularVelocity.z;
 		}
 
 		public override bool SetRumble(XRControllerRumbleSide controller, float strength, float duration)

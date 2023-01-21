@@ -56,10 +56,16 @@ This API universalizes different vendor XR input oddities into a single easy-to-
 * Use legacy 'PicoVR Unity SDK' plugin NOT 'Unity Integration SDK' plugin
 * Extract <a href="https://www.picoxr.com/us/sdk.html">'PicoVR_Unity_SDK.zip'</a> in a folder
 * Import "64bit" version of the unitypackage
+* In Pvr_SDKSetting disable "EditorApplication.update += Update;" (this can cause issues)
+* NOTE: Enable/Disable Pico2 so it doesn't conflict with other devices:
+	* Change Plugins/Android/AndroidManifest.xml to PICO2_AndroidManifest.xml
+	* Disable Plugins/Android/Pico_PaymentSDK_Android_V1.0.24.jar
+	* Disable Plugins/Android/libs/pvrSDK-release.aar
+* NOTE: Legacy docs: https://sdk.picovr.com/docs/sdk/en/chapter_one.html
 
 ## 'Pico 3 & 4' setup
 * Use 'Unity Integration SDK' plugin NOT legacy 'PicoVR Unity SDK' plugin
-* Extract <a href="https://developer.pico-interactive.com/sdk/index?id=8">'PICO Unity Integration SDK.zip'</a> in a folder
+* Extract <a href="https://developer-global.pico-interactive.com/sdk?deviceId=1&platformId=1&itemId=12">'PICO Unity Integration SDK.zip'</a> in a folder
 * Move extracted folder to "\<Your-Proj\>/Packages"
 * You should now see 'PicoXR' in Unity's standard XR managment area
 
