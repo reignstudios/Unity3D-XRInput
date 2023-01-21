@@ -3,7 +3,7 @@
     "rootNamespace": "",
     "references": [
         "Facebook.Wit.Conduit",
-        "LitJson"
+        "LitJson_Oculus"
     ],
     "includePlatforms": [
         "Editor"
