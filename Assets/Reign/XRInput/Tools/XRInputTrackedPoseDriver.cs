@@ -3,7 +3,7 @@ using UnityEngine.SpatialTracking;
 using Oculus.Interaction.Input;
 using UnityEngine.XR;
 
-namespace VRstudios.Tools
+namespace Reign.XR.Tools
 {
     public class XRInputTrackedPoseDriver : TrackedPoseDriver
     {

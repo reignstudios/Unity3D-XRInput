@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
-using VRstudios.API;
+using Reign.XR.API;
 
-namespace VRstudios
+namespace Reign.XR
 {
     public enum XRInputLoaderType
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.XR;
 using Unity.XR.Oculus;
 
-namespace VRstudios.API
+namespace Reign.XR.API
 {
     public sealed class UnityEngine_XR : XRInputAPI
     {

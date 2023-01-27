@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace VRstudios
+namespace Reign.XR.Example
 {
     public class TestInput : MonoBehaviour
     {

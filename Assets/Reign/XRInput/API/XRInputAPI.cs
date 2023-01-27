@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace VRstudios.API
+namespace Reign.XR.API
 {
     public enum SideToSet
     {

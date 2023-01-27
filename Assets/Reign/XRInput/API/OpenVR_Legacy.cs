@@ -8,7 +8,7 @@ using System.Text;
 using Valve.VR;
 #endif
 
-namespace VRstudios.API
+namespace Reign.XR.API
 {
 #if UNITY_STANDALONE && !XRINPUT_DISABLE_STEAMVR
     public sealed class OpenVR_Legacy : XRInputAPI

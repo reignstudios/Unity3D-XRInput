@@ -4,7 +4,7 @@ using UnityEngine;
 using Pvr_UnitySDKAPI;
 #endif
 
-namespace VRstudios.API
+namespace Reign.XR.API
 {
 	#if !XRINPUT_DISABLE_PICO2
 	public sealed class Pico2VR : XRInputAPI

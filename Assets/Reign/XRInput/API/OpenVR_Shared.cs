@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace VRstudios.API
+namespace Reign.XR.API
 {
 	public static class OpenVR_Shared
     {

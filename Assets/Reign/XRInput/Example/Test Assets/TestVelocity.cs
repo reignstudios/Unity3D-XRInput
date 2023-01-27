@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace VRstudios
+namespace Reign.XR.Example
 {
 	public class TestVelocity : MonoBehaviour
 	{

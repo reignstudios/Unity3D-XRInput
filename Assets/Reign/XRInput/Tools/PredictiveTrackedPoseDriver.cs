@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SpatialTracking;
 
-namespace VRstudios.Tools
+namespace Reign.XR.Tools
 {
 	public enum PredictionMode
 	{

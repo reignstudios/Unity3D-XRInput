@@ -4,7 +4,7 @@ using UnityEngine;
 using Oculus.Interaction.Input;
 using System.Runtime.InteropServices;
 
-namespace VRstudios.API
+namespace Reign.XR.API
 {
     public sealed class OculusXR : XRInputAPI
     {
