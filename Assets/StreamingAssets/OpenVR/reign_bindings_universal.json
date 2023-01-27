@@ -1,0 +1,368 @@
+{
+    "bindings": {
+        "/actions/reign": {
+            "poses": [
+                {
+                    "output": "/actions/reign/in/hand_left",
+                    "path": "/user/hand/left/pose/raw"
+                },
+                {
+                    "output": "/actions/reign/in/hand_right",
+                    "path": "/user/hand/right/pose/raw"
+                }
+            ],
+            "haptics": [
+                {
+                    "output": "/actions/reign/out/haptic_right",
+                    "path": "/user/hand/right/output/haptic"
+                },
+                {
+                    "output": "/actions/reign/out/haptic_left",
+                    "path": "/user/hand/left/output/haptic"
+                }
+            ],
+            "sources": [
+                // bumpers
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/bumperbutton"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/bumpertouch"
+                        }
+                    },
+                    "mode": "button",
+                    "path": "/user/hand/left/input/bumper"
+                },
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/bumperbutton"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/bumpertouch"
+                        }
+                    },
+                    "mode": "button",
+                    "path": "/user/hand/right/input/bumper"
+                },
+
+                // trigger button
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/triggerbutton"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/triggertouch"
+                        }
+                    },
+                    "mode": "trigger",
+                    "path": "/user/hand/right/input/trigger"
+                },
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/triggerbutton"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/triggertouch"
+                        }
+                    },
+                    "mode": "trigger",
+                    "path": "/user/hand/left/input/trigger"
+                },
+
+                // menu
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/menubutton"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/menutouch"
+                        }
+                    },
+                    "mode": "button",
+                    "path": "/user/hand/left/input/application_menu"
+                },
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/menubutton"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/menutouch"
+                        }
+                    },
+                    "mode": "button",
+                    "path": "/user/hand/right/input/application_menu"
+                },
+
+                // grip button
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/gripbutton"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/griptouch"
+                        }
+                    },
+                    "mode": "button",
+                    "path": "/user/hand/right/input/grip"
+                },
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/gripbutton"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/griptouch"
+                        }
+                    },
+                    "mode": "button",
+                    "path": "/user/hand/left/input/grip"
+                },
+
+                // button 1 (path 1)
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/button1"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/touch1"
+                        }
+                    },
+                    "mode": "button",
+                    "path": "/user/hand/left/input/a"
+                },
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/button1"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/touch1"
+                        }
+                    },
+                    "mode": "button",
+                    "path": "/user/hand/right/input/a"
+                },
+
+                // button 2 (path 1)
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/button2"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/touch2"
+                        }
+                    },
+                    "mode": "button",
+                    "path": "/user/hand/left/input/b"
+                },
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/button2"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/touch2"
+                        }
+                    },
+                    "mode": "button",
+                    "path": "/user/hand/right/input/b"
+                },
+
+                // button 1 (path 2)
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/button1"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/touch1"
+                        }
+                    },
+                    "mode": "button",
+                    "path": "/user/hand/left/input/x"
+                },
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/button1"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/touch1"
+                        }
+                    },
+                    "mode": "button",
+                    "path": "/user/hand/right/input/x"
+                },
+
+                // button 2 (path 2)
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/button2"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/touch2"
+                        }
+                    },
+                    "mode": "button",
+                    "path": "/user/hand/left/input/y"
+                },
+                {
+                    "inputs": {
+                        "click": {
+                            "output": "/actions/reign/in/button2"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/touch2"
+                        }
+                    },
+                    "mode": "button",
+                    "path": "/user/hand/right/input/y"
+                },
+
+                // grip
+                {
+                    "inputs": {
+                        "pull": {
+                            "output": "/actions/reign/in/grip"
+                        }
+                    },
+                    "mode": "trigger",
+                    "path": "/user/hand/right/input/grip"
+                },
+                {
+                    "inputs": {
+                        "pull": {
+                            "output": "/actions/reign/in/grip"
+                        }
+                    },
+                    "mode": "trigger",
+                    "path": "/user/hand/left/input/grip"
+                },
+
+                // trigger
+                {
+                    "inputs": {
+                        "pull": {
+                            "output": "/actions/reign/in/trigger"
+                        }
+                    },
+                    "mode": "trigger",
+                    "path": "/user/hand/right/input/trigger"
+                },
+                {
+                    "inputs": {
+                        "pull": {
+                            "output": "/actions/reign/in/trigger"
+                        }
+                    },
+                    "mode": "trigger",
+                    "path": "/user/hand/left/input/trigger"
+                },
+
+                // touchpad 1
+                {
+                    "inputs": {
+                        "position": {
+                            "output": "/actions/reign/in/touchpad1"
+                        },
+                        "click": {
+                            "output": "/actions/reign/in/touchpad1_button"
+                        }
+                    },
+                    "mode": "trackpad",
+                    "path": "/user/hand/right/input/trackpad"
+                },
+                {
+                    "inputs": {
+                        "position": {
+                            "output": "/actions/reign/in/touchpad1"
+                        },
+                        "click": {
+                            "output": "/actions/reign/in/touchpad1_button"
+                        }
+                    },
+                    "mode": "trackpad",
+                    "path": "/user/hand/left/input/trackpad"
+                },
+
+                // joystick 1 (path 1)
+                {
+                    "inputs": {
+                        "position": {
+                            "output": "/actions/reign/in/joystick1"
+                        },
+                        "click": {
+                            "output": "/actions/reign/in/joystick1_button"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/joystick1_touch"
+                        }
+                    },
+                    "mode": "joystick",
+                    "path": "/user/hand/right/input/thumbstick"
+                },
+                {
+                    "inputs": {
+                        "position": {
+                            "output": "/actions/reign/in/joystick1"
+                        },
+                        "click": {
+                            "output": "/actions/reign/in/joystick1_button"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/joystick1_touch"
+                        }
+                    },
+                    "mode": "joystick",
+                    "path": "/user/hand/left/input/thumbstick"
+                },
+
+                // joystick 1 (path 2)
+                {
+                    "inputs": {
+                        "position": {
+                            "output": "/actions/reign/in/joystick1"
+                        },
+                        "click": {
+                            "output": "/actions/reign/in/joystick1_button"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/joystick1_touch"
+                        }
+                    },
+                    "mode": "joystick",
+                    "path": "/user/hand/right/input/joystick"
+                },
+                {
+                    "inputs": {
+                        "position": {
+                            "output": "/actions/reign/in/joystick1"
+                        },
+                        "click": {
+                            "output": "/actions/reign/in/joystick1_button"
+                        },
+                        "touch": {
+                            "output": "/actions/reign/in/joystick1_touch"
+                        }
+                    },
+                    "mode": "joystick",
+                    "path": "/user/hand/left/input/joystick"
+                }
+            ]
+        }
+    },
+    "controller_type": "generic",
+    "description": "Reign bindings for OpenVR generic controllers",
+    "name": "Reign bindings for generic controllers"
+}

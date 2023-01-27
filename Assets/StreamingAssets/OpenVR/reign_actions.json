@@ -1,0 +1,161 @@
+{
+      "default_bindings": [
+        {
+            "controller_type": "generic",
+            "binding_url": "reign_bindings_universal.json"
+        }
+      ],
+  "actions": [
+    // touch
+    {
+        "name": "/actions/reign/in/bumpertouch",
+        "type": "boolean"
+    },
+    {
+        "name": "/actions/reign/in/triggertouch",
+        "type": "boolean"
+    },
+    {
+        "name": "/actions/reign/in/menutouch",
+        "type": "boolean"
+    },
+    {
+        "name": "/actions/reign/in/griptouch",
+        "type": "boolean"
+    },
+    {
+        "name": "/actions/reign/in/touch1",
+        "type": "boolean"
+    },
+    {
+        "name": "/actions/reign/in/touch2",
+        "type": "boolean"
+    },
+    {
+        "name": "/actions/reign/in/joystick1_touch",
+        "type": "boolean"
+    },
+
+    // buttons
+    {
+        "name": "/actions/reign/in/bumperbutton",
+        "type": "boolean"
+    },
+    {
+        "name": "/actions/reign/in/triggerbutton",
+        "type": "boolean"
+    },
+    {
+        "name": "/actions/reign/in/menubutton",
+        "type": "boolean"
+    },
+    {
+        "name": "/actions/reign/in/gripbutton",
+        "type": "boolean"
+    },
+    {
+        "name": "/actions/reign/in/button1",
+        "type": "boolean"
+    },
+    {
+        "name": "/actions/reign/in/button2",
+        "type": "boolean"
+    },
+    {
+        "name": "/actions/reign/in/touchpad1_button",
+        "type": "boolean"
+    },
+    {
+        "name": "/actions/reign/in/joystick1_button",
+        "type": "boolean"
+    },
+
+    // grip
+    {
+        "name": "/actions/reign/in/grip",
+        "type": "vector1"
+    },
+
+    // triggers
+    {
+        "name": "/actions/reign/in/trigger",
+        "type": "vector1"
+    },
+
+    // touchpads
+    {
+        "name": "/actions/reign/in/touchpad1",
+        "type": "vector2"
+    },
+
+    // joysticks
+    {
+        "name": "/actions/reign/in/joystick1",
+        "type": "vector2"
+    },
+
+    // tracking
+    {
+        "name": "/actions/reign/in/Hand_Right",
+        "type": "pose"
+    },
+    {
+        "name": "/actions/reign/in/Hand_Left",
+        "type": "pose"
+    },
+
+    // haptics
+    {
+        "name": "/actions/reign/out/haptic_left",
+        "type": "vibration"
+    },
+    {
+        "name": "/actions/reign/out/haptic_right",
+        "type": "vibration"
+    }
+  ],
+    "localization" : [
+        {
+            "language_tag": "en_US",
+
+            // touch
+            "/actions/reign/in/bumpertouch": "Bumper Touch",
+            "/actions/reign/in/triggertouch": "Trigger Touch",
+            "/actions/reign/in/menutouch": "Menu Touch",
+            "/actions/reign/in/griptouch": "Grip Touch",
+            "/actions/reign/in/touch1": "Touch 1",
+            "/actions/reign/in/touch2": "Touch 2",
+            "/actions/reign/in/joystick1_touch": "Joystick Touch",
+
+            // buttons
+            "/actions/reign/in/bumperbutton": "Bumper Button",
+            "/actions/reign/in/triggerbutton": "Trigger Button",
+            "/actions/reign/in/menubutton": "Menu Button",
+            "/actions/reign/in/gripbutton": "Grip Button",
+            "/actions/reign/in/button1": "Button 1",
+            "/actions/reign/in/button2": "Button 2",
+            "/actions/reign/in/touchpad1_button": "Touchpad Button",
+            "/actions/reign/in/joystick1_button": "Joystick Button",
+
+            // grip
+            "/actions/reign/in/grip": "Grip",
+
+            // triggers
+            "/actions/reign/in/trigger": "Trigger",
+
+            // touchpads
+            "/actions/reign/in/touchpad1": "Touchpad",
+
+            // joysticks
+            "/actions/reign/in/joystick1": "Joystick",
+
+            // tracking
+            "/actions/reign/in/hand_right": "Right Hand Pose",
+            "/actions/reign/in/hand_left": "Left Hand Pose",
+
+            // haptics
+            "/actions/reign/out/haptic_left": "Left Haptic Feedback",
+            "/actions/reign/out/haptic_right": "Right Haptic Feedback"
+        }
+    ]
+}
