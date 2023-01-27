@@ -18,7 +18,7 @@ This API universalizes different vendor XR input oddities into a single easy-to-
     * Create a new folder: "Assets/StreamingAssets/SteamVR/Original"
     * Move all .json files into "Original" folder
     * Copy all .json files from "Assets/StreamingAssets/OpenVR/" to "Assets/StreamingAssets/SteamVR/"
-    * In the "SteamVR" folder, rename "vrstudios_actions.json" to "actions.json"
+    * In the "SteamVR" folder, rename "reign_actions.json" to "actions.json"
     * Make sure <b>"Steam Plugin In Use"</b> is checked on in the XRInput script in your scene
 * OpenXR with Cosmos controllers (NOTE: bumpers don't work in OpenXR mode)
     * Download interaction profile <a href="https://forum.vive.com/topic/9141-vive-cosmos-controller-openxr-feature-for-unity/#comments">here</a>
