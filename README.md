@@ -3,7 +3,7 @@ This API universalizes different vendor XR input oddities into a single easy-to-
 
 # How to setup
 * <b>NOTE: If you have "Initialize XR on Startup" off & manually create a loader instance, you may need to pass that instance to "XRInput.loaderOverride".</b>
-* Drop 'Unity3D-XRInput/Assets/VRstudios/XRInput' prefab into scene & thats it.
+* Drop 'Unity3D-XRInput/Assets/Reign/XRInput/XRInput' prefab into scene & thats it.
 * Select Input type and ready to go!
 
 ## 'Oculus' setup
@@ -70,7 +70,7 @@ This API universalizes different vendor XR input oddities into a single easy-to-
 * You should now see 'PicoXR' in Unity's standard XR managment area
 
 # How to get Input
-* Take a look at 'Unity3D-XRInput/Assets/VRstudios/TestInput.cs' for basic working example
+* Take a look at 'Unity3D-XRInput/Assets/Reign/XRInput/Example/TestAssets/TestInput.cs' for basic working example
 * You can get Input in multiple ways
     * Get full input state of controller: XRInput.ControllerState(...)
     * Get specific input state of controller: XRInput.ButtonTrigger(...), XRInput.Button1(...), etc
