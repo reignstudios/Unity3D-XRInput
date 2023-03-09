@@ -9,6 +9,8 @@ namespace Reign.XR.API
 	#if !XRINPUT_DISABLE_PICO2
 	public sealed class Pico2VR : XRInputAPI
 	{
+		private bool handIndexSet;
+
 		public override bool GatherInput(XRControllerState[] state_controllers, out int controllerCount, out bool leftSet, out int leftSetIndex, out bool rightSet, out int rightSetIndex, out SideToSet sideToSet)
 		{
 			// defaults
@@ -19,8 +21,12 @@ namespace Reign.XR.API
 				// force hand index
 				const int leftHandIndex = 0;
 				const int rightHandIndex = 1;
-				Controller.UPvr_SetHandNess(Pvr_Controller.UserHandNess.Left);
-				Controller.UPvr_SetMainHandNess(leftHandIndex);
+				if (!handIndexSet)
+				{
+					handIndexSet = true;
+					Controller.UPvr_SetHandNess(Pvr_Controller.UserHandNess.Left);
+					Controller.UPvr_SetMainHandNess(leftHandIndex);
+				}
 
 				// get hand index
 				//int mainControllerIndex = Controller.UPvr_GetMainHandNess();
@@ -71,6 +77,7 @@ namespace Reign.XR.API
             state_controller.buttonTrigger.Update(Controller.UPvr_GetKey(controllerIndex, Pvr_KeyCode.TRIGGER));
 			bool gripOn = Controller.UPvr_GetKey(controllerIndex, side == XRControllerSide.Right ? Pvr_KeyCode.Right : Pvr_KeyCode.Left);
             state_controller.buttonGrip.Update(gripOn);
+			state_controller.buttonMenu.Update(Controller.UPvr_GetKey(controllerIndex, Pvr_KeyCode.APP));
 
             // analogs
             state_controller.trigger.Update(Controller.UPvr_GetControllerTriggerValue(controllerIndex) / 255.0f);
