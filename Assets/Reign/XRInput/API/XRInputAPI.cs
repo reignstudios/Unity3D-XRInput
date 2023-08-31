@@ -127,5 +127,10 @@ namespace Reign.XR.API
         {
             return false;
         }
+
+        public virtual bool SetHMDRumble(float strength, float duration)
+        {
+            return false;
+        }
     }
 }

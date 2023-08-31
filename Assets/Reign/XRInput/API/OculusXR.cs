@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Oculus.Interaction.Input;
 using System.Runtime.InteropServices;
+
+#if !XRINPUT_DISABLE_OCULUSXR
+using Oculus.Interaction.Input;
+#endif
 
 namespace Reign.XR.API
 {
+    #if !XRINPUT_DISABLE_OCULUSXR
     public sealed class OculusXR : XRInputAPI
     {
         private float rightRumbleTime, leftRumbleTime;
@@ -148,4 +152,16 @@ namespace Reign.XR.API
             return true;
         }
     }
+    #else
+    /// <summary>
+    /// Shim when disabled
+    /// </summary>
+    public sealed class OculusXR : XRInputAPI
+	{
+		public override bool GatherInput(XRControllerState[] state_controllers, out int controllerCount, out bool leftSet, out int leftSetIndex, out bool rightSet, out int rightSetIndex, out SideToSet sideToSet)
+		{
+			throw new System.NotImplementedException();
+		}
+	}
+    #endif
 }

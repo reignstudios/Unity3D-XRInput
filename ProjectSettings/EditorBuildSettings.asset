@@ -15,6 +15,7 @@ EditorBuildSettings:
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: 7211ac213164d874396f59476da5cb51, type: 2}
     com.htc.upm.wave.xrsdk.xrsettings: {fileID: 11400000, guid: b568004f2ba230b40bf9df2936fa62e0, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 0b74ce7b365159547831e428d4dcfa53, type: 2}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 55f6a0e91e122f04abffe458edc1bf3b, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 2fd9dff5c1bb86b4c9d0b3e69063ced5, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 85e271ebf6800fa4e87713d8561d6a04, type: 2}
     xr.sdk.mock-hmd.settings: {fileID: 11400000, guid: d209f32caab7e2b4db74c8c039c95ef7, type: 2}

@@ -14,7 +14,8 @@ namespace Reign.XR
         OpenXR,
         OculusXR,
         OpenVR,
-        PicoXR
+        PicoXR,
+        PSVR2
     }
 
     public enum XRInputAPIType
@@ -91,7 +92,7 @@ namespace Reign.XR
             singleton = this;
 
             // print version
-            XRInput.Log("XRInput version: 1.4.0");
+            XRInput.Log("XRInput version: 1.5.0");
 
             // check if loaders are used
             bool useLoader = apiType != XRInputAPIType.Pico2VR;
@@ -143,6 +144,7 @@ namespace Reign.XR
                         case "OculusLoader": loaderType = XRInputLoaderType.OculusXR; break;
                         case "OpenVRLoader": loaderType = XRInputLoaderType.OpenVR; break;
                         case "PXR Loader": loaderType = XRInputLoaderType.PicoXR; break;
+                        case "PSVR2Loader": loaderType = XRInputLoaderType.PSVR2; break;
                         default: loaderType = XRInputLoaderType.Unknown; break;
                     }
 
@@ -868,6 +870,12 @@ namespace Reign.XR
             return singleton.api.SetRumble(controller, strength, duration);
         }
 
+        public static bool SetHMDRumble(float strength, float duration = .1f)
+        {
+            if (singleton == null || !singleton.apiInit) return false;
+            return singleton.api.SetHMDRumble(strength, duration);
+        }
+
         public static XRInputControllerType GetControllerType(XRInputControllerTypeSide controller)
         {
             if (singleton == null || !singleton.apiInit) return XRInputControllerType.Unknown;
@@ -966,7 +974,8 @@ namespace Reign.XR
         HTCViveWave,
         ValveIndex,
         WMR,
-        WMR_G2
+        WMR_G2,
+        PSVR2
     }
 
     public struct XRControllerState

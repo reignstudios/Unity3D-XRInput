@@ -20,6 +20,11 @@ namespace Reign.XR.API
         /// </summary>
         public static InputDevice handRight { get; private set; }
 
+        /// <summary>
+        /// Native UnityXR Right-Hand device handle
+        /// </summary>
+        public static InputDevice hmd { get; private set; }
+
         public override void Init()
 		{
 			base.Init();
@@ -28,6 +33,11 @@ namespace Reign.XR.API
             // add existing devices (this is needed to handle OVR bug where left controller may not be added via callbacks)
             InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, controllers);
             foreach (var c in controllers.ToArray()) UpdateDevice(c, false);
+
+            // get HMD
+            var hmds = new List<InputDevice>();
+            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeadMounted, hmds);
+            if (hmds.Count >= 1) hmd = hmds[0];
 
             // watch for device changes
             InputDevices.deviceConnected += InputDevices_deviceConnected;
@@ -43,7 +53,7 @@ namespace Reign.XR.API
 
             base.Dispose();
 		}
-
+        bool setLeft, setRight;
 		public override bool GatherInput(XRControllerState[] state_controllers, out int controllerCount, out bool leftSet, out int leftSetIndex, out bool rightSet, out int rightSetIndex, out SideToSet sideToSet)
 		{
 			// defaults
@@ -85,6 +95,7 @@ namespace Reign.XR.API
                 else if (c.name.StartsWith("HTC Vive")) controller.type = XRInputControllerType.HTCVive;
                 else if (c.name.StartsWith("WVR_CR")) controller.type = XRInputControllerType.HTCViveWave;
                 else if (c.name.StartsWith("Index Controller")) controller.type = XRInputControllerType.ValveIndex;
+                else if (c.name.StartsWith("PSVR2 Controller")) controller.type = XRInputControllerType.PSVR2;
                 else controller.type = XRInputControllerType.Unknown;
 
                 bool simulateGripAnalog = controller.type != XRInputControllerType.Oculus && controller.type != XRInputControllerType.WMR_G2;
@@ -172,11 +183,19 @@ namespace Reign.XR.API
                 {
                     if (controller.type == XRInputControllerType.Oculus)
                     {
+                        #if !XRINPUT_DISABLE_OCULUSXR
                         if (c.TryGetFeatureValue(OculusUsages.indexTouch, out bool triggerTouch)) controller.touchTrigger.Update(triggerTouch);
                         else controller.touchTrigger.Update(false);
 
                         if (c.TryGetFeatureValue(OculusUsages.thumbTouch, out bool joystickTouch)) controller.touchJoystick.Update(joystickTouch);
                         else controller.touchJoystick.Update(false);
+                        #else
+                        if (c.TryGetFeatureValue(new InputFeatureUsage<bool>("IndexTouch"), out bool triggerTouch)) controller.touchTrigger.Update(triggerTouch);
+                        else controller.touchTrigger.Update(false);
+
+                        if (c.TryGetFeatureValue(new InputFeatureUsage<bool>("ThumbTouch"), out bool joystickTouch)) controller.touchJoystick.Update(joystickTouch);
+                        else controller.touchJoystick.Update(false);
+                        #endif
                     }
                     else
                     {
@@ -245,6 +264,10 @@ namespace Reign.XR.API
                     {
                         controller.angularVelocity = rotation * controller.angularVelocity;
                     }
+                }
+                else if (controller.type == XRInputControllerType.PSVR2)
+                {
+                    controller.angularVelocity = -controller.angularVelocity;
                 }
 
                 // apply
@@ -398,6 +421,18 @@ namespace Reign.XR.API
             }
 
             return false;
+        }
+
+        public override bool SetHMDRumble(float strength, float duration)
+        {
+            if (XRInput.loaderType == XRInputLoaderType.PSVR2)
+            {
+                return hmd.SendHapticImpulse(XRInput.singleton.rumbleChannel, strength, duration);
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

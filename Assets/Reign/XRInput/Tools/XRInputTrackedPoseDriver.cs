@@ -1,7 +1,10 @@
 using UnityEngine;
 using UnityEngine.SpatialTracking;
-using Oculus.Interaction.Input;
 using UnityEngine.XR;
+
+#if !XRINPUT_DISABLE_OCULUSXR
+using Oculus.Interaction.Input;
+#endif
 
 namespace Reign.XR.Tools
 {
@@ -21,6 +24,7 @@ namespace Reign.XR.Tools
         {
             if (XRInput.singleton.apiType == XRInputAPIType.OculusXR)
             {
+                #if !XRINPUT_DISABLE_OCULUSXR
                 if (poseSource == TrackedPose.Head)
                 {
                     var pose = OVRManager.tracker.GetPose();
@@ -47,18 +51,29 @@ namespace Reign.XR.Tools
                 {
                     base.SetLocalTransform(newPosition, newRotation, poseFlags);
                 }
+                #else
+                base.SetLocalTransform(newPosition, newRotation, poseFlags);
+                #endif
             }
             else if (XRInput.singleton.apiType == XRInputAPIType.OpenVR)
             {
+                #if UNITY_STANDALONE && !XRINPUT_DISABLE_STEAMVR
                 base.SetLocalTransform(newPosition, newRotation, poseFlags);// TODO: use native OpenVR API directly
+                #else
+                base.SetLocalTransform(newPosition, newRotation, poseFlags);
+                #endif
             }
             else if (XRInput.singleton.apiType == XRInputAPIType.OpenVR_Legacy)
             {
+                #if UNITY_STANDALONE && !XRINPUT_DISABLE_STEAMVR
                 base.SetLocalTransform(newPosition, newRotation, poseFlags);// TODO: use native OpenVR API directly
+                #else
+                base.SetLocalTransform(newPosition, newRotation, poseFlags);
+                #endif
             }
-            /*#if !XRINPUT_DISABLE_PICO2// NOTE: sadly this functionality isn't called when XR isn't init (which Pico2 doesn't use)
             else if (XRInput.singleton.apiType == XRInputAPIType.Pico2VR)
             {
+                /*#if !XRINPUT_DISABLE_PICO2// NOTE: sadly this functionality isn't called when XR isn't init (which Pico2 doesn't use)
                 if (poseSource == TrackedPose.Head)
                 {
                     if (Pvr_UnitySDKManager.SDK != null && Pvr_UnitySDKManager.SDK.HeadPose != null)
@@ -92,8 +107,10 @@ namespace Reign.XR.Tools
                 {
                     base.SetLocalTransform(newPosition, newRotation, poseFlags);
                 }
+                #else*/
+                base.SetLocalTransform(newPosition, newRotation, poseFlags);
+                //#endif
             }
-            #endif*/
             else
             {
                 base.SetLocalTransform(newPosition, newRotation, poseFlags);
