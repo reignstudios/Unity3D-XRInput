@@ -53,6 +53,8 @@ namespace Oculus.Interaction
         {
             Bounds worldBounds = new Bounds();
 
+            Vector3 boundsMin = bounds.min;
+            Vector3 boundsMax = bounds.max;
             Vector3 min = transform.position;
             Vector3 max = transform.position;
             Matrix4x4 m = transform.localToWorldMatrix;
@@ -61,15 +63,14 @@ namespace Oculus.Interaction
             {
                 for (int j = 0; j < 3; ++j)
                 {
-                    float e = m[i, j] * bounds.min[j];
-                    float f = m[i, j] * bounds.max[j];
+                    float e = m[i, j] * boundsMin[j];
+                    float f = m[i, j] * boundsMax[j];
                     min[i] += (e < f) ? e : f;
                     max[i] += (e < f) ? f : e;
                 }
             }
 
-            worldBounds.min = min;
-            worldBounds.max = max;
+            worldBounds.SetMinMax(min, max);
             return worldBounds;
         }
 

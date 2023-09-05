@@ -50,8 +50,6 @@ MonoBehaviour:
   _updateAfter: {fileID: 0}
   _iModifyDataFromSourceMono: {fileID: 0}
   _applyModifier: 0
-  _aspects:
-  - {fileID: 8129481091251789688}
 --- !u!114 &2897960862161668955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,8 +239,6 @@ MonoBehaviour:
   _updateAfter: {fileID: 0}
   _iModifyDataFromSourceMono: {fileID: 0}
   _applyModifier: 0
-  _aspects:
-  - {fileID: 2144280554781333715}
 --- !u!114 &2897960862900503268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,7 +263,7 @@ GameObject:
   - component: {fileID: 2017001048413419788}
   - component: {fileID: 2144280554781333715}
   m_Layer: 0
-  m_Name: ControllerHandFeatures
+  m_Name: ControllerHandFeaturesLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -311,7 +307,7 @@ GameObject:
   - component: {fileID: 3547062687724975628}
   - component: {fileID: 8129481091251789688}
   m_Layer: 0
-  m_Name: ControllerHandFeatures
+  m_Name: ControllerHandFeaturesRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -123,7 +123,7 @@ namespace Oculus.Interaction.Input.Filter
         #endregion Oculus Library Methods and Constants
 
         #region Tuneable Values
-        [Header("Settings")]
+        [Header("Settings", order =-1)]
         [Tooltip("Applies a One Euro Filter when filter parameters are provided")]
         [SerializeField, Optional]
         private HandFilterParameterBlock _filterParameters = null;
@@ -139,10 +139,10 @@ namespace Oculus.Interaction.Input.Filter
         {
             _handData.Init();
             _dataSourceHandle = isdk_DataSource_Create(_isdkExternalHandSourceId);
-            Assert.IsTrue(_dataSourceHandle >= 0, $"{_logPrefix} Unable to allocate external hand data source!");
+            this.AssertIsTrue(_dataSourceHandle >= 0, $"{_logPrefix} Unable to allocate external hand data source!");
 
             _handModifierHandle = isdk_DataModifier_Create(_isdkOneEuroHandModifierId, _dataSourceHandle);
-            Assert.IsTrue(_handModifierHandle >= 0, $"{_logPrefix} Unable to allocate one euro hand data modifier!");
+            this.AssertIsTrue(_handModifierHandle >= 0, $"{_logPrefix} Unable to allocate one euro hand data modifier!");
         }
 
         protected virtual void OnDestroy()
@@ -151,9 +151,9 @@ namespace Oculus.Interaction.Input.Filter
 
             //Release the filter and source
             result = isdk_DataSource_Destroy(_handModifierHandle);
-            Assert.AreEqual(_isdkSuccess, result);
+            this.AssertIsTrue(_isdkSuccess ==  result, $"{nameof(_handModifierHandle)} destroy was unsuccessful. ");
             result = isdk_DataSource_Destroy(_dataSourceHandle);
-            Assert.AreEqual(_isdkSuccess, result);
+            this.AssertIsTrue(_isdkSuccess == result, $"{nameof(_dataSourceHandle)} destroy was unsuccessful. ");
         }
 
         protected override void Apply(HandDataAsset handDataAsset)

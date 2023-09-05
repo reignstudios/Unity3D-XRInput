@@ -138,6 +138,9 @@ namespace Oculus.Interaction.PoseDetection.Editor
 
         protected abstract IReadOnlyDictionary<TFeature, FeatureDescription> CreateFeatureDescriptions();
 
+        protected abstract string FeatureMidpointTooltip { get; }
+        protected abstract string FeatureWidthTooltip { get; }
+
         void OnEnable()
         {
             if (_featureDescriptions == null)
@@ -339,8 +342,8 @@ namespace Oculus.Interaction.PoseDetection.Editor
                         float thresholdMidpoint = model.ThresholdMidpoint;
                         float thresholdWidth = model.ThresholdWidth;
 
-                        float newMidpoint = EditorGUILayout.FloatField("Midpoint", thresholdMidpoint);
-                        float newWidth = EditorGUILayout.Slider("Width", thresholdWidth, 0.0f,
+                        float newMidpoint = EditorGUILayout.FloatField(new GUIContent("Midpoint", FeatureMidpointTooltip), thresholdMidpoint);
+                        float newWidth = EditorGUILayout.Slider(new GUIContent("Width", FeatureWidthTooltip), thresholdWidth, 0.0f,
                             thresholdMaxWidth);
 
                         if (Math.Abs(newMidpoint - thresholdMidpoint) > float.Epsilon ||

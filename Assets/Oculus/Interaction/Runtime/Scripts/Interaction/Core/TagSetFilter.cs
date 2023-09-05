@@ -38,14 +38,13 @@ namespace Oculus.Interaction
         [FormerlySerializedAs("_avoidTags")]
         private string[] _excludeTags;
 
-        private HashSet<string> _requireTagSet;
-        private HashSet<string> _excludeTagSet;
+        private readonly HashSet<string> _requireTagSet =
+            new HashSet<string>();
+        private readonly HashSet<string> _excludeTagSet =
+            new HashSet<string>();
 
         protected virtual void Start()
         {
-            _requireTagSet = new HashSet<string>();
-            _excludeTagSet = new HashSet<string>();
-
             foreach (string requireTag in _requireTags)
             {
                 _requireTagSet.Add(requireTag);
@@ -59,8 +58,8 @@ namespace Oculus.Interaction
 
         public bool Filter(GameObject gameObject)
         {
-            TagSet tagSet = gameObject.GetComponent<TagSet>();
-            if (tagSet == null && _requireTagSet.Count > 0)
+            bool hasTagSet = gameObject.TryGetComponent(out TagSet tagSet);
+            if (!hasTagSet && _requireTagSet.Count > 0)
             {
                 return false;
             }
@@ -73,7 +72,7 @@ namespace Oculus.Interaction
                 }
             }
 
-            if (tagSet == null)
+            if (!hasTagSet)
             {
                 return true;
             }

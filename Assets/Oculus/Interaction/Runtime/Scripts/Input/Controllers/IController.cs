@@ -23,7 +23,7 @@ using UnityEngine;
 
 namespace Oculus.Interaction.Input
 {
-    public interface IController : IAspectProvider
+    public interface IController
     {
         Handedness Handedness { get; }
         bool IsConnected { get; }

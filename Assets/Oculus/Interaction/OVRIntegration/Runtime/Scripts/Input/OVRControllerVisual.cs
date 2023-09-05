@@ -26,7 +26,7 @@ namespace Oculus.Interaction.Input.Visuals
     public class OVRControllerVisual : MonoBehaviour
     {
         [SerializeField, Interface(typeof(IController))]
-        private MonoBehaviour _controller;
+        private UnityEngine.Object _controller;
 
         public IController Controller;
 
@@ -45,8 +45,8 @@ namespace Oculus.Interaction.Input.Visuals
         protected virtual void Start()
         {
             this.BeginStart(ref _started);
-            Assert.IsNotNull(Controller);
-            Assert.IsNotNull(_ovrControllerHelper);
+            this.AssertField(Controller, nameof(Controller));
+            this.AssertField(_ovrControllerHelper, nameof(_ovrControllerHelper));
             switch (Controller.Handedness)
             {
                 case Handedness.Left:
@@ -81,11 +81,11 @@ namespace Oculus.Interaction.Input.Visuals
                 ForceOffVisibility ||
                 !Controller.TryGetPose(out Pose rootPose))
             {
-                _ovrControllerHelper.enabled = false;
+                _ovrControllerHelper.gameObject.SetActive(false);
                 return;
             }
 
-            _ovrControllerHelper.enabled = true;
+            _ovrControllerHelper.gameObject.SetActive(true);
             transform.position = rootPose.position;
             transform.rotation = rootPose.rotation;
             float parentScale = transform.parent != null ? transform.parent.lossyScale.x : 1f;
@@ -102,7 +102,7 @@ namespace Oculus.Interaction.Input.Visuals
 
         public void InjectController(IController controller)
         {
-            _controller = controller as MonoBehaviour;
+            _controller = controller as UnityEngine.Object;
             Controller = controller;
         }
 

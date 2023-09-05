@@ -18,20 +18,22 @@
  * limitations under the License.
  */
 
-using Oculus.Interaction.Input;
 using UnityEngine;
 
-public class JointsRadiusFeature : MonoBehaviour
+namespace Oculus.Interaction.Input
 {
-    [SerializeField]
-    private Hand _hand;
-
-    public float GetJointRadius(HandJointId id)
+    public class JointsRadiusFeature : MonoBehaviour
     {
-        return _hand.GetData().Config.HandSkeleton[(int)id].radius;
+        [SerializeField]
+        private Hand _hand;
+
+        public float GetJointRadius(HandJointId id)
+        {
+            return _hand.GetData().Config.HandSkeleton[(int)id].radius;
+        }
+
+        #region Inject
+
+        #endregion
     }
-
-    #region Inject
-
-    #endregion
 }

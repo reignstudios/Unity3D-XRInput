@@ -67,9 +67,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -453,7 +450,7 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2392954646439022170, guid: 39a90ede87cfdcb479cab0d0c84aad0f, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 6d46269d1f1e93342aa059e070cfec2c, type: 2}
     - target: {fileID: 2392954646439022180, guid: 39a90ede87cfdcb479cab0d0c84aad0f, type: 3}
@@ -521,7 +518,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2392954647419265592, guid: 39a90ede87cfdcb479cab0d0c84aad0f, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: df7bba3c74df89741a71c333fe1565e3, type: 2}
     - target: {fileID: 2392954647419265594, guid: 39a90ede87cfdcb479cab0d0c84aad0f, type: 3}
@@ -1754,7 +1751,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1123549496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1769,6 +1766,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useRecommendedMSAALevel: 0
   _monoscopic: 0
+  _sharpenType: 0
+  enableDynamicResolution: 0
+  minDynamicResolutionScale: 1
+  maxDynamicResolutionScale: 1
   minRenderScale: 0.7
   maxRenderScale: 1
   _headPoseRelativeOffsetRotation: {x: 0, y: 0, z: 0}
@@ -1806,10 +1807,12 @@ MonoBehaviour:
   virtualGreenScreenApplyDepthCulling: 0
   virtualGreenScreenDepthTolerance: 0.2
   mrcActivationMode: 0
+  launchMultimodalHandsControllersOnStartup: 0
   isInsightPassthroughEnabled: 0
   requestBodyTrackingPermissionOnStartup: 0
   requestFaceTrackingPermissionOnStartup: 0
   requestEyeTrackingPermissionOnStartup: 0
+  requestScenePermissionOnStartup: 0
   _localDimming: 0
   _trackingOriginType: 1
   usePositionTracking: 1
@@ -1819,6 +1822,8 @@ MonoBehaviour:
   AllowRecenter: 1
   LateControllerUpdate: 1
   LateLatching: 1
+  _readOnlyControllerDrivenHandPosesType: 0
+  controllerDrivenHandPosesType: 0
 --- !u!4 &1123549497
 Transform:
   m_ObjectHideFlags: 0
@@ -2789,31 +2794,31 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 821027172066052999, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
-      propertyPath: rigSets.Array.data[0].enableObjects.Array.data[0]
+      propertyPath: 'rigSets.Array.data[0].enableObjects.Array.data[0]'
       value: 
       objectReference: {fileID: 1123549495}
     - target: {fileID: 821027172066052999, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
-      propertyPath: rigSets.Array.data[1].enableObjects.Array.data[0]
+      propertyPath: 'rigSets.Array.data[1].enableObjects.Array.data[0]'
       value: 
       objectReference: {fileID: 1123549495}
     - target: {fileID: 821027172066052999, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
-      propertyPath: rigSets.Array.data[2].enableObjects.Array.data[0]
+      propertyPath: 'rigSets.Array.data[2].enableObjects.Array.data[0]'
       value: 
       objectReference: {fileID: 769409083}
     - target: {fileID: 821027172066052999, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
-      propertyPath: rigSets.Array.data[2].enableObjects.Array.data[1]
+      propertyPath: 'rigSets.Array.data[2].enableObjects.Array.data[1]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 821027172066052999, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
-      propertyPath: rigSets.Array.data[3].enableObjects.Array.data[0]
+      propertyPath: 'rigSets.Array.data[3].enableObjects.Array.data[0]'
       value: 
       objectReference: {fileID: 8940946303418956523}
     - target: {fileID: 821027172066052999, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
-      propertyPath: rigSets.Array.data[3].enableObjects.Array.data[1]
+      propertyPath: 'rigSets.Array.data[3].enableObjects.Array.data[1]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 821027172066052999, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}
-      propertyPath: rigSets.Array.data[3].disableObjects.Array.data[0]
+      propertyPath: 'rigSets.Array.data[3].disableObjects.Array.data[0]'
       value: 
       objectReference: {fileID: 2392954646967170620}
     - target: {fileID: 980542379300818618, guid: b5afcd43ae43e404fbfdafffe5aa2232, type: 3}

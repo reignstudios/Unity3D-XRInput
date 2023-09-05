@@ -957,7 +957,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1678554349857304353}
   - component: {fileID: 1678554349857304354}
-  - component: {fileID: 3389240346569705373}
   m_Layer: 0
   m_Name: OVRRightHandVisual
   m_TagString: Untagged
@@ -1023,22 +1022,6 @@ MonoBehaviour:
   - {fileID: 1678554349188605870}
   - {fileID: 1678554350487550514}
   - {fileID: 1678554349719938632}
---- !u!114 &3389240346569705373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1678554349857304352}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1e477b940c8a084ab4f2dda703b49ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _handVisual: {fileID: 1678554349857304354}
-  _asTriggers: 0
-  _useLayer: 0
-  _mask: -1
 --- !u!1 &1678554349869442576
 GameObject:
   m_ObjectHideFlags: 0

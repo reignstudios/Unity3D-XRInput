@@ -40,7 +40,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6536860776232889757}
   - component: {fileID: 6536860776232889756}
-  - component: {fileID: 4686655757951481241}
   m_Layer: 0
   m_Name: OVRLeftHandVisual
   m_TagString: Untagged
@@ -106,22 +105,6 @@ MonoBehaviour:
   - {fileID: 6536860777726595021}
   - {fileID: 6536860776602212899}
   - {fileID: 6536860777436698472}
---- !u!114 &4686655757951481241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6536860776232889746}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1e477b940c8a084ab4f2dda703b49ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _handVisual: {fileID: 6536860776232889756}
-  _asTriggers: 0
-  _useLayer: 0
-  _mask: -1
 --- !u!1 &6536860776314661801
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,13 +10,14 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
-using Facebook.WitAi.TTS.Data;
-using Facebook.WitAi.TTS.Events;
-using Facebook.WitAi.TTS.Interfaces;
-using Facebook.WitAi.TTS.Utilities;
-using Facebook.WitAi.Utilities;
+using Meta.WitAi.TTS.Data;
+using Meta.WitAi.TTS.Events;
+using Meta.WitAi.TTS.Interfaces;
+using Meta.WitAi.Utilities;
+using Meta.WitAi.Requests;
+using Meta.Voice.Audio;
 
-namespace Facebook.WitAi.TTS.Integrations
+namespace Meta.WitAi.TTS.Integrations
 {
     public class TTSDiskCache : MonoBehaviour, ITTSDiskCacheHandler
     {
@@ -44,7 +45,18 @@ namespace Facebook.WitAi.TTS.Integrations
         }
 
         // All currently performing stream requests
-        private Dictionary<string, VoiceUnityRequest> _streamRequests = new Dictionary<string, VoiceUnityRequest>();
+        private Dictionary<string, VRequest> _streamRequests = new Dictionary<string, VRequest>();
+
+        // Cancel all requests
+        protected virtual void OnDestroy()
+        {
+            Dictionary<string, VRequest> requests = _streamRequests;
+            _streamRequests.Clear();
+            foreach (var request in requests.Values)
+            {
+                request.Cancel();
+            }
+        }
 
         /// <summary>
         /// Builds full cache path
@@ -93,7 +105,7 @@ namespace Facebook.WitAi.TTS.Integrations
             }
 
             // Return clip path
-            return Path.Combine(directory, clipData.clipID + "." + clipData.audioType.ToString().ToLower());
+            return Path.Combine(directory, clipData.clipID + "." + WitTTSVRequest.GetAudioExtension(clipData.audioType));
         }
 
         /// <summary>
@@ -122,20 +134,18 @@ namespace Facebook.WitAi.TTS.Integrations
             }
 
             // Check if file exists
-            VoiceUnityRequest request =
-                VoiceUnityRequest.CheckFileExists(cachePath, (path, success) =>
+            VRequest request = new VRequest();
+            bool canPerform = request.RequestFileExists(cachePath, (success, error) =>
+            {
+                // Remove
+                if (_streamRequests.ContainsKey(clipData.clipID))
                 {
-                    // Remove
-                    if (_streamRequests.ContainsKey(clipData.clipID))
-                    {
-                        _streamRequests.Remove(clipData.clipID);
-                    }
-                    // Complete
-                    onCheckComplete(clipData, success);
-                });
-
-            // Return request
-            if (request != null)
+                    _streamRequests.Remove(clipData.clipID);
+                }
+                // Complete
+                onCheckComplete(clipData, success);
+            });
+            if (canPerform)
             {
                 _streamRequests[clipData.clipID] = request;
             }
@@ -153,13 +163,17 @@ namespace Facebook.WitAi.TTS.Integrations
             string filePath = GetDiskCachePath(clipData);
 
             // Load clip async
-            _streamRequests[clipData.clipID] = VoiceUnityRequest.RequestAudioClip(filePath, (path, progress) => clipData.loadProgress = progress, (path, clip, error) =>
+            VRequest request = new VRequest((progress) => clipData.loadProgress = progress);
+            bool canPerform = request.RequestAudioStream(clipData.clipStream, new Uri(request.CleanUrl(filePath)),
+                (clipStream, error) =>
+                {
+                    clipData.clipStream = clipStream;
+                    OnStreamComplete(clipData, error);
+                }, clipData.audioType, clipData.diskCacheSettings.StreamFromDisk);
+            if (canPerform)
             {
-                // Apply clip
-                clipData.clip = clip;
-                // Call on complete
-                OnStreamComplete(clipData, error);
-            });
+                _streamRequests[clipData.clipID] = request;
+            }
         }
         /// <summary>
         /// Cancels unity request
@@ -173,14 +187,12 @@ namespace Facebook.WitAi.TTS.Integrations
             }
 
             // Get request
-            VoiceUnityRequest request = _streamRequests[clipData.clipID];
+            VRequest request = _streamRequests[clipData.clipID];
             _streamRequests.Remove(clipData.clipID);
 
-            // Destroy immediately
-            if (request != null)
-            {
-                request.Unload();
-            }
+            // Cancel immediately
+            request?.Cancel();
+            request = null;
 
             // Call cancel
             DiskStreamEvents?.OnStreamCancel?.Invoke(clipData);

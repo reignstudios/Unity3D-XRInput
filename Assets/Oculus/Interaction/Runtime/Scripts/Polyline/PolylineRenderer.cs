@@ -274,7 +274,7 @@ namespace Oculus.Interaction
 
             Bounds bounds = new Bounds(
                 _matrix.MultiplyPoint(_bounds.center),
-                _matrix.MultiplyVector(_bounds.extents));
+                _matrix.MultiplyVector(_bounds.size));
 
             Graphics.DrawMeshInstancedIndirect(_baseMesh, 0, _material, bounds, _argsBuffer);
         }

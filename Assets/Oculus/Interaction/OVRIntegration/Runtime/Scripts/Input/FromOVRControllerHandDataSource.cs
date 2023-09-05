@@ -36,9 +36,10 @@ namespace Oculus.Interaction.Input
         [SerializeField]
         private Vector3 _rootAngleOffset;
 
+
         [Header("OVR Data Source")]
         [SerializeField, Interface(typeof(IOVRCameraRigRef))]
-        private MonoBehaviour _cameraRigRef;
+        private UnityEngine.Object _cameraRigRef;
         private IOVRCameraRigRef CameraRigRef;
 
         [SerializeField]
@@ -49,12 +50,8 @@ namespace Oculus.Interaction.Input
         private Handedness _handedness;
 
         [SerializeField, Interface(typeof(ITrackingToWorldTransformer))]
-        private MonoBehaviour _trackingToWorldTransformer;
+        private UnityEngine.Object _trackingToWorldTransformer;
         private ITrackingToWorldTransformer TrackingToWorldTransformer;
-
-        [SerializeField, Interface(typeof(IDataSource<HmdDataAsset>))]
-        private MonoBehaviour _hmdData;
-        private IDataSource<HmdDataAsset> HmdData;
 
         public bool ProcessLateUpdates
         {
@@ -85,7 +82,6 @@ namespace Oculus.Interaction.Input
         {
             _skeleton = HandSkeletonOVR.CreateSkeletonData(_handedness);
             TrackingToWorldTransformer = _trackingToWorldTransformer as ITrackingToWorldTransformer;
-            HmdData = _hmdData as IDataSource<HmdDataAsset>;
             CameraRigRef = _cameraRigRef as IOVRCameraRigRef;
 
             UpdateConfig();
@@ -94,18 +90,17 @@ namespace Oculus.Interaction.Input
         protected override void Start()
         {
             this.BeginStart(ref _started, () => base.Start());
-            Assert.IsNotNull(CameraRigRef);
-            Assert.IsNotNull(TrackingToWorldTransformer);
-            Assert.IsNotNull(HmdData);
+            this.AssertField(CameraRigRef, nameof(CameraRigRef));
+            this.AssertField(TrackingToWorldTransformer, nameof(TrackingToWorldTransformer));
             if (_handedness == Handedness.Left)
             {
-                Assert.IsNotNull(CameraRigRef.LeftHand);
+                this.AssertField(CameraRigRef.LeftHand, nameof(CameraRigRef.LeftHand));
                 _ovrControllerAnchor = CameraRigRef.LeftController;
                 _ovrController = OVRInput.Controller.LTouch;
             }
             else
             {
-                Assert.IsNotNull(CameraRigRef.RightHand);
+                this.AssertField(CameraRigRef.RightHand, nameof(CameraRigRef.RightHand));
                 _ovrControllerAnchor = CameraRigRef.RightController;
                 _ovrController = OVRInput.Controller.RTouch;
             }
@@ -186,7 +181,6 @@ namespace Oculus.Interaction.Input
             Config.Handedness = _handedness;
             Config.TrackingToWorldTransformer = TrackingToWorldTransformer;
             Config.HandSkeleton = _skeleton;
-            Config.HmdData = HmdData;
         }
 
         protected override void UpdateData()
@@ -219,16 +213,17 @@ namespace Oculus.Interaction.Input
                 || (OVRInput.GetDominantHand() == OVRInput.Handedness.RightHanded
                     && _handedness == Handedness.Right);
 
-            float indexStrength = _pinchCurve.Evaluate(OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, _ovrController));
+            float pinchAmount = OVRControllerUtility.GetPinchAmount(_ovrController);
+            float pinchStrength = _pinchCurve.Evaluate(pinchAmount);
             float gripStrength = _pinchCurve.Evaluate(OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, _ovrController));
 
             _handDataAsset.IsFingerHighConfidence[(int)HandFinger.Thumb] = true;
-            _handDataAsset.IsFingerPinching[(int)HandFinger.Thumb] = indexStrength >= 1f || gripStrength >= 1f;
-            _handDataAsset.FingerPinchStrength[(int)HandFinger.Thumb] = Mathf.Max(indexStrength, gripStrength);
+            _handDataAsset.IsFingerPinching[(int)HandFinger.Thumb] = pinchStrength >= 1f || gripStrength >= 1f;
+            _handDataAsset.FingerPinchStrength[(int)HandFinger.Thumb] = Mathf.Max(pinchStrength, gripStrength);
 
             _handDataAsset.IsFingerHighConfidence[(int)HandFinger.Index] = true;
-            _handDataAsset.IsFingerPinching[(int)HandFinger.Index] = indexStrength >= 1f;
-            _handDataAsset.FingerPinchStrength[(int)HandFinger.Index] = indexStrength;
+            _handDataAsset.IsFingerPinching[(int)HandFinger.Index] = pinchStrength >= 1f;
+            _handDataAsset.FingerPinchStrength[(int)HandFinger.Index] = pinchStrength;
 
             _handDataAsset.IsFingerHighConfidence[(int)HandFinger.Middle] = true;
             _handDataAsset.IsFingerPinching[(int)HandFinger.Middle] = gripStrength >= 1f;
@@ -269,13 +264,12 @@ namespace Oculus.Interaction.Input
 
         public void InjectAllFromOVRControllerHandDataSource(UpdateModeFlags updateMode, IDataSource updateAfter,
             Handedness handedness, ITrackingToWorldTransformer trackingToWorldTransformer,
-            IDataSource<HmdDataAsset> hmdData, Transform[] bones, AnimationCurve pinchCurve,
+            Transform[] bones, AnimationCurve pinchCurve,
             Vector3 rootOffset, Vector3 rootAngleOffset)
         {
             base.InjectAllDataSource(updateMode, updateAfter);
             InjectHandedness(handedness);
             InjectTrackingToWorldTransformer(trackingToWorldTransformer);
-            InjectHmdData(hmdData);
             InjectBones(bones);
             InjectPinchCurve(pinchCurve);
             InjectRootOffset(rootOffset);
@@ -289,14 +283,8 @@ namespace Oculus.Interaction.Input
 
         public void InjectTrackingToWorldTransformer(ITrackingToWorldTransformer trackingToWorldTransformer)
         {
-            _trackingToWorldTransformer = trackingToWorldTransformer as MonoBehaviour;
+            _trackingToWorldTransformer = trackingToWorldTransformer as UnityEngine.Object;
             TrackingToWorldTransformer = trackingToWorldTransformer;
-        }
-
-        public void InjectHmdData(IDataSource<HmdDataAsset> hmdData)
-        {
-            _hmdData = hmdData as MonoBehaviour;
-            HmdData = hmdData;
         }
 
         public void InjectBones(Transform[] bones)

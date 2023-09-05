@@ -29,20 +29,12 @@ namespace Oculus.Interaction.Input
     // from other sources.
     public class Hand : DataModifier<HandDataAsset>, IHand
     {
-        [SerializeField, Optional]
-        [Tooltip(
-            "Provides access to additional functionality on top of what the IHand interface provides." +
-            "For example, this list can be used to provide access to the SkinnedMeshRenderer through " +
-            "the IHand.GetHandAspect method.")]
-        private Component[] _aspects;
-
         public Handedness Handedness => GetData().Config.Handedness;
 
         public ITrackingToWorldTransformer TrackingToWorldTransformer =>
             GetData().Config.TrackingToWorldTransformer;
 
         public HandSkeleton HandSkeleton => GetData().Config.HandSkeleton;
-        public IDataSource<HmdDataAsset> HmdData => GetData().Config.HmdData;
 
         private HandJointCache _jointPosesCache;
 
@@ -52,9 +44,9 @@ namespace Oculus.Interaction.Input
         public bool IsHighConfidence => GetData().IsHighConfidence;
         public bool IsDominantHand => GetData().IsDominantHand;
 
-        public float Scale => GetData().HandScale * (TrackingToWorldTransformer != null
-            ? TrackingToWorldTransformer.Transform.localScale.x
-            : 1);
+        public float Scale => (TrackingToWorldTransformer != null
+                               ? TrackingToWorldTransformer.Transform.lossyScale.x
+                               : 1) * GetData().HandScale;
 
         private static readonly Vector3 PALM_LOCAL_OFFSET = new Vector3(0.08f, -0.01f, 0.0f);
 
@@ -204,36 +196,8 @@ namespace Oculus.Interaction.Input
             return ValidatePose(currentData.Root, currentData.RootPoseOrigin, out pose);
         }
 
-        public bool IsCenterEyePoseValid => HmdData.GetData().IsTracked;
-
-        public bool GetCenterEyePose(out Pose pose)
-        {
-            HmdDataAsset hmd = HmdData.GetData();
-
-            if (hmd == null || !hmd.IsTracked)
-            {
-                pose = Pose.identity;
-                return false;
-            }
-
-            pose = TrackingToWorldTransformer.ToWorldPose(hmd.Root);
-            return true;
-        }
-
         #endregion
 
-
-        public Transform TrackingToWorldSpace
-        {
-            get
-            {
-                if (TrackingToWorldSpace == null)
-                {
-                    return null;
-                }
-                return TrackingToWorldTransformer.Transform;
-            }
-        }
 
         private bool ValidatePose(in Pose sourcePose, PoseOrigin sourcePoseOrigin, out Pose pose)
         {
@@ -260,38 +224,12 @@ namespace Oculus.Interaction.Input
             return poseOrigin == PoseOrigin.None;
         }
 
-        public bool TryGetAspect<TAspect>(out TAspect foundAspect) where TAspect : class
-        {
-            foreach (Component aspect in _aspects)
-            {
-                foundAspect = aspect as TAspect;
-                if (foundAspect != null)
-                {
-                    return true;
-                }
-            }
-
-            if (ModifyDataFromSource is IAspectProvider)
-            {
-                IAspectProvider prevDevice = ModifyDataFromSource as IAspectProvider;
-                return prevDevice.TryGetAspect(out foundAspect);
-            }
-
-            foundAspect = null;
-            return false;
-        }
-
         #region Inject
 
         public void InjectAllHand(UpdateModeFlags updateMode, IDataSource updateAfter,
             DataModifier<HandDataAsset> modifyDataFromSource, bool applyModifier)
         {
             base.InjectAllDataModifier(updateMode, updateAfter, modifyDataFromSource, applyModifier);
-        }
-
-        public void InjectOptionalAspects(Component[] aspects)
-        {
-            _aspects = aspects;
         }
 
         #endregion

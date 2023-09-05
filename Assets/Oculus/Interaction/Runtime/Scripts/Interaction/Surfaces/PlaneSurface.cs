@@ -37,6 +37,9 @@ namespace Oculus.Interaction.Surfaces
             Forward,
         }
 
+        [Tooltip("The normal facing of the surface. Hits will be " +
+            "registered either on the front or back of the plane " +
+            "depending on this value.")]
         [SerializeField]
         private NormalFacing _facing = NormalFacing.Backward;
 

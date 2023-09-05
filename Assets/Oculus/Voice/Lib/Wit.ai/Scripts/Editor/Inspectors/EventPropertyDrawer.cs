@@ -9,10 +9,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 
-namespace Facebook.WitAi.Events.Editor
+namespace Meta.WitAi.Events.Editor
 {
     public abstract class EventPropertyDrawer<T> : PropertyDrawer
     {
@@ -28,38 +29,86 @@ namespace Facebook.WitAi.Events.Editor
 
         private int propertyOffset;
 
-        private static Dictionary<string, List<string>> eventCategories;
+        private static Dictionary<string, string[]> _eventCategories;
+
+        public virtual string DocumentationUrl => string.Empty;
+        public virtual string DocumentationTooltip => string.Empty;
+
+        private const BindingFlags FLAGS = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
         private void InitializeEventCategories(Type eventsType)
         {
-            EventCategoryAttribute[] eventCategoryAttributes;
-
-            eventCategories = new Dictionary<string, List<string>>();
-
-            foreach (var field in eventsType.GetFields())
+            // Get all category events in type & base type
+            Dictionary<string, List<string>> categoryLists = new Dictionary<string, List<string>>();
+            foreach (var field in eventsType.GetFields(FLAGS))
             {
-                eventCategoryAttributes = field.GetCustomAttributes(
-                    typeof(EventCategoryAttribute), false) as EventCategoryAttribute[];
-
-                if (eventCategoryAttributes != null && eventCategoryAttributes.Length != 0)
-                {
-                    foreach (var eventCategory in eventCategoryAttributes)
-                    {
-                        if (!eventCategories.TryGetValue(eventCategory.Category, out var categories))
-                        {
-                            eventCategories[eventCategory.Category] = new List<string>();
-                        }
-                        
-                        eventCategories[eventCategory.Category].Add(field.Name);
-                    }
-                }
+                AddCustomField(field, categoryLists);
             }
+            foreach (var baseField in eventsType.BaseType.GetFields(FLAGS))
+            {
+                AddCustomField(baseField, categoryLists);
+            }
+
+            // Apply
+            _eventCategories = new Dictionary<string, string[]>();
+            foreach (var category in categoryLists.Keys)
+            {
+                _eventCategories[category] = categoryLists[category].ToArray();
+            }
+        }
+        private void AddCustomField(FieldInfo field, Dictionary<string, List<string>> categoryLists)
+        {
+            if (!ShouldShowField(field))
+            {
+                return;
+            }
+            EventCategoryAttribute[] attributes = field.GetCustomAttributes(
+                typeof(EventCategoryAttribute), false) as EventCategoryAttribute[];
+            if (attributes == null || attributes.Length == 0)
+            {
+                return;
+            }
+            foreach (var eventCategory in attributes)
+            {
+                List<string> values = categoryLists.ContainsKey(eventCategory.Category) ? categoryLists[eventCategory.Category] : new List<string>();
+                string fieldName = GetDisplayFieldName(field);
+                if (!values.Contains(fieldName))
+                {
+                    values.Add(fieldName);
+                }
+                categoryLists[eventCategory.Category] = values;
+            }
+        }
+        private bool ShouldShowField(FieldInfo field)
+        {
+            if (field.IsStatic)
+            {
+                return false;
+            }
+            if (!field.IsPublic && !Attribute.IsDefined(field, typeof(SerializeField)))
+            {
+                return false;
+            }
+            if (Attribute.IsDefined(field, typeof(HideInInspector)))
+            {
+                return false;
+            }
+            return Attribute.IsDefined(field, typeof(EventCategoryAttribute));
+        }
+        private string GetDisplayFieldName(FieldInfo field)
+        {
+            string result = field.Name.TrimStart('_');
+            return result[0].ToString().ToUpper() + result.Substring(1, result.Length - 1);
+        }
+        private string GetFieldNameFromDisplay(string fieldDisplayName)
+        {
+            return "_" + fieldDisplayName[0].ToString().ToLower() + fieldDisplayName.Substring(1, fieldDisplayName.Length - 1);
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             var eventObject = fieldInfo.GetValue(property.serializedObject.targetObject) as EventRegistry;
-            
+
             var lineHeight = EditorGUIUtility.singleLineHeight;
             var lines = 1;
             var height = 0;
@@ -83,69 +132,104 @@ namespace Facebook.WitAi.Events.Editor
 
                 foreach (var callback in callbacksArray)
                 {
-                    height += Mathf.RoundToInt(EditorGUI.GetPropertyHeight(property.FindPropertyRelative(callback),
-                                                   true) + CONTROL_SPACING);
+                    var fieldProperty = GetPropertyFromDisplayFieldName(property, callback);
+                    if (fieldProperty != null)
+                    {
+                        height += Mathf.RoundToInt(EditorGUI.GetPropertyHeight(fieldProperty, true) + CONTROL_SPACING);
+                    }
                 }
 
                 // Add some extra space so the last property field's +/- buttons don't overlap the next control.
                 height += PROPERTY_FIELD_SPACING;
             }
-            
+
             return height;
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             showEvents = EditorGUI.Foldout(new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight), showEvents, "Events");
-            
+
+            string url = DocumentationUrl;
+            if (!string.IsNullOrEmpty(url))
+            {
+                Texture texture = WitStyles.HelpIcon.image;
+                if (texture != null)
+                {
+                    // Add a ? button
+                    Vector2 textureSize = WitStyles.IconButton.CalcSize(WitStyles.HelpIcon);
+                    Rect buttonRect = new Rect(position.x + position.width - textureSize.x, position.y, textureSize.x, textureSize.y);
+                    if (GUI.Button(buttonRect,
+                        new GUIContent(WitStyles.HelpIcon.image, DocumentationTooltip), WitStyles.IconButton))
+                    {
+                        Application.OpenURL(url);
+                    }
+                    // Add a tooltip
+                    if (!string.IsNullOrEmpty(DocumentationTooltip))
+                    {
+                        GUI.Label(buttonRect, GUI.tooltip);
+                    }
+                }
+            }
+
             if (showEvents && Selection.activeTransform)
             {
-                if (eventCategories == null)
+                if (_eventCategories == null)
                     InitializeEventCategories(fieldInfo.FieldType);
 
                 var eventObject = fieldInfo.GetValue(property.serializedObject.targetObject) as EventRegistry;
 
-                var eventCategoriesKeyArray = eventCategories.Keys.ToArray();
+                var eventCategoriesKeyArray = _eventCategories.Keys.ToArray();
 
                 EditorGUI.indentLevel++;
-                
+
                 // Shift the control rectangle down one line to accomodate the category dropdown.
                 position.y += EditorGUIUtility.singleLineHeight;
                 position.height = EditorGUIUtility.singleLineHeight;
 
-                selectedCategoryIndex = EditorGUI.Popup(position, "Event Category", 
+                selectedCategoryIndex = EditorGUI.Popup(position, "Event Category",
                     selectedCategoryIndex, eventCategoriesKeyArray);
 
                 if (selectedCategoryIndex != UNSELECTED)
                 {
-                    var eventsArray = eventCategories[eventCategoriesKeyArray[selectedCategoryIndex]].ToArray();
+                    var eventsArray = _eventCategories[eventCategoriesKeyArray[selectedCategoryIndex]];
 
-                    if (selectedCategoryIndex >= eventsArray.Length)
+                    if (selectedEventIndex >= eventsArray.Length)
                         selectedEventIndex = 0;
-                    
+
                     // Create a new rectangle to position the events dropdown and Add button.
                     var selectedEventDropdownPosition = new Rect(position);
 
                     selectedEventDropdownPosition.y += EditorGUIUtility.singleLineHeight + 2;
                     selectedEventDropdownPosition.width = position.width - (BUTTON_WIDTH + (int)WitStyles.TextButtonPadding);
-                    
+
                     selectedEventIndex = EditorGUI.Popup(selectedEventDropdownPosition, "Event", selectedEventIndex,
                         eventsArray);
-                    
+
                     var selectedEventButtonPosition = new Rect(selectedEventDropdownPosition);
 
                     selectedEventButtonPosition.width = BUTTON_WIDTH;
                     selectedEventButtonPosition.x =
                         selectedEventDropdownPosition.x + selectedEventDropdownPosition.width + CONTROL_SPACING;
-                    
+
                     if (GUI.Button(selectedEventButtonPosition, "Add"))
                     {
-                        var eventName = eventCategories[eventCategoriesKeyArray[selectedCategoryIndex]][
+                        var eventName = _eventCategories[eventCategoriesKeyArray[selectedCategoryIndex]][
                             selectedEventIndex];
-                        
+
                         if (eventObject != null && selectedEventIndex != UNSELECTED &&
                             !eventObject.IsCallbackOverridden(eventName))
                         {
+                            var fieldName = GetFieldNameFromDisplay(eventName);
+                            if (eventObject.IsCallbackOverridden(fieldName))
+                            {
+                                eventObject.RemoveOverriddenCallback(fieldName);
+                            }
+                            fieldName = GetFieldNameFromDisplay(eventName).Substring(1);
+                            if (eventObject.IsCallbackOverridden(fieldName))
+                            {
+                                eventObject.RemoveOverriddenCallback(fieldName);
+                            }
                             eventObject.RegisterOverriddenCallback(eventName);
                         }
                     }
@@ -156,22 +240,38 @@ namespace Facebook.WitAi.Events.Editor
                 {
                     var propertyRect = new Rect(position.x, position.y + propertyOffset, position.width, 0);
 
-                    SerializedProperty callbackProperty;
-
                     foreach (var callback in eventObject.OverriddenCallbacks)
                     {
-                        callbackProperty = property.FindPropertyRelative(callback);
-                        
-                        propertyRect.height = EditorGUI.GetPropertyHeight(callbackProperty, true);
-                        
-                        EditorGUI.PropertyField(propertyRect, property.FindPropertyRelative(callback));
-                        
+                        var fieldProperty = GetPropertyFromDisplayFieldName(property, callback);
+                        if (fieldProperty == null)
+                        {
+                            continue;
+                        }
+
+                        propertyRect.height = EditorGUI.GetPropertyHeight(fieldProperty, true);
+
+                        EditorGUI.PropertyField(propertyRect, fieldProperty);
+
                         propertyRect.y += propertyRect.height + CONTROL_SPACING;
                     }
                 }
 
                 EditorGUI.indentLevel--;
             }
+        }
+        private SerializedProperty GetPropertyFromDisplayFieldName(SerializedProperty property, string fieldName)
+        {
+            SerializedProperty result = property.FindPropertyRelative(fieldName);
+            if (result == null)
+            {
+                string fieldName2 = GetFieldNameFromDisplay(fieldName);
+                result = property.FindPropertyRelative(fieldName2);
+                if (result == null)
+                {
+                    Debug.LogError($"Could not find serialized property field: {fieldName} ({fieldName2})");
+                }
+            }
+            return result;
         }
     }
 }

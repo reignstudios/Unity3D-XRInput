@@ -28,9 +28,11 @@ namespace Oculus.Interaction.Input
     public class HandPhysicsCapsules : MonoBehaviour
     {
         [SerializeField, Interface(typeof(IHandVisual))]
-        private MonoBehaviour _handVisual;
-
+        private UnityEngine.Object _handVisual;
         private IHandVisual HandVisual;
+
+        [SerializeField]
+        private JointsRadiusFeature _jointsRadiusFeature;
 
         [Space]
         [SerializeField]
@@ -66,7 +68,6 @@ namespace Oculus.Interaction.Input
         private List<BoneCapsule> _capsules;
         public IList<BoneCapsule> Capsules { get; private set; }
 
-        private JointsRadiusFeature _jointsradius;
         private Rigidbody[] _rigidbodies;
         private bool _capsulesAreActive;
         private bool _capsulesGenerated;
@@ -89,9 +90,8 @@ namespace Oculus.Interaction.Input
         protected virtual void Start()
         {
             this.BeginStart(ref _started);
-            Assert.IsNotNull(HandVisual, $"{nameof(HandPhysicsCapsules)} needs a {nameof(HandVisual)}");
-            HandVisual.Hand.TryGetAspect(out _jointsradius);
-            Assert.IsNotNull(_jointsradius, $"{nameof(HandPhysicsCapsules)} Hand needs a {nameof(_jointsradius)}");
+            this.AssertField(HandVisual, nameof(HandVisual));
+            this.AssertField(_jointsRadiusFeature, nameof(_jointsRadiusFeature));
             GenerateCapsules();
             this.EndStart(ref _started);
         }
@@ -129,7 +129,7 @@ namespace Oculus.Interaction.Input
                 }
 
                 string boneName = $"{parentJoint}-{currentJoint} CapsuleCollider";
-                float boneRadius = _jointsradius.GetJointRadius(parentJoint);
+                float boneRadius = _jointsRadiusFeature.GetJointRadius(parentJoint);
                 float offset = currentJoint >= HandJointId.HandMaxSkinnable ? -boneRadius
                     : parentJoint == HandJointId.HandStart ? boneRadius
                     : 0f;
@@ -306,7 +306,7 @@ namespace Oculus.Interaction.Input
 
         public void InjectHandVisual(IHandVisual handVisual)
         {
-            _handVisual = handVisual as MonoBehaviour;
+            _handVisual = handVisual as UnityEngine.Object;
             HandVisual = handVisual;
         }
 

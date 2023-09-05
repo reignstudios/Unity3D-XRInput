@@ -18,8 +18,8 @@
  * limitations under the License.
  */
 
-using Facebook.WitAi.Configuration;
-using Facebook.WitAi;
+using Meta.WitAi.Configuration;
+using Meta.WitAi;
 using UnityEngine;
 
 namespace Oculus.Voice.Bindings.Android
@@ -37,7 +37,7 @@ namespace Oculus.Voice.Bindings.Android
         {
             AndroidJavaObject witConfig =
                 new AndroidJavaObject("com.oculus.assistant.api.voicesdk.immersivevoicecommands.WitConfiguration");
-            witConfig.Set("clientAccessToken", configuration.witConfiguration.clientAccessToken);
+            witConfig.Set("clientAccessToken", configuration.witConfiguration.GetClientAccessToken());
 
             AndroidJavaObject witRuntimeConfig = new AndroidJavaObject("com.oculus.assistant.api.voicesdk.immersivevoicecommands.WitRuntimeConfiguration");
             witRuntimeConfig.Set("witConfiguration", witConfig);
@@ -60,9 +60,9 @@ namespace Oculus.Voice.Bindings.Android
             witRuntimeConfig.Set("preferredActivationOffset",
                 configuration.preferredActivationOffset);
             witRuntimeConfig.Set("clientName",
-                WitRequest.WIT_CLIENT_NAME);
+                WitConstants.CLIENT_NAME);
             witRuntimeConfig.Set("serverVersion",
-                WitRequest.WIT_API_VERSION);
+                WitConstants.API_VERSION);
 
             return witRuntimeConfig;
         }

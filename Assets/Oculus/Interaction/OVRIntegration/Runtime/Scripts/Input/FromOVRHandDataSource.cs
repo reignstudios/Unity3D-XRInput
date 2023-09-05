@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  * All rights reserved.
  *
@@ -28,7 +28,7 @@ namespace Oculus.Interaction.Input
     {
         [Header("OVR Data Source")]
         [SerializeField, Interface(typeof(IOVRCameraRigRef))]
-        private MonoBehaviour _cameraRigRef;
+        private UnityEngine.Object _cameraRigRef;
 
         [SerializeField]
         private bool _processLateUpdates = false;
@@ -38,16 +38,12 @@ namespace Oculus.Interaction.Input
         private Handedness _handedness;
 
         [SerializeField, Interface(typeof(ITrackingToWorldTransformer))]
-        private MonoBehaviour _trackingToWorldTransformer;
+        private UnityEngine.Object _trackingToWorldTransformer;
         private ITrackingToWorldTransformer TrackingToWorldTransformer;
 
         [SerializeField, Interface(typeof(IHandSkeletonProvider))]
-        private MonoBehaviour _handSkeletonProvider;
+        private UnityEngine.Object _handSkeletonProvider;
         private IHandSkeletonProvider HandSkeletonProvider;
-
-        [SerializeField, Interface(typeof(IDataSource<HmdDataAsset>))]
-        private MonoBehaviour _hmdData;
-        private IDataSource<HmdDataAsset> HmdData;
 
         public bool ProcessLateUpdates
         {
@@ -78,7 +74,6 @@ namespace Oculus.Interaction.Input
         protected virtual void Awake()
         {
             TrackingToWorldTransformer = _trackingToWorldTransformer as ITrackingToWorldTransformer;
-            HmdData = _hmdData as IDataSource<HmdDataAsset>;
             CameraRigRef = _cameraRigRef as IOVRCameraRigRef;
             HandSkeletonProvider = _handSkeletonProvider as IHandSkeletonProvider;
 
@@ -88,10 +83,9 @@ namespace Oculus.Interaction.Input
         protected override void Start()
         {
             this.BeginStart(ref _started, () => base.Start());
-            Assert.IsNotNull(CameraRigRef);
-            Assert.IsNotNull(TrackingToWorldTransformer);
-            Assert.IsNotNull(HandSkeletonProvider);
-            Assert.IsNotNull(HmdData);
+            this.AssertField(CameraRigRef, nameof(CameraRigRef));
+            this.AssertField(TrackingToWorldTransformer, nameof(TrackingToWorldTransformer));
+            this.AssertField(HandSkeletonProvider, nameof(HandSkeletonProvider));
             if (_handedness == Handedness.Left)
             {
                 _ovrHand = CameraRigRef.LeftHand;
@@ -160,7 +154,6 @@ namespace Oculus.Interaction.Input
             Config.Handedness = _handedness;
             Config.TrackingToWorldTransformer = TrackingToWorldTransformer;
             Config.HandSkeleton = HandSkeletonProvider[_handedness];
-            Config.HmdData = HmdData;
         }
 
         protected override void UpdateData()
@@ -271,13 +264,12 @@ namespace Oculus.Interaction.Input
 
         public void InjectAllFromOVRHandDataSource(UpdateModeFlags updateMode, IDataSource updateAfter,
             Handedness handedness, ITrackingToWorldTransformer trackingToWorldTransformer,
-            IHandSkeletonProvider handSkeletonProvider, IDataSource<HmdDataAsset> hmdData)
+            IHandSkeletonProvider handSkeletonProvider)
         {
             base.InjectAllDataSource(updateMode, updateAfter);
             InjectHandedness(handedness);
             InjectTrackingToWorldTransformer(trackingToWorldTransformer);
             InjectHandSkeletonProvider(handSkeletonProvider);
-            InjectHmdData(hmdData);
         }
 
         public void InjectHandedness(Handedness handedness)
@@ -287,20 +279,14 @@ namespace Oculus.Interaction.Input
 
         public void InjectTrackingToWorldTransformer(ITrackingToWorldTransformer trackingToWorldTransformer)
         {
-            _trackingToWorldTransformer = trackingToWorldTransformer as MonoBehaviour;
+            _trackingToWorldTransformer = trackingToWorldTransformer as UnityEngine.Object;
             TrackingToWorldTransformer = trackingToWorldTransformer;
         }
 
         public void InjectHandSkeletonProvider(IHandSkeletonProvider handSkeletonProvider)
         {
-            _handSkeletonProvider = handSkeletonProvider as MonoBehaviour;
+            _handSkeletonProvider = handSkeletonProvider as UnityEngine.Object;
             HandSkeletonProvider = handSkeletonProvider;
-        }
-
-        public void InjectHmdData(IDataSource<HmdDataAsset> hmdData)
-        {
-            _hmdData = hmdData as MonoBehaviour;
-            HmdData = hmdData;
         }
 
         #endregion

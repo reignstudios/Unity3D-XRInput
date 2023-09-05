@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7514664576725099329}
   - component: {fileID: 8553895791537599524}
+  - component: {fileID: 8583721622288979178}
   - component: {fileID: 4293472022422511749}
   - component: {fileID: 2747179891865928050}
   - component: {fileID: 7514664576725099328}
@@ -48,6 +49,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hand: {fileID: 0}
+--- !u!114 &8583721622288979178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7514664576725099330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 870d37507a21e5e42877dca0f61dcd28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fingerFeatureStateProvider: {fileID: 0}
 --- !u!114 &4293472022422511749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,5 +122,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hand: {fileID: 8553895791537599524}
+  _fingerFeatureStateProvider: {fileID: 8583721622288979178}
   _shapes:
   - {fileID: 11400000, guid: 9cd3316a4684d0f46ab1faf9695b2f4c, type: 2}

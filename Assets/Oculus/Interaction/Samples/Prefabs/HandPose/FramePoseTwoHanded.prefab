@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hand: {fileID: 3392016606721254853}
+  _transformFeatureStateProvider: {fileID: 0}
   _transformFeatureConfigs:
     _values:
     - _mode: 0
@@ -173,6 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hand: {fileID: 2991722639505544446}
+  _transformFeatureStateProvider: {fileID: 0}
   _transformFeatureConfigs:
     _values:
     - _mode: 0

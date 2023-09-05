@@ -48,8 +48,6 @@ MonoBehaviour:
   _updateAfter: {fileID: 0}
   _iModifyDataFromSourceMono: {fileID: 0}
   _applyModifier: 1
-  _aspects:
-  - {fileID: 2143258140177466422}
   _wristPositionLockCurve:
     _animationCurve:
       serializedVersion: 2
@@ -284,12 +282,6 @@ PrefabInstance:
 --- !u!4 &2143258140644656282 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6536860776232889757, guid: 70d02a90551f23042a882cdceeaf8e3a,
-    type: 3}
-  m_PrefabInstance: {fileID: 5118897133543319815}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2143258140177466422 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6536860776972643633, guid: 70d02a90551f23042a882cdceeaf8e3a,
     type: 3}
   m_PrefabInstance: {fileID: 5118897133543319815}
   m_PrefabAsset: {fileID: 0}

@@ -78,7 +78,7 @@ namespace Oculus.Interaction.Input
         protected virtual void Start()
         {
             this.BeginStart(ref _started);
-            Assert.IsNotNull(_ovrCameraRig);
+            this.AssertField(_ovrCameraRig, nameof(_ovrCameraRig));
             this.EndStart(ref _started);
         }
 

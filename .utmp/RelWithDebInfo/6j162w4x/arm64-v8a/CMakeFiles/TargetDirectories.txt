@@ -1,0 +1,5 @@
+E:/Dev/Reign/Unity3D-XRInput/.utmp/RelWithDebInfo/6j162w4x/arm64-v8a/CMakeFiles/edit_cache.dir
+E:/Dev/Reign/Unity3D-XRInput/.utmp/RelWithDebInfo/6j162w4x/arm64-v8a/CMakeFiles/rebuild_cache.dir
+E:/Dev/Reign/Unity3D-XRInput/.utmp/RelWithDebInfo/6j162w4x/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+E:/Dev/Reign/Unity3D-XRInput/.utmp/RelWithDebInfo/6j162w4x/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+E:/Dev/Reign/Unity3D-XRInput/.utmp/RelWithDebInfo/6j162w4x/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir

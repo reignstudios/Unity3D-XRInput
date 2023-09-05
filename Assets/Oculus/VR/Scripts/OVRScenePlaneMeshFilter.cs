@@ -21,7 +21,6 @@
 using System;
 using Unity.Collections;
 using Unity.Jobs;
-using Unity.Profiling;
 using UnityEngine;
 
 /// <summary>
@@ -32,11 +31,9 @@ using UnityEngine;
 /// generates a mesh from its boundary vertices.
 /// </remarks>
 [RequireComponent(typeof(MeshFilter))]
-public unsafe class OVRScenePlaneMeshFilter : MonoBehaviour
+public class OVRScenePlaneMeshFilter : MonoBehaviour
 {
     private MeshFilter _meshFilter;
-
-    private OVRSceneAnchor _sceneAnchor;
 
     private Mesh _mesh;
 
@@ -44,16 +41,9 @@ public unsafe class OVRScenePlaneMeshFilter : MonoBehaviour
 
     private bool _meshRequested;
 
-    private NativeArray<Vector2> _previousBoundary;
+    private NativeArray<Vector2> _boundary;
 
-    private NativeArray<int> _boundaryLength;
-
-    NativeArray<Vector2> _boundary;
-
-    NativeArray<int> _triangles;
-
-    static readonly ProfilerMarker ComparePreviousBoundaryMarker =
-        new ProfilerMarker("Compare previous boundary");
+    private NativeArray<int> _triangles;
 
 
     private void Start()
@@ -62,37 +52,49 @@ public unsafe class OVRScenePlaneMeshFilter : MonoBehaviour
         _meshFilter = GetComponent<MeshFilter>();
         _meshFilter.sharedMesh = _mesh;
 
-        _sceneAnchor = GetComponent<OVRSceneAnchor>();
-        if (_sceneAnchor)
-        {
-            _mesh.name = $"{nameof(OVRScenePlaneMeshFilter)} {_sceneAnchor.Uuid}";
-            RequestMeshGeneration();
-        }
+        var sceneAnchor = GetComponent<OVRSceneAnchor>();
+        _mesh.name = sceneAnchor
+            ? $"{nameof(OVRScenePlaneMeshFilter)} {sceneAnchor.Uuid}"
+            : $"{nameof(OVRScenePlaneMeshFilter)} (anonymous)";
+
+        RequestMeshGeneration();
     }
 
     internal void ScheduleMeshGeneration()
     {
         if (_jobHandle != null) return;
+        if (!TryGetComponent<OVRScenePlane>(out var plane) || plane.Boundary.Count < 3) return;
 
-        using (new OVRProfilerScope("Schedule " + nameof(GetBoundaryLengthJob)))
+        using var profiler = new OVRProfilerScope(nameof(ScheduleMeshGeneration));
+
+        var vertexCount = plane.Boundary.Count;
+        Debug.Assert(_boundary.IsCreated == false,
+            "Boundary buffer should not be allocated.");
+
+        using (new OVRProfilerScope("Copy boundary"))
         {
-            _boundaryLength = new NativeArray<int>(1, Allocator.TempJob);
-            _jobHandle = new GetBoundaryLengthJob
+            _boundary = new NativeArray<Vector2>(vertexCount, Allocator.TempJob,
+                NativeArrayOptions.UninitializedMemory);
+
+            for (var i = 0; i < plane.Boundary.Count; i++)
             {
-                Space = _sceneAnchor.Space,
-                Length = _boundaryLength,
+                _boundary[i] = plane.Boundary[i];
+            }
+        }
+
+        using (new OVRProfilerScope("Schedule " + nameof(TriangulateBoundaryJob)))
+        {
+            _triangles = new NativeArray<int>((vertexCount - 2) * 3, Allocator.TempJob);
+            _jobHandle = new TriangulateBoundaryJob
+            {
+                Boundary = _boundary,
+                Triangles = _triangles,
             }.Schedule();
-            _meshRequested = false;
         }
     }
 
     private void Update()
     {
-        if (_meshRequested)
-        {
-            ScheduleMeshGeneration();
-        }
-
         if (_jobHandle?.IsCompleted == true)
         {
             // Even though the job is complete, we have to call Complete() in order
@@ -102,41 +104,11 @@ public unsafe class OVRScenePlaneMeshFilter : MonoBehaviour
         }
         else
         {
+            // Otherwise, there's a job running
             return;
         }
 
-        if (_boundaryLength.IsCreated)
-        {
-            var length = _boundaryLength[0];
-            _boundaryLength.Dispose();
-
-            if (length >= 3)
-            {
-                _boundary = new NativeArray<Vector2>(length, Allocator.TempJob);
-                _triangles = new NativeArray<int>((length - 2) * 3, Allocator.TempJob);
-                if (!_previousBoundary.IsCreated)
-                {
-                    _previousBoundary = new NativeArray<Vector2>(length, Allocator.Persistent);
-                }
-
-                using (new OVRProfilerScope("Schedule Boundary Jobs"))
-                {
-                    _jobHandle = new GetBoundaryJob
-                    {
-                        Space = _sceneAnchor.Space,
-                        Boundary = _boundary,
-                        PreviousBoundary = _previousBoundary,
-                    }.Schedule();
-
-                    _jobHandle = new TriangulateBoundaryJob
-                    {
-                        Boundary = _boundary,
-                        Triangles = _triangles,
-                    }.Schedule(_jobHandle.Value);
-                }
-            }
-        }
-        else if (_boundary.IsCreated && _triangles.IsCreated)
+        if (_boundary.IsCreated && _triangles.IsCreated)
         {
             try
             {
@@ -145,21 +117,6 @@ public unsafe class OVRScenePlaneMeshFilter : MonoBehaviour
                     _triangles[2] == 0)
                 {
                     return;
-                }
-
-                using (new OVRProfilerScope("Copy boundary"))
-                {
-                    if (_previousBoundary.Length == 0 || float.IsNaN(_previousBoundary[0].x))
-                    {
-                        if (_previousBoundary.IsCreated)
-                        {
-                            _previousBoundary.Dispose();
-                        }
-
-                        _previousBoundary = new NativeArray<Vector2>(_boundary.Length,
-                            Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
-                        _previousBoundary.CopyFrom(_boundary);
-                    }
                 }
 
                 using (new OVRProfilerScope("Update mesh"))
@@ -176,9 +133,9 @@ public unsafe class OVRScenePlaneMeshFilter : MonoBehaviour
                         for (var i = 0; i < _boundary.Length; i++)
                         {
                             var point = _boundary[i];
-                            vertices[i] = new Vector3(-point.x, point.y, 0);
+                            vertices[i] = new Vector3(point.x, point.y, 0);
                             normals[i] = new Vector3(0, 0, 1);
-                            uvs[i] = new Vector2(-point.x, point.y);
+                            uvs[i] = new Vector2(point.x, point.y);
                         }
                     }
 
@@ -201,6 +158,10 @@ public unsafe class OVRScenePlaneMeshFilter : MonoBehaviour
                 _triangles.Dispose();
             }
         }
+        else if (_meshRequested)
+        {
+            ScheduleMeshGeneration();
+        }
     }
 
     internal void RequestMeshGeneration()
@@ -215,75 +176,13 @@ public unsafe class OVRScenePlaneMeshFilter : MonoBehaviour
     void OnDisable()
     {
         // Job completed but we may not yet have consumed the data
-        if (_boundary.IsCreated) _boundary.Dispose(_jobHandle ?? default);
-        if (_triangles.IsCreated) _triangles.Dispose(_jobHandle ?? default);
-        if (_boundaryLength.IsCreated) _boundaryLength.Dispose(_jobHandle ?? default);
-        if (_previousBoundary.IsCreated) _previousBoundary.Dispose(_jobHandle ?? default);
+        if (_triangles.IsCreated)
+        {
+            _triangles.Dispose(_jobHandle ?? default);
+        }
 
-        _boundary = default;
         _triangles = default;
-        _boundaryLength = default;
         _jobHandle = null;
-    }
-
-    private struct GetBoundaryLengthJob : IJob
-    {
-        public OVRSpace Space;
-
-        [WriteOnly]
-        public NativeArray<int> Length;
-
-        public void Execute() => Length[0] = OVRPlugin.GetSpaceBoundary2DCount(Space, out var count)
-            ? count
-            : 0;
-    }
-
-    private struct GetBoundaryJob : IJob
-    {
-        public OVRSpace Space;
-
-        public NativeArray<Vector2> Boundary;
-
-        public NativeArray<Vector2> PreviousBoundary;
-
-        private bool HasBoundaryChanged()
-        {
-            using var marker = ComparePreviousBoundaryMarker.Auto();
-
-            if (!PreviousBoundary.IsCreated) return true;
-            if (Boundary.Length != PreviousBoundary.Length) return true;
-
-            var length = Boundary.Length;
-            for (var i = 0; i < length; i++)
-            {
-                if (Vector2.SqrMagnitude(Boundary[i] - PreviousBoundary[i]) > 1e-6f) return true;
-            }
-
-            return false;
-        }
-
-        static void SetNaN(NativeArray<Vector2> array)
-        {
-            // Set a NaN to indicate failure
-            if (array.Length > 0)
-            {
-                array[0] = new Vector2(float.NaN, float.NaN);
-            }
-        }
-
-        public void Execute()
-        {
-            if (OVRPlugin.GetSpaceBoundary2D(Space, Boundary) && HasBoundaryChanged())
-            {
-                // Invalid old boundary
-                SetNaN(PreviousBoundary);
-            }
-            else
-            {
-                // Invalid bounday
-                SetNaN(Boundary);
-            }
-        }
     }
 
     private struct TriangulateBoundaryJob : IJob
@@ -353,9 +252,12 @@ public unsafe class OVRScenePlaneMeshFilter : MonoBehaviour
             {
                 if (!indexListChanged)
                 {
-                    Debug.LogError(
-                        $"[{nameof(OVRScenePlaneMeshFilter)}] Infinite loop while triangulating boundary mesh.");
-                    break;
+                    Debug.LogError($"[{nameof(OVRScenePlaneMeshFilter)}] Plane boundary triangulation failed.");
+
+                    Triangles[0] = 0;
+                    Triangles[1] = 0;
+                    Triangles[2] = 0;
+                    return;
                 }
 
                 indexListChanged = false;
@@ -374,7 +276,7 @@ public unsafe class OVRScenePlaneMeshFilter : MonoBehaviour
                     var atoc = vc - va;
 
                     // reflex angle check
-                    if (Cross(atob, atoc) >= 0) continue;
+                    if (Cross(atob, atoc) < 0) continue;
 
                     var validTriangle = true;
                     for (var j = 0; j < Boundary.Length; j++)
@@ -409,8 +311,8 @@ public unsafe class OVRScenePlaneMeshFilter : MonoBehaviour
         private static float Cross(Vector2 a, Vector2 b) => a.x * b.y - a.y * b.x;
 
         private static bool PointInTriangle(Vector2 p, Vector2 a, Vector2 b, Vector2 c) =>
-            Cross(b - a, p - a) < 0 &&
-            Cross(c - b, p - b) < 0 &&
-            Cross(a - c, p - c) < 0;
+            Cross(b - a, p - a) >= 0 &&
+            Cross(c - b, p - b) >= 0 &&
+            Cross(a - c, p - c) >= 0;
     }
 }

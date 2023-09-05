@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-
-using System.Text;
-using Meta.Wit.LitJson;
+using Meta.WitAi;
+using Meta.WitAi.Json;
 
 namespace Meta.Conduit.Editor
 {
@@ -46,6 +45,8 @@ namespace Meta.Conduit.Editor
             this._assemblyMiner = assemblyMiner;
         }
 
+        #region API
+
         /// <summary>
         /// Generate a manifest for assemblies marked with the <see cref="ConduitAssemblyAttribute"/> attribute.
         /// </summary>
@@ -54,8 +55,38 @@ namespace Meta.Conduit.Editor
         /// <returns>A JSON representation of the manifest.</returns>
         public string GenerateManifest(string domain, string id)
         {
+            VLog.D($"Generate Manifest: {domain}");
             return GenerateManifest(_assemblyWalker.GetTargetAssemblies(), domain, id);
         }
+
+        /// <summary>
+        /// Generate a manifest with empty entities and actions lists.
+        /// </summary>
+        /// <param name="domain">A friendly name to use for this app.</param>
+        /// <param name="id">The App ID.</param>
+        /// <returns>A JSON representation of the empty manifest.</returns>
+        public string GenerateEmptyManifest(string domain, string id)
+        {
+            return GenerateManifest(new List<IConduitAssembly>(), domain, id);
+        }
+
+        /// <summary>
+        /// Extract entities and actions from assemblies marked with the <see cref="ConduitAssemblyAttribute"/> attribute.
+        /// </summary>
+        /// <returns>Extracted Intents list</returns>
+        public List<string> ExtractManifestData()
+        {
+            VLog.D("Extracting manifest actions and entities.");
+
+            var (entities, actions, errorHandlers) = ExtractAssemblyData(_assemblyWalker.GetTargetAssemblies());
+            VLog.D($"Extracted {actions.Count} actions and {entities.Count} entities.");
+
+            List<string> transformedActions = new HashSet<string>(actions.Select(v => v.Name).Where(v => !string.IsNullOrEmpty(v))).ToList();
+
+            return transformedActions;
+        }
+
+        #endregion
 
         /// <summary>
         /// Generate a manifest for the supplied assemblies.
@@ -66,16 +97,9 @@ namespace Meta.Conduit.Editor
         /// <returns>A JSON representation of the manifest.</returns>
         private string GenerateManifest(IEnumerable<IConduitAssembly> assemblies, string domain, string id)
         {
-            var entities = new List<ManifestEntity>();
-            var actions = new List<ManifestAction>();
-            _assemblyMiner.Initialize();
-            foreach (var assembly in assemblies)
-            {
-                entities.AddRange(this._assemblyMiner.ExtractEntities(assembly));
-                actions.AddRange(this._assemblyMiner.ExtractActions(assembly));
-            }
+            VLog.D($"Generating manifest.");
 
-            this.PruneUnreferencedEntities(ref entities, actions);
+            var (entities, actions, errorHandlers) = ExtractAssemblyData(assemblies);
 
             var manifest = new Manifest()
             {
@@ -83,18 +107,36 @@ namespace Meta.Conduit.Editor
                 Version = CurrentVersion,
                 Domain = domain,
                 Entities = entities,
-                Actions = actions
+                Actions = actions,
+                ErrorHandlers = errorHandlers
             };
 
-            var sb = new StringBuilder();
-            var jsonWriter = new JsonWriter(sb)
+            return JsonConvert.SerializeObject(manifest);
+        }
+ 
+        private (List<ManifestEntity>, List<ManifestAction>, List<ManifestErrorHandler>) ExtractAssemblyData(IEnumerable<IConduitAssembly> assemblies)
+        {
+            var entities = new List<ManifestEntity>();
+            var actions = new List<ManifestAction>();
+            var errorHandlers = new List<ManifestErrorHandler>();
+            _assemblyMiner.Initialize();
+            foreach (var assembly in assemblies)
             {
-                PrettyPrint = true,
-                IndentValue = 4,
-            };
+                actions.AddRange(this._assemblyMiner.ExtractActions(assembly));
+                entities.AddRange(this._assemblyMiner.ExtractEntities(assembly));
+                try
+                {
+                    errorHandlers.AddRange(this._assemblyMiner.ExtractErrorHandlers(assembly));
+                }
+                catch (Exception)
+                {
+                    VLog.W("Conduit App found no error handlers");
+                }
+            }
 
-            JsonMapper.ToJson(manifest, jsonWriter);
-            return sb.ToString();
+            this.PruneUnreferencedEntities(ref entities, actions);
+
+            return (entities, actions, errorHandlers);
         }
 
         /// <summary>

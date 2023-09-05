@@ -163,7 +163,7 @@ namespace Oculus.Interaction.UnityCanvas
         protected override void Start()
         {
             this.BeginStart(ref _started, () => base.Start());
-            Assert.IsNotNull(_canvasMesh);
+            this.AssertField(_canvasMesh, nameof(_canvasMesh));
             Assert.IsTrue(GetOverlayParameters(out _, out _, out _),
                 $"Unsupported {nameof(CanvasMesh)} type");
             this.EndStart(ref _started);
