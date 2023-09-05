@@ -267,7 +267,10 @@ namespace Reign.XR
 
 		private void OnApplicationQuit()
 		{
-			if (stopLoaderOnAppExit && loader != null) loader.Stop();
+			if (stopLoaderOnAppExit && loaderType == XRInputLoaderType.OpenVR && loader != null)
+            {
+                loader.Stop();
+            }
 		}
 
         private void FixedUpdate()

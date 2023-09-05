@@ -183,19 +183,11 @@ namespace Reign.XR.API
                 {
                     if (controller.type == XRInputControllerType.Oculus)
                     {
-                        #if !XRINPUT_DISABLE_OCULUSXR
-                        if (c.TryGetFeatureValue(OculusUsages.indexTouch, out bool triggerTouch)) controller.touchTrigger.Update(triggerTouch);
+                        if (c.TryGetFeatureValue(new InputFeatureUsage<bool>("IndexTouch"), out bool triggerTouch)) controller.touchTrigger.Update(triggerTouch);// aka OculusUsages.indexTouch
                         else controller.touchTrigger.Update(false);
 
-                        if (c.TryGetFeatureValue(OculusUsages.thumbTouch, out bool joystickTouch)) controller.touchJoystick.Update(joystickTouch);
+                        if (c.TryGetFeatureValue(new InputFeatureUsage<bool>("ThumbTouch"), out bool joystickTouch)) controller.touchJoystick.Update(joystickTouch);// aka OculusUsages.thumbTouch
                         else controller.touchJoystick.Update(false);
-                        #else
-                        if (c.TryGetFeatureValue(new InputFeatureUsage<bool>("IndexTouch"), out bool triggerTouch)) controller.touchTrigger.Update(triggerTouch);
-                        else controller.touchTrigger.Update(false);
-
-                        if (c.TryGetFeatureValue(new InputFeatureUsage<bool>("ThumbTouch"), out bool joystickTouch)) controller.touchJoystick.Update(joystickTouch);
-                        else controller.touchJoystick.Update(false);
-                        #endif
                     }
                     else
                     {
