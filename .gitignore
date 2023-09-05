@@ -27,10 +27,11 @@ ipch/
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
-UserSettings
+UserSettings/
 Assets/TEMP/
 Assets/TEMP.meta
 Assets/AssetStoreTools*
+UpgradeLog.htm
 
 *.sln
 *.csproj
