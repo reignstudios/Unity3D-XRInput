@@ -25,7 +25,7 @@ namespace Reign.XR.Tools
             if (XRInput.singleton.apiType == XRInputAPIType.OculusXR)
             {
                 #if !XRINPUT_DISABLE_OCULUSXR
-                if (poseSource == TrackedPose.Head)
+                if (poseSource == TrackedPose.Center)
                 {
                     var pose = OVRManager.tracker.GetPose();
                     base.SetLocalTransform(pose.position, pose.orientation, poseFlags);
