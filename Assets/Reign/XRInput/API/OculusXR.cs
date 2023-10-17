@@ -66,7 +66,7 @@ namespace Reign.XR.API
 
         private bool GatherInputForController(OVRInput.Controller controller, ref XRControllerState state_controller)
         {
-            if (OVRInput.IsControllerConnected(controller)) return false;
+            //if (!OVRInput.IsControllerConnected(controller)) return false;// this fails to report correctly sometimes
 
             if (controller == OVRInput.Controller.RHand)
             {
