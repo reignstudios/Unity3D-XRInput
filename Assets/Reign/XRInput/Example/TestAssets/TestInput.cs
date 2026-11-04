@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 
 namespace Reign.XR.Example
@@ -8,6 +9,10 @@ namespace Reign.XR.Example
         [Tooltip("Sets XR render-scale after XRInput is init")]
         [Range(0.25f, 1f)]
         public float renderScale = 1;
+
+        public TMP_Text fpsText, captureTimeText, nowTimeText;
+        private float fpsTime;
+        private int fps;
 
 		private void Start()
 		{
@@ -137,6 +142,19 @@ namespace Reign.XR.Example
 
             // rumble
             if (stateR.trigger.value != 0) XRInput.SetRumble(XRControllerRumbleSide.Right, stateR.trigger.value);
+
+            // time
+            //Debug.Log("Time: " + stateR.time.ToString());
+            fpsTime += Time.deltaTime;
+            fps++;
+            if (fpsTime >= 1)
+            {
+                fpsText.text = $"FPS: {fps}";
+                fpsTime %= 1f;
+                fps = 0;
+            }
+            captureTimeText.text = $"CaptureTime: {Math.Round(stateR.captureTime, 6)}";
+            nowTimeText.text = $"NowTime: {Math.Round(stateR.nowTime, 6)}";
         }
 
         void PrintButton(XRControllerButton button, string name)

@@ -92,7 +92,7 @@ namespace Reign.XR
             singleton = this;
 
             // print version
-            XRInput.Log("XRInput version: 1.5.1");
+            XRInput.Log("XRInput version: 1.5.2");
 
             // check if loaders are used
             bool useLoader = apiType != XRInputAPIType.Pico2VR;
@@ -1002,6 +1002,16 @@ namespace Reign.XR
 
         public bool linearVelocityValid, angularVelocityValid;
         public Vector3 linearVelocity, angularVelocity;
+
+        /// <summary>
+        /// Time input captured
+        /// </summary>
+        public double captureTime;
+
+        /// <summary>
+        /// Time now relationship to captureTime
+        /// </summary>
+        public double nowTime;
     }
 
     public struct XRControllerButton

@@ -32,7 +32,7 @@ namespace Reign.XR.API
             // add existing devices (this is needed to handle OVR bug where left controller may not be added via callbacks)
             InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, controllers);
             foreach (var c in controllers.ToArray()) UpdateDevice(c, false);
-
+            
             // get HMD
             var hmds = new List<InputDevice>();
             InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeadMounted, hmds);
@@ -52,7 +52,7 @@ namespace Reign.XR.API
 
             base.Dispose();
 		}
-        bool setLeft, setRight;
+        
 		public override bool GatherInput(XRControllerState[] state_controllers, out int controllerCount, out bool leftSet, out int leftSetIndex, out bool rightSet, out int rightSetIndex, out SideToSet sideToSet)
 		{
 			// defaults
@@ -99,7 +99,7 @@ namespace Reign.XR.API
 
                 bool simulateGripAnalog = controller.type != XRInputControllerType.Oculus && controller.type != XRInputControllerType.WMR_G2;
                 bool simulateAllTouch = controller.type == XRInputControllerType.WMR || controller.type == XRInputControllerType.HTCViveCosmos;
-
+                
                 // update buttons states
                 bool triggerValueValid = c.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
                 bool triggerButton = false;
@@ -260,6 +260,10 @@ namespace Reign.XR.API
                 {
                     controller.angularVelocity = -controller.angularVelocity;
                 }
+
+                // set times
+                if (OpenXRClockFeature.TryGetPollTimeSeconds(c, out double pollTime)) controller.captureTime = pollTime;
+                if (OpenXRClockFeature.TryGetNowSeconds(out double nowTime)) controller.nowTime = nowTime;
 
                 // apply
                 state_controllers[controllerCount] = controller;

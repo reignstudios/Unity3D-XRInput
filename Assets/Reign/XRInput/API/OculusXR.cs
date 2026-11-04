@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
+using System;
 
 namespace Reign.XR.API
 {
@@ -37,6 +38,7 @@ namespace Reign.XR.API
             {
                 rightSet = true;
                 rightSetIndex = controllerCount;
+                state_controllers[controllerCount].nowTime = OVRPlugin.GetNodePoseStateImmediate(OVRPlugin.Node.HandRight).Time;
                 controllerCount++;
             }
 
@@ -44,6 +46,7 @@ namespace Reign.XR.API
             {
                 leftSet = true;
                 leftSetIndex = controllerCount;
+                state_controllers[controllerCount].nowTime = OVRPlugin.GetNodePoseStateImmediate(OVRPlugin.Node.HandLeft).Time;
                 controllerCount++;
             }
 
@@ -59,6 +62,21 @@ namespace Reign.XR.API
 
             return true;
         }
+
+        /*private static double AndroidTime()
+        {
+            using (var system = new AndroidJavaClass("java.lang.System"))
+            {
+                double now = system.CallStatic<long>("nanoTime") / 1e9;
+
+                Debug.Log($"Pose Time: {pose.Time:F6}");
+                Debug.Log($"System Time: {now:F6}");
+                Debug.Log($"Difference: {(now - pose.Time) * 1000.0:F3} ms");
+            }
+        }*/
+
+        //[DllImport("LibOVRRT64_1.dll", EntryPoint = "ovr_GetTimeInSeconds", CallingConvention = CallingConvention.Cdecl)]
+        //public static extern double GetTimeInSeconds();
 
         private bool GatherInputForController(OVRInput.Controller controller, ref XRControllerState state_controller)
         {
@@ -88,6 +106,10 @@ namespace Reign.XR.API
                 //state_controller.touchGrip.Update(OVRInput.Get(OVRInput.RawTouch.RHandTrigger, controller));// doesn't exist
                 state_controller.touchGrip.Update(gripValue >= XRControllerAnalog.tolerance);
                 state_controller.touchJoystick.Update(OVRInput.Get(OVRInput.RawTouch.RThumbstick, controller));
+
+                // time
+                var state = OVRPlugin.GetNodePoseStateRaw(OVRPlugin.Node.HandRight, OVRPlugin.Step.Render);
+                state_controller.captureTime = state.Time;
             }
             else if (controller == OVRInput.Controller.LHand)
             {
@@ -116,6 +138,10 @@ namespace Reign.XR.API
                 //state_controller.touchGrip.Update(OVRInput.Get(OVRInput.RawTouch.LHandTrigger, controller));// doesn't exist
                 state_controller.touchGrip.Update(gripValue >= XRControllerAnalog.tolerance);
                 state_controller.touchJoystick.Update(OVRInput.Get(OVRInput.RawTouch.LThumbstick, controller));
+
+                // time
+                var state = OVRPlugin.GetNodePoseStateRaw(OVRPlugin.Node.HandLeft, OVRPlugin.Step.Render);
+                state_controller.captureTime = state.Time;
             }
 
             // velocity
