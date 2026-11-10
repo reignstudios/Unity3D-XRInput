@@ -14,9 +14,18 @@ namespace Reign.XR.Example
         private float fpsTime;
         private int fps;
 
+        public bool logTimes;
+        private System.Diagnostics.Stopwatch stopwatch;
+
 		private void Start()
 		{
             Debug.Log($"XRInput environment: OS:'{SystemInfo.operatingSystem}' GPU:'{SystemInfo.graphicsDeviceName}' API:{SystemInfo.graphicsDeviceType} Rez:({Screen.width}, {Screen.height})");
+
+            if (logTimes)
+            {
+                stopwatch = new System.Diagnostics.Stopwatch();
+                stopwatch.Start();
+            }
 
 			XRInput.InitializedCallback += XRInput_InitializedCallback;
 			XRInput.DisposedCallback += XRInput_DisposedCallback;
@@ -154,6 +163,7 @@ namespace Reign.XR.Example
             }
             captureTimeText.text = $"CaptureTime: {Math.Round(stateR.captureTime, 6)}";
             nowTimeText.text = $"NowTime: {Math.Round(stateR.nowTime, 6)}";
+            if (logTimes) Debug.Log($"CaptureTime:{stateR.captureTime} NowTime:{stateR.nowTime} DateTime:{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000.0} Stopwatch:{stopwatch.Elapsed.TotalSeconds}");
         }
 
         void PrintButton(XRControllerButton button, string name)
