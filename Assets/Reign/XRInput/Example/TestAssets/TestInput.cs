@@ -154,7 +154,6 @@ namespace Reign.XR.Example
             }
             captureTimeText.text = $"CaptureTime: {Math.Round(stateR.captureTime, 6)}";
             nowTimeText.text = $"NowTime: {Math.Round(stateR.nowTime, 6)}";
-            Debug.Log($"{captureTimeText.text} VS OVR={OVRPlugin.GetNodePoseStateRaw(OVRPlugin.Node.HandLeft, OVRPlugin.Step.Render).Time} -- {nowTimeText.text} VS OVR={OVRPlugin.GetNodePoseStateImmediate(OVRPlugin.Node.HandRight).Time}");
         }
 
         void PrintButton(XRControllerButton button, string name)
