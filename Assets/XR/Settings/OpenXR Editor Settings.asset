@@ -16,9 +16,9 @@ MonoBehaviour:
   Values:
   - featureSets:
     - com.microsoft.openxr.featureset.wmr
-    - com.valvesoftware.openxr.utils.featureset
+    - com.unity.openxr.featureset.meta
   - featureSets: []
   - featureSets:
-    - com.valvesoftware.openxr.utils.featureset
+    - com.unity.openxr.featureset.meta
   m_vulkanAdditionalGraphicsQueue: 0
   m_vulkanOffscreenSwapchainNoMainDisplay: 1

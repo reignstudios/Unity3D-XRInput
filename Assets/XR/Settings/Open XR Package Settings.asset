@@ -2516,7 +2516,7 @@ MonoBehaviour:
   - {fileID: -2151119700516361841}
   - {fileID: -3247846883883694829}
   - {fileID: 641538788804222147}
-  - {fileID: -8268197357038983407}
+  - {fileID: 5368481229250485672}
   - {fileID: 7574825280217595396}
   - {fileID: 3790750328658821260}
   - {fileID: 7984533221296775907}
@@ -2876,7 +2876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac65e183df5ca334bbde9784d27da199, type: 3}
   m_Name: ValveOpenXRLeptonValidationFeature Android
   m_EditorClassIdentifier: 
-  m_enabled: 1
+  m_enabled: 0
   nameUi: 'Valve Utils: Lepton Validation'
   version: 0.1.0
   featureIdInternal: com.valvesoftware.openxr.utils.validation
@@ -7167,7 +7167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f647cc0545697264a9878224faada6d5, type: 3}
   m_Name: MetaQuestFeature Android
   m_EditorClassIdentifier: 
-  m_enabled: 0
+  m_enabled: 1
   nameUi: Meta Quest Support
   version: 1.0.0
   featureIdInternal: com.unity.openxr.feature.metaquest

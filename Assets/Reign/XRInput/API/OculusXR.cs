@@ -63,21 +63,6 @@ namespace Reign.XR.API
             return true;
         }
 
-        /*private static double AndroidTime()
-        {
-            using (var system = new AndroidJavaClass("java.lang.System"))
-            {
-                double now = system.CallStatic<long>("nanoTime") / 1e9;
-
-                Debug.Log($"Pose Time: {pose.Time:F6}");
-                Debug.Log($"System Time: {now:F6}");
-                Debug.Log($"Difference: {(now - pose.Time) * 1000.0:F3} ms");
-            }
-        }*/
-
-        //[DllImport("LibOVRRT64_1.dll", EntryPoint = "ovr_GetTimeInSeconds", CallingConvention = CallingConvention.Cdecl)]
-        //public static extern double GetTimeInSeconds();
-
         private bool GatherInputForController(OVRInput.Controller controller, ref XRControllerState state_controller)
         {
             //if (!OVRInput.IsControllerConnected(controller)) return false;// this fails to report correctly sometimes

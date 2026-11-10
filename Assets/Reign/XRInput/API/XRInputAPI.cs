@@ -113,19 +113,6 @@ namespace Reign.XR.API
             {
                 sideToSet = SideToSet.Both;
 			}
-
-            /*var time = Time.realtimeSinceStartupAsDouble;
-            if (leftSet)
-            {
-                if (state_controllers[leftSetIndex].captureTime < 0) state_controllers[leftSetIndex].captureTime = time;
-                state_controllers[leftSetIndex].nowTime = time;
-            }
-
-            if (rightSet)
-            {
-                if (state_controllers[rightSetIndex].captureTime < 0) state_controllers[rightSetIndex].captureTime = time;
-                state_controllers[rightSetIndex].nowTime = time;
-            }*/
 		}
 
         protected void ResetControllers(XRControllerState[] state_controllers)
