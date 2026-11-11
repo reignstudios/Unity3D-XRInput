@@ -262,8 +262,11 @@ namespace Reign.XR.API
                 }
 
                 // set times
-                if (OpenXRClockFeature.TryGetPollTimeSeconds(c, out double pollTime)) controller.captureTime = pollTime;
-                if (OpenXRClockFeature.TryGetNowSeconds(out double nowTime)) controller.nowTime = nowTime;
+                //if (OpenXRClockFeature.TryGetPollTimeSeconds(c, out double pollTime)) controller.captureTime = pollTime;
+                //if (OpenXRClockFeature.TryGetNowSeconds(out double nowTime)) controller.nowTime = nowTime;
+
+                if (OpenXRClockFeature.TryGetNowSeconds(out double poseTime)) controller.captureTime = poseTime;// invert and use Now Time
+                if (OpenXRClockFeature.TryGetPoseTimeSeconds(c, out double nowTime)) controller.nowTime = nowTime;// invert and use Pose Time
 
                 // apply
                 state_controllers[controllerCount] = controller;
